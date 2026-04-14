@@ -1,0 +1,171 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+
+@import "tailwindcss";
+
+/* ─── Rosebud Design Tokens ─────────────────────────────────────────────── */
+@theme {
+  /* Colors — Home / global palette (deep navy + purple) */
+  --color-background:                #0B0F2A;
+  --color-surface:                   #0F1435;
+  --color-surface-variant:           #161B3D;
+  --color-surface-container:         #131840;
+  --color-surface-container-low:     #0F1435;
+  --color-surface-container-high:    #1E2450;
+  --color-surface-container-highest: #252B5C;
+  --color-surface-container-lowest:  #080C22;
+  --color-surface-bright:            #2D345B;
+
+  --color-primary:                   #A000B5;
+  --color-primary-container:         #4c1d95;
+  --color-primary-dim:               #7c00a0;
+  --color-primary-fixed:             #d946ef;
+
+  --color-on-background:             #ffffff;
+  --color-on-surface:                #ffffff;
+  --color-on-surface-variant:        #94a3b8;
+  --color-on-primary:                #ffffff;
+  --color-on-primary-container:      #f0abfc;
+
+  --color-outline:                   #2D345B;
+  --color-outline-variant:           #3a4270;
+
+  --color-secondary:                 #f472b6;
+  --color-tertiary:                  #818cf8;
+
+  /* Typography */
+  --font-headline: 'Manrope', sans-serif;
+  --font-body:     'Inter', sans-serif;
+  --font-label:    'Inter', sans-serif;
+
+  /* Border Radius */
+  --radius:      0.25rem;
+  --radius-lg:   0.5rem;
+  --radius-xl:   0.75rem;
+  --radius-2xl:  1rem;
+  --radius-full: 9999px;
+}
+
+/* ─── Global Utilities ──────────────────────────────────────────────────── */
+@layer utilities {
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+  }
+
+  .glass-header {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: rgba(11, 15, 42, 0.85);
+  }
+
+  .text-gradient-primary {
+    background: linear-gradient(135deg, #A000B5 0%, #d946ef 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #5b21b6 0%, #be185d 100%);
+    box-shadow: 0 4px 15px -3px rgba(160, 0, 181, 0.2);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 0 20px 2px rgba(244, 114, 182, 0.3);
+    filter: brightness(1.1);
+  }
+
+  .rose-diffused-highlight {
+    background: radial-gradient(circle at 70% 30%, rgba(160, 0, 181, 0.05) 0%, rgba(11, 15, 42, 0) 60%);
+  }
+
+  .border-gradient-soft {
+    border: 1px solid transparent;
+    background:
+      linear-gradient(#161B3D, #161B3D) padding-box,
+      linear-gradient(135deg, rgba(76, 29, 149, 0.5), rgba(244, 114, 182, 0.5)) border-box;
+  }
+
+  /* Mouse spotlight overlay */
+  .spotlight {
+    --spotlight-x: 50%;
+    --spotlight-y: 50%;
+  }
+  .spotlight::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      600px circle at var(--spotlight-x) var(--spotlight-y),
+      rgba(160, 0, 181, 0.08) 0%,
+      transparent 70%
+    );
+    z-index: 5;
+    transition: opacity 0.3s;
+  }
+
+  /* Animated gradient button */
+  .btn-animated {
+    background-size: 200% 200%;
+    background-image: linear-gradient(135deg, #5b21b6, #A000B5, #be185d, #5b21b6);
+    animation: gradientShift 4s ease infinite;
+    transition: box-shadow 0.3s, filter 0.3s;
+  }
+  .btn-animated:hover {
+    box-shadow: 0 0 28px 6px rgba(160, 0, 181, 0.4);
+    filter: brightness(1.15);
+  }
+
+  @keyframes gradientShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Slow spin for watermark */
+  .spin-slow {
+    animation: spinSlow 40s linear infinite;
+  }
+  @keyframes spinSlow {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+}
+
+/* ─── Base ──────────────────────────────────────────────────────────────── */
+html { color-scheme: dark; }
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #0B0F2A;
+  color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  width: 100%;
+  min-height: 100svh;
+}
