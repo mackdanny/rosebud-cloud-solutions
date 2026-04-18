@@ -2,6 +2,14 @@ import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
 import { SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE } from '../config/site';
 
+interface PreloadImage {
+  readonly href: string;
+  readonly type?: string; // e.g. 'image/webp'
+  readonly fetchPriority?: 'high' | 'low' | 'auto';
+  readonly imagesrcset?: string;
+  readonly imagesizes?: string;
+}
+
 interface SEOProps {
   readonly title: string;
   readonly description: string;
@@ -10,6 +18,8 @@ interface SEOProps {
   readonly type?: 'website' | 'article';
   readonly noindex?: boolean;
   readonly schema?: object | readonly object[];
+  /** Preload hints for critical above-the-fold imagery (typically 1 per page: the LCP candidate). */
+  readonly preloadImages?: readonly PreloadImage[];
 }
 
 export function SEO({
@@ -20,6 +30,7 @@ export function SEO({
   type = 'website',
   noindex = false,
   schema,
+  preloadImages,
 }: SEOProps) {
   const location = useLocation();
   const canonical = `${SITE_URL}${path ?? location.pathname}`;
@@ -47,6 +58,18 @@ export function SEO({
         <script key={i} type="application/ld+json">
           {JSON.stringify(s)}
         </script>
+      ))}
+      {preloadImages?.map((img, i) => (
+        <link
+          key={`preload-${i}`}
+          rel="preload"
+          as="image"
+          href={img.href}
+          {...(img.type ? { type: img.type } : {})}
+          {...(img.fetchPriority ? { fetchpriority: img.fetchPriority } : {})}
+          {...(img.imagesrcset ? { imagesrcset: img.imagesrcset } : {})}
+          {...(img.imagesizes ? { imagesizes: img.imagesizes } : {})}
+        />
       ))}
     </Helmet>
   );

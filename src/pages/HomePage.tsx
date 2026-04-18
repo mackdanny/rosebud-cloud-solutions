@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { lazy, Suspense, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
@@ -8,7 +8,12 @@ import { ParticleBackground } from '../components/ParticleBackground';
 import { TiltCard } from '../components/TiltCard';
 import { useMouseSpotlight } from '../hooks/useMouseSpotlight';
 import { heroContent, certifications } from '../data/mockData';
-import { SparklesCore } from '../components/ui/sparkles';
+
+// Lazy-load: SparklesCore pulls in three.js (~500KB). Defer until after the hero
+// text paints so LCP isn't blocked by the animation engine.
+const SparklesCore = lazy(() =>
+  import('../components/ui/sparkles').then((m) => ({ default: m.SparklesCore })),
+);
 
 // ─── Animation Variants ───────────────────────────────────────────────────────
 
@@ -110,7 +115,13 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
 
   return (
     <main className={className}>
-      <SEO {...pageMeta.home} schema={[organisationSchema, websiteSchema]} />
+      <SEO
+        {...pageMeta.home}
+        schema={[organisationSchema, websiteSchema]}
+        preloadImages={[
+          { href: '/rcs-logo.webp', type: 'image/webp', fetchPriority: 'high' },
+        ]}
+      />
 
       {/* ── Hero ─────────────────────────────────────────────────────── */}
       <section
@@ -127,16 +138,18 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
         <div className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none flex items-center justify-center pr-4">
           <div className="relative w-[580px] h-[580px] flex items-center justify-center">
 
-            {/* Ambient sparkles floating around the logo area */}
-            <SparklesCore
-              className="absolute inset-0 z-10 pointer-events-auto"
-              background="transparent"
-              particleColor="#d946ef"
-              particleDensity={35}
-              minSize={0.6}
-              maxSize={1.6}
-              speed={1.0}
-            />
+            {/* Ambient sparkles — lazy-loaded after hero text paints */}
+            <Suspense fallback={null}>
+              <SparklesCore
+                className="absolute inset-0 z-10 pointer-events-auto"
+                background="transparent"
+                particleColor="#d946ef"
+                particleDensity={35}
+                minSize={0.6}
+                maxSize={1.6}
+                speed={1.0}
+              />
+            </Suspense>
 
             {/* Logo — drop-shadow traces the actual flower silhouette */}
             <motion.img

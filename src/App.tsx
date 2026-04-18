@@ -40,6 +40,9 @@ const CaseStudiesPage = lazy(() =>
 const CaseStudyDetailPage = lazy(() =>
   import('./pages/CaseStudyDetailPage').then((m) => ({ default: m.CaseStudyDetailPage })),
 );
+const NotFoundPage = lazy(() =>
+  import('./pages/NotFoundPage').then((m) => ({ default: m.NotFoundPage })),
+);
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -72,6 +75,7 @@ export function AppRoutes() {
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/case-studies" element={<CaseStudiesPage />} />
             <Route path="/case-studies/:slug" element={<CaseStudyDetailPage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Suspense>
         <Footer />

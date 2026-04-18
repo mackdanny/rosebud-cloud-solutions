@@ -52,6 +52,13 @@ export const CaseStudyDetailPage: React.FC = () => {
     : null;
 
   const studyPath = `/case-studies/${study.slug}`;
+  const keywords = [
+    study.industry,
+    ...study.detail.clientSummary.microsoftPlatform,
+    'Azure',
+    'cloud security',
+    'case study',
+  ];
   const caseStudyArticleSchema = {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -60,6 +67,9 @@ export const CaseStudyDetailPage: React.FC = () => {
     image: `${SITE_URL}/${study.image}`,
     url: `${SITE_URL}${studyPath}`,
     about: study.industry,
+    articleSection: 'Case Studies',
+    keywords: keywords.join(', '),
+    inLanguage: 'en-GB',
     author: { '@id': `${SITE_URL}/#organization` },
     publisher: { '@id': `${SITE_URL}/#organization` },
     mainEntityOfPage: `${SITE_URL}${studyPath}`,

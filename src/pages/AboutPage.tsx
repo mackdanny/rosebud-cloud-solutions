@@ -188,9 +188,19 @@ export const AboutPage: React.FC<AboutPageProps> = ({ className = '' }) => {
                 <div className="absolute top-0 right-0 w-48 h-48 bg-primary/5 rounded-full blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
                 <div className="relative z-10 p-10 flex flex-col h-full">
-                  {/* Photo */}
+                  {/* Photo — responsive srcset: 400w for <= 600px viewports, 800w otherwise */}
                   <div className="w-[168px] h-[168px] rounded-full overflow-hidden border-[3px] border-primary/30 mb-8 shrink-0">
-                    <img src={member.photo} alt={member.name} className="w-full h-full object-cover" />
+                    <img
+                      src={member.photo}
+                      srcSet={`${member.photo.replace('.webp', '-sm.webp')} 400w, ${member.photo} 800w`}
+                      sizes="(max-width: 768px) 200px, 336px"
+                      alt={member.name}
+                      width={168}
+                      height={168}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover"
+                    />
                   </div>
 
                   {/* Name & Role */}
