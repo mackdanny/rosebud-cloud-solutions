@@ -140,7 +140,7 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
 
             {/* Logo — drop-shadow traces the actual flower silhouette */}
             <motion.img
-              src={`${import.meta.env.BASE_URL}rcs-logo.png`}
+              src={`${import.meta.env.BASE_URL}rcs-logo.webp`}
               alt=""
               aria-hidden="true"
               className="relative z-20 w-full h-full object-contain opacity-40 mix-blend-lighten select-none"

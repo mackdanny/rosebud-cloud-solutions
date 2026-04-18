@@ -1225,7 +1225,7 @@ export const DevSecOpsPage: React.FC<DevSecOpsPageProps> = ({ className = '' }) 
               <div className="absolute -inset-6 bg-primary/5 rounded-3xl blur-3xl pointer-events-none" />
               <div className="relative bg-surface-container-highest p-4 rounded-2xl shadow-2xl border border-outline/30">
                 <img
-                  src={`${import.meta.env.BASE_URL}service-devsecops.png`}
+                  src={`${import.meta.env.BASE_URL}service-devsecops.webp`}
                   alt="Secure DevOps & Automation"
                   className="rounded-xl w-full h-[460px] object-cover"
                 />

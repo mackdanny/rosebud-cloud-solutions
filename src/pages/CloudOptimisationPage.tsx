@@ -1023,7 +1023,7 @@ export const CloudOptimisationPage: React.FC<CloudOptimisationPageProps> = ({ cl
               <div className="absolute -inset-6 bg-primary/5 rounded-3xl blur-3xl pointer-events-none" />
               <div className="relative bg-surface-container-highest p-4 rounded-2xl shadow-2xl border border-outline/30">
                 <img
-                  src={`${import.meta.env.BASE_URL}service-cloud-optimisation.png`}
+                  src={`${import.meta.env.BASE_URL}service-cloud-optimisation.webp`}
                   alt="Cloud Optimisation & Improvement"
                   className="rounded-xl w-full h-[460px] object-cover"
                 />

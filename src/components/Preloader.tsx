@@ -163,7 +163,7 @@ export const Preloader: React.FC<{ children: React.ReactNode }> = ({ children })
             >
               {/* Logo image — rotateY */}
               <motion.img
-                src={`${import.meta.env.BASE_URL}rcs-logo.png`}
+                src={`${import.meta.env.BASE_URL}rcs-logo.webp`}
                 alt="RCS Logo"
                 className="h-80 md:h-[26rem] w-auto mb-2"
                 style={{ transformStyle: 'preserve-3d', backfaceVisibility: 'hidden' }}

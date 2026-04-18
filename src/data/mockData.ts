@@ -9,12 +9,12 @@ export const heroContent = {
 };
 
 export const certifications = [
-  { src: '/cert-01.png', alt: 'Microsoft Certified: Azure Solutions Architect Expert' },
-  { src: '/cert-02.png', alt: 'Microsoft Certified: DevOps Engineer Expert' },
-  { src: '/cert-03.png', alt: 'Microsoft Certified: Azure Administrator Associate' },
-  { src: '/cert-04.png', alt: 'Microsoft Certified: Azure Virtual Desktop Specialty' },
-  { src: '/cert-05.png', alt: 'Microsoft Certified: Azure AI Engineer Associate' },
-  { src: '/cert-06.png', alt: 'Microsoft Certified: Azure Network Engineer Associate' },
+  { src: '/cert-01.webp', alt: 'Microsoft Certified: Azure Solutions Architect Expert' },
+  { src: '/cert-02.webp', alt: 'Microsoft Certified: DevOps Engineer Expert' },
+  { src: '/cert-03.webp', alt: 'Microsoft Certified: Azure Administrator Associate' },
+  { src: '/cert-04.webp', alt: 'Microsoft Certified: Azure Virtual Desktop Specialty' },
+  { src: '/cert-05.webp', alt: 'Microsoft Certified: Azure AI Engineer Associate' },
+  { src: '/cert-06.webp', alt: 'Microsoft Certified: Azure Network Engineer Associate' },
 ];
 
 export const services = [

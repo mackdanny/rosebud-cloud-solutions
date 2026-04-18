@@ -35,7 +35,7 @@ export const caseStudies: CaseStudy[] = [
     title: 'Secure-by-Design Azure Platform for Tier-1 Financial Institution',
     industry: 'Financial Services (Tier-1)',
     icon: 'account_balance',
-    image: 'case-study-01.png',
+    image: 'case-study-01.webp',
     description:
       'Delivering a greenfield Azure platform under strict regulatory constraints. RCS embedded DevSecOps practices, automated policy enforcement, and Microsoft security baselines from day one.',
     detail: {
@@ -80,7 +80,7 @@ export const caseStudies: CaseStudy[] = [
     title: 'Secure Hybrid Identity for UK Public Sector Regulator',
     industry: 'Public Sector (Regulatory)',
     icon: 'badge',
-    image: 'case-study-02.png',
+    image: 'case-study-02.webp',
     description:
       'Modernising legacy Active Directory into a secure, governed Azure identity platform aligned to Microsoft security best practice. RCS embedded RBAC, automation, and resilience controls to strengthen audit readiness and reduce operational risk.',
     detail: {
@@ -135,7 +135,7 @@ export const caseStudies: CaseStudy[] = [
     title: 'Secure Azure Virtual Desktop Platform for Public Sector',
     industry: 'Public Sector',
     icon: 'desktop_windows',
-    image: 'case-study-03.png',
+    image: 'case-study-03.webp',
     description:
       'Designing and delivering a centrally governed Azure Virtual Desktop (AVD) environment to support a distributed workforce. Automation and embedded identity controls ensured secure, scalable operations aligned to Microsoft best practices.',
     detail: {
@@ -190,7 +190,7 @@ export const caseStudies: CaseStudy[] = [
     title: 'Enterprise Azure Landing Zone for Global Retailer',
     industry: 'Retail (Global Operations)',
     icon: 'storefront',
-    image: 'case-study-04.png',
+    image: 'case-study-04.webp',
     description:
       'Building a standardised Azure landing zone architecture across multiple regions. RCS implemented Infrastructure-as-Code and Microsoft-aligned governance controls to enable secure, consistent cloud adoption at enterprise scale.',
     detail: {
@@ -248,7 +248,7 @@ export const caseStudies: CaseStudy[] = [
     title: 'Azure Governance & Security Foundations for Financial Services',
     industry: 'Financial Services',
     icon: 'policy',
-    image: 'case-study-05.png',
+    image: 'case-study-05.webp',
     description:
       'Redesigning Azure governance architecture to support safe cloud growth. Management group structures, policy frameworks, and security controls were codified using Terraform to improve audit readiness and reduce manual intervention.',
     detail: {
@@ -302,7 +302,7 @@ export const caseStudies: CaseStudy[] = [
     title: 'Secure Azure Data Platform for Sensitive Analytics Workloads',
     industry: 'Legal / Professional Services',
     icon: 'database',
-    image: 'case-study-06.png',
+    image: 'case-study-06.webp',
     description:
       'Designing a fully private Azure data platform for sensitive analytics environments. Network topology, security controls, and deployment pipelines were codified to align with CIS benchmarks and Microsoft security standards.',
     detail: {
