@@ -2,8 +2,13 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // ─── Gating ──────────────────────────────────────────────────────────────────
-// Preloader only plays on the homepage AND at most once every 24 hours per browser.
-// Deep links (e.g. /services/cloud-security) always skip the brand intro.
+// Preloader plays on the homepage.
+//
+// 🚧 REVIEW MODE: 24h cooldown is disabled so stakeholders (Alex, Hannah) see
+// the brand intro on every visit. Before going live on the production domain,
+// set REVIEW_MODE = false to re-enable the once-per-24h gate.
+
+const REVIEW_MODE = true;
 
 const PRELOADER_LAST_SEEN_KEY = 'rcs-preloader-last-seen';
 const PRELOADER_COOLDOWN_MS = 24 * 60 * 60 * 1000;
@@ -11,6 +16,7 @@ const PRELOADER_COOLDOWN_MS = 24 * 60 * 60 * 1000;
 function shouldShowPreloader(): boolean {
   if (typeof window === 'undefined') return false;
   if (window.location.pathname !== '/') return false;
+  if (REVIEW_MODE) return true;
   try {
     const lastSeen = Number(window.localStorage.getItem(PRELOADER_LAST_SEEN_KEY) ?? 0);
     return !lastSeen || Date.now() - lastSeen > PRELOADER_COOLDOWN_MS;
