@@ -1,5 +1,8 @@
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
+import { SEO } from '../components/SEO';
+import { pageMeta, breadcrumbSchema } from '../data/seoMeta';
 import { TiltCard } from '../components/TiltCard';
 
 // ─── Animation Variants ───────────────────────────────────────────────────────
@@ -78,9 +81,16 @@ interface StrategicTriagePageProps {
 export const StrategicTriagePage: React.FC<StrategicTriagePageProps> = ({ className = '' }) => {
   return (
     <main className={`pt-24 ${className}`}>
+      <SEO
+        {...pageMeta.strategicTriage}
+        schema={breadcrumbSchema([
+          { name: 'Home', path: '/' },
+          { name: 'Strategic Triage', path: pageMeta.strategicTriage.path },
+        ])}
+      />
 
       {/* ── Hero ─────────────────────────────────────────────────────── */}
-      <section className="relative min-h-screen flex items-center px-8 md:px-24 overflow-hidden bg-background">
+      <section className="relative pt-28 pb-20 flex items-center px-8 md:px-24 overflow-hidden bg-background">
         {/* Ambient glows */}
         <motion.div
           className="absolute top-[-10%] left-[-5%] w-[700px] h-[700px] rounded-full pointer-events-none"
@@ -122,23 +132,25 @@ export const StrategicTriagePage: React.FC<StrategicTriagePageProps> = ({ classN
             </motion.div>
 
             {/* Headline */}
-            <div className="font-headline text-[3rem] md:text-[5rem] leading-[1.0] font-extrabold tracking-tighter mb-8">
-              <motion.div
+            <h1 className="font-headline text-[3rem] md:text-[5rem] leading-[1.0] font-extrabold tracking-tighter mb-8">
+              <motion.span
+                className="block"
                 initial={{ opacity: 0, y: 60 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] }}
               >
                 From Intake Paralysis
-              </motion.div>
-              <motion.div
+              </motion.span>
+              <motion.span
+                className="block"
                 initial={{ opacity: 0, y: 60 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.44, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] }}
               >
                 to{' '}
                 <span className="text-gradient-primary">Operationalised Intent</span>
-              </motion.div>
-            </div>
+              </motion.span>
+            </h1>
 
             {/* Subtitle */}
             <motion.p
@@ -239,14 +251,14 @@ export const StrategicTriagePage: React.FC<StrategicTriagePageProps> = ({ classN
                         viewport={{ once: true }}
                         transition={{ delay: 0.3 + i * 0.1 }}
                       >
-                        <span className="material-symbols-outlined text-primary" style={{ fontSize: '1.6rem' }}>{icon}</span>
+                        <span aria-hidden="true" className="material-symbols-outlined text-primary" style={{ fontSize: '1.6rem' }}>{icon}</span>
                       </motion.div>
                     ))}
                   </div>
                   <div className="w-full h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
                   <div className="text-center space-y-3">
                     <div className="flex items-center justify-center gap-3">
-                      <span className="material-symbols-outlined text-primary" style={{ fontSize: '2rem' }}>hub</span>
+                      <span aria-hidden="true" className="material-symbols-outlined text-primary" style={{ fontSize: '2rem' }}>hub</span>
                       <span className="font-headline font-bold text-lg">Strategic Directed Graph</span>
                     </div>
                     <p className="text-on-surface-variant text-sm max-w-xs">
@@ -330,7 +342,7 @@ export const StrategicTriagePage: React.FC<StrategicTriagePageProps> = ({ classN
 
                   <div className="relative z-10">
                     <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/25 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
-                      <span className="material-symbols-outlined text-primary" style={{ fontSize: '1.4rem' }}>
+                      <span aria-hidden="true" className="material-symbols-outlined text-primary" style={{ fontSize: '1.4rem' }}>
                         {icon}
                       </span>
                     </div>
@@ -397,13 +409,15 @@ export const StrategicTriagePage: React.FC<StrategicTriagePageProps> = ({ classN
           </ScrollReveal>
           <ScrollReveal delay={2}>
             <div className="flex flex-col md:flex-row justify-center items-center gap-6">
-              <motion.button
-                className="btn-animated text-white font-headline font-bold px-14 py-6 rounded-lg text-xl tracking-tight"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                Book a Triage Walk-through
-              </motion.button>
+              <Link to="/contact" className="no-underline">
+                <motion.button
+                  className="btn-animated text-white font-headline font-bold px-14 py-6 rounded-lg text-xl tracking-tight"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.97 }}
+                >
+                  Book a Triage Walk-through
+                </motion.button>
+              </Link>
               <motion.button
                 className="text-white font-headline font-bold px-14 py-6 border border-outline hover:bg-white/5 rounded-lg text-xl transition-all"
                 whileHover={{ scale: 1.05, borderColor: 'rgba(160,0,181,0.5)' }}

@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
+import { SEO } from '../components/SEO';
+import { pageMeta, breadcrumbSchema } from '../data/seoMeta';
 import { ParticleBackground } from '../components/ParticleBackground';
 
 // ─── Animation Variants ───────────────────────────────────────────────────────
@@ -135,9 +137,16 @@ const engagementOptions = [
 export const HowWeWorkPage: React.FC = () => {
   return (
     <main className="bg-background min-h-screen">
+      <SEO
+        {...pageMeta.howWeWork}
+        schema={breadcrumbSchema([
+          { name: 'Home', path: '/' },
+          { name: 'How We Work', path: pageMeta.howWeWork.path },
+        ])}
+      />
 
       {/* ── Hero ──────────────────────────────────────────────────────── */}
-      <section className="relative min-h-[85vh] flex items-center overflow-hidden border-b border-outline">
+      <section className="relative pt-28 pb-20 flex items-center overflow-hidden border-b border-outline">
         <ParticleBackground />
 
         {/* Ambient glows */}
@@ -154,7 +163,7 @@ export const HowWeWorkPage: React.FC = () => {
           transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 3 }}
         />
 
-        <div className="max-w-[1440px] mx-auto px-8 pt-40 pb-28 relative z-10">
+        <div className="max-w-[1440px] mx-auto px-8 pt-12 pb-16 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -235,7 +244,7 @@ export const HowWeWorkPage: React.FC = () => {
                       </span>
                       <div>
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="material-symbols-outlined text-primary" style={{ fontSize: '1.4rem' }}>
+                          <span aria-hidden="true" className="material-symbols-outlined text-primary" style={{ fontSize: '1.4rem' }}>
                             {step.icon}
                           </span>
                           <h3 className="font-headline text-2xl md:text-3xl font-bold tracking-tight text-white">
@@ -254,7 +263,7 @@ export const HowWeWorkPage: React.FC = () => {
                     <ul className="space-y-3">
                       {step.items.map((item) => (
                         <li key={item} className="flex items-start gap-3">
-                          <span className="material-symbols-outlined text-primary mt-0.5 shrink-0" style={{ fontSize: '1rem' }}>
+                          <span aria-hidden="true" className="material-symbols-outlined text-primary mt-0.5 shrink-0" style={{ fontSize: '1rem' }}>
                             check_circle
                           </span>
                           <span className="text-on-surface-variant text-[15px] leading-relaxed">{item}</span>
@@ -332,7 +341,7 @@ export const HowWeWorkPage: React.FC = () => {
                   {/* Center label */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
-                      <span className="material-symbols-outlined text-primary mb-2 block" style={{ fontSize: '2.5rem' }}>
+                      <span aria-hidden="true" className="material-symbols-outlined text-primary mb-2 block" style={{ fontSize: '2.5rem' }}>
                         all_inclusive
                       </span>
                       <span className="text-white font-headline font-bold text-lg tracking-tight">DevSecOps</span>
@@ -360,7 +369,7 @@ export const HowWeWorkPage: React.FC = () => {
                         transition={{ delay: 0.5 + idx * 0.2, duration: 0.5 }}
                       >
                         <div className="w-14 h-14 rounded-xl bg-surface-container border border-primary/30 flex items-center justify-center">
-                          <span className="material-symbols-outlined text-primary" style={{ fontSize: '1.5rem' }}>
+                          <span aria-hidden="true" className="material-symbols-outlined text-primary" style={{ fontSize: '1.5rem' }}>
                             {node.icon}
                           </span>
                         </div>
@@ -410,7 +419,7 @@ export const HowWeWorkPage: React.FC = () => {
               >
                 <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
                 <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors duration-300">
-                  <span className="material-symbols-outlined text-primary" style={{ fontSize: '1.5rem' }}>
+                  <span aria-hidden="true" className="material-symbols-outlined text-primary" style={{ fontSize: '1.5rem' }}>
                     {outcome.icon}
                   </span>
                 </div>
@@ -460,7 +469,7 @@ export const HowWeWorkPage: React.FC = () => {
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl" />
                 <div className="relative z-10">
                   <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-5 group-hover:bg-primary/20 transition-colors duration-300">
-                    <span className="material-symbols-outlined text-primary" style={{ fontSize: '1.8rem' }}>
+                    <span aria-hidden="true" className="material-symbols-outlined text-primary" style={{ fontSize: '1.8rem' }}>
                       {option.icon}
                     </span>
                   </div>
@@ -506,14 +515,14 @@ export const HowWeWorkPage: React.FC = () => {
             </p>
           </ScrollReveal>
           <ScrollReveal delay={2}>
-            <Link to="/about">
+            <Link to="/contact" className="no-underline">
               <motion.button
                 className="btn-animated text-white font-headline font-bold px-14 py-6 rounded-lg text-xl tracking-tight"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.97 }}
               >
                 Start a Conversation
-                <span className="material-symbols-outlined ml-3 align-middle" style={{ fontSize: '1.3rem' }}>
+                <span aria-hidden="true" className="material-symbols-outlined ml-3 align-middle" style={{ fontSize: '1.3rem' }}>
                   arrow_forward
                 </span>
               </motion.button>

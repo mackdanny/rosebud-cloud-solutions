@@ -21,10 +21,13 @@ import { ManagedCloudPage } from './pages/ManagedCloudPage';
 import { StrategicTriagePage } from './pages/StrategicTriagePage';
 import { AboutPage } from './pages/AboutPage';
 import { HowWeWorkPage } from './pages/HowWeWorkPage';
+import { ContactPage } from './pages/ContactPage';
+import { CaseStudiesPage } from './pages/CaseStudiesPage';
+import { CaseStudyDetailPage } from './pages/CaseStudyDetailPage';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Preloader>
         <div className="min-h-screen bg-background text-on-background">
           <ScrollToTop />
@@ -40,6 +43,9 @@ function App() {
             <Route path="/tools/strategic-triage" element={<StrategicTriagePage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/how-we-work" element={<HowWeWorkPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/case-studies" element={<CaseStudiesPage />} />
+            <Route path="/case-studies/:slug" element={<CaseStudyDetailPage />} />
           </Routes>
           <Footer />
         </div>

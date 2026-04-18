@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import Particles from '@tsparticles/react';
 import { loadSlim } from '@tsparticles/slim';
 import type { Engine } from '@tsparticles/engine';
@@ -8,9 +8,21 @@ interface ParticleBackgroundProps {
 }
 
 export const ParticleBackground: React.FC<ParticleBackgroundProps> = ({ className = '' }) => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 768px)');
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
   const init = useCallback(async (engine: Engine) => {
     await loadSlim(engine);
   }, []);
+
+  if (isMobile) return null;
 
   return (
     <Particles

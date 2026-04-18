@@ -1,33 +1,110 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const PHASE_DURATION = 0.6;
-const PHASE_HOLD = 0.8;
-const PHASE_GAP = 0.15;
+// ─── Gating ──────────────────────────────────────────────────────────────────
+// Preloader only plays on the homepage AND at most once every 24 hours per browser.
+// Deep links (e.g. /services/cloud-security) always skip the brand intro.
 
-// Timeline (seconds):
-// 0.0  – "STOP REACTING" rotates in
-// 0.6  – hold
-// 1.4  – rotates out
-// 2.0  – gap
-// 2.15 – "START SECURING" rotates in
-// 2.75 – hold
-// 3.55 – rotates out
-// 4.15 – gap
-// 4.30 – Logo (rotateY) + "Rosebud Cloud Solutions" (rotateX) rotate in
-// 4.90 – hold
-// 5.70 – both rotate out
-// 6.30 – overlay fades out
+const PRELOADER_LAST_SEEN_KEY = 'rcs-preloader-last-seen';
+const PRELOADER_COOLDOWN_MS = 24 * 60 * 60 * 1000;
 
-const T1_IN = 0;
-const T1_OUT = T1_IN + PHASE_DURATION + PHASE_HOLD;
-const T2_IN = T1_OUT + PHASE_DURATION + PHASE_GAP;
-const T2_OUT = T2_IN + PHASE_DURATION + PHASE_HOLD;
-const T3_IN = T2_OUT + PHASE_DURATION + PHASE_GAP;
-const T3_OUT = T3_IN + PHASE_DURATION + PHASE_HOLD;
+function shouldShowPreloader(): boolean {
+  if (typeof window === 'undefined') return false;
+  if (window.location.pathname !== '/') return false;
+  try {
+    const lastSeen = Number(window.localStorage.getItem(PRELOADER_LAST_SEEN_KEY) ?? 0);
+    return !lastSeen || Date.now() - lastSeen > PRELOADER_COOLDOWN_MS;
+  } catch {
+    return true;
+  }
+}
+
+// ─── Timing constants ────────────────────────────────────────────────────────
+const ROTATE_IN  = 0.45;   // time to rotate from -90 → 0
+const HOLD       = 0.50;   // time text stays fully visible
+const ROTATE_OUT = 0.40;   // time to rotate from 0 → 90
+const GAP        = 0.0;    // no dead-air between phases
+
+const p1Start = 0;
+const p1End   = p1Start + ROTATE_IN + HOLD + ROTATE_OUT;
+
+const p2Start = p1End + GAP;
+const p2End   = p2Start + ROTATE_IN + HOLD + ROTATE_OUT;
+
+const p3Start = p2End + GAP;
+const p3End   = p3Start + ROTATE_IN + HOLD + ROTATE_OUT;
+
+// Quick dissolve once phase 3 content has fully rotated away
+const OVERLAY_FADE_DUR = 0.3;
+
+// ─── Smooth rotation keyframes (7 stops, custom ease per segment) ────────────
+
+function rotatePhase(startDelay: number) {
+  const dur = ROTATE_IN + HOLD + ROTATE_OUT;
+  const inEnd    = ROTATE_IN / dur;
+  const holdEnd  = (ROTATE_IN + HOLD) / dur;
+
+  return {
+    rotateX: {
+      times:    [0,   inEnd * 0.35, inEnd * 0.7,  inEnd,   holdEnd,  holdEnd + (1 - holdEnd) * 0.4,  1],
+      values:   [-90, -52,          -14,           0,       0,        38,                              90],
+      delay: startDelay,
+      duration: dur,
+      ease: ['easeOut', 'easeOut', 'easeOut', 'linear', 'easeIn', 'easeIn'],
+    },
+    opacity: {
+      times:    [0,    inEnd * 0.25,  holdEnd,   holdEnd + (1 - holdEnd) * 0.7, 1],
+      values:   [0,    1,             1,         0.6,                            0],
+      delay: startDelay,
+      duration: dur,
+      ease: ['easeOut', 'linear', 'easeIn', 'easeIn'],
+    },
+  };
+}
+
+// Logo uses rotateY instead of rotateX
+function rotatePhaseY(startDelay: number) {
+  const dur = ROTATE_IN + HOLD + ROTATE_OUT;
+  const inEnd    = ROTATE_IN / dur;
+  const holdEnd  = (ROTATE_IN + HOLD) / dur;
+
+  return {
+    rotateY: {
+      times:    [0,   inEnd * 0.35, inEnd * 0.7,  inEnd,   holdEnd,  holdEnd + (1 - holdEnd) * 0.4,  1],
+      values:   [-90, -52,          -14,           0,       0,        38,                              90],
+      delay: startDelay,
+      duration: dur,
+      ease: ['easeOut', 'easeOut', 'easeOut', 'linear', 'easeIn', 'easeIn'],
+    },
+    opacity: {
+      times:    [0,    inEnd * 0.25,  holdEnd,   holdEnd + (1 - holdEnd) * 0.7, 1],
+      values:   [0,    1,             1,         0.6,                            0],
+      delay: startDelay,
+      duration: dur,
+      ease: ['easeOut', 'linear', 'easeIn', 'easeIn'],
+    },
+  };
+}
+
+// ─── Component ───────────────────────────────────────────────────────────────
 
 export const Preloader: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [done, setDone] = useState(false);
+  const [done, setDone] = useState(() => !shouldShowPreloader());
+
+  useEffect(() => {
+    if (!done && typeof window !== 'undefined') {
+      try {
+        window.localStorage.setItem(PRELOADER_LAST_SEEN_KEY, String(Date.now()));
+      } catch {
+        // localStorage blocked (private mode / quota); fall through silently
+      }
+    }
+  }, []);
+
+  const p1 = rotatePhase(p1Start);
+  const p2 = rotatePhase(p2Start);
+  const p3x = rotatePhase(p3Start);   // text uses rotateX
+  const p3y = rotatePhaseY(p3Start);  // logo uses rotateY
 
   return (
     <>
@@ -39,107 +116,80 @@ export const Preloader: React.FC<{ children: React.ReactNode }> = ({ children })
             style={{ backgroundColor: '#0B0F2A', perspective: 800 }}
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: 'easeInOut' }}
-            onAnimationComplete={() => {}}
+            transition={{ duration: OVERLAY_FADE_DUR, ease: [0.25, 0.1, 0.25, 1] }}
           >
             {/* Phase 1: STOP REACTING */}
-            <motion.h1
+            <motion.div
+              role="presentation"
+              aria-hidden="true"
               className="absolute font-headline text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter text-white text-center"
-              style={{ transformStyle: 'preserve-3d', backfaceVisibility: 'hidden' }}
+              style={{ transformStyle: 'preserve-3d', backfaceVisibility: 'hidden', marginTop: '-38px' }}
               initial={{ rotateX: -90, opacity: 0 }}
               animate={{
-                rotateX: [  -90,   0,    0,   90 ],
-                opacity:  [    0,   1,    1,    1 ],
+                rotateX: p1.rotateX.values,
+                opacity: p1.opacity.values,
               }}
               transition={{
-                duration: T1_OUT + PHASE_DURATION - T1_IN,
-                times: [
-                  0,
-                  PHASE_DURATION / (T1_OUT + PHASE_DURATION),
-                  T1_OUT / (T1_OUT + PHASE_DURATION),
-                  1,
-                ],
-                ease: [0.4, 0, 0.2, 1],
+                rotateX: { delay: p1.rotateX.delay, duration: p1.rotateX.duration, times: p1.rotateX.times, ease: p1.rotateX.ease },
+                opacity: { delay: p1.opacity.delay, duration: p1.opacity.duration, times: p1.opacity.times, ease: p1.opacity.ease },
               }}
             >
               STOP REACTING
-            </motion.h1>
+            </motion.div>
 
             {/* Phase 2: START SECURING */}
-            <motion.h1
+            <motion.div
+              role="presentation"
+              aria-hidden="true"
               className="absolute font-headline text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter text-white text-center"
-              style={{ transformStyle: 'preserve-3d', backfaceVisibility: 'hidden' }}
+              style={{ transformStyle: 'preserve-3d', backfaceVisibility: 'hidden', marginTop: '-38px' }}
               initial={{ rotateX: -90, opacity: 0 }}
               animate={{
-                rotateX: [  -90,   0,    0,   90 ],
-                opacity:  [    0,   1,    1,    1 ],
+                rotateX: p2.rotateX.values,
+                opacity: p2.opacity.values,
               }}
               transition={{
-                delay: T2_IN,
-                duration: T2_OUT + PHASE_DURATION - T2_IN,
-                times: [
-                  0,
-                  PHASE_DURATION / (T2_OUT + PHASE_DURATION - T2_IN),
-                  (T2_OUT - T2_IN) / (T2_OUT + PHASE_DURATION - T2_IN),
-                  1,
-                ],
-                ease: [0.4, 0, 0.2, 1],
+                rotateX: { delay: p2.rotateX.delay, duration: p2.rotateX.duration, times: p2.rotateX.times, ease: p2.rotateX.ease },
+                opacity: { delay: p2.opacity.delay, duration: p2.opacity.duration, times: p2.opacity.times, ease: p2.opacity.ease },
               }}
             >
               <span className="text-gradient-primary">START SECURING</span>
-            </motion.h1>
+            </motion.div>
 
             {/* Phase 3: Logo + Company Name */}
             <motion.div
               className="absolute flex flex-col items-center"
               style={{ transformStyle: 'preserve-3d' }}
-              initial={{ opacity: 1 }}
-              animate={{ opacity: 1 }}
-              onAnimationComplete={() => {}}
             >
-              {/* Logo image - rotateY */}
+              {/* Logo image — rotateY */}
               <motion.img
-                src="/rcs-logo.png"
+                src={`${import.meta.env.BASE_URL}rcs-logo.png`}
                 alt="RCS Logo"
-                className="h-80 md:h-[26rem] w-auto mb-6"
+                className="h-80 md:h-[26rem] w-auto mb-2"
                 style={{ transformStyle: 'preserve-3d', backfaceVisibility: 'hidden' }}
                 initial={{ rotateY: -90, opacity: 0 }}
                 animate={{
-                  rotateY: [ -90,   0,    0,   90 ],
-                  opacity:  [   0,   1,    1,    1 ],
+                  rotateY: p3y.rotateY.values,
+                  opacity: p3y.opacity.values,
                 }}
                 transition={{
-                  delay: T3_IN,
-                  duration: T3_OUT + PHASE_DURATION - T3_IN,
-                  times: [
-                    0,
-                    PHASE_DURATION / (T3_OUT + PHASE_DURATION - T3_IN),
-                    (T3_OUT - T3_IN) / (T3_OUT + PHASE_DURATION - T3_IN),
-                    1,
-                  ],
-                  ease: [0.4, 0, 0.2, 1],
+                  rotateY: { delay: p3y.rotateY.delay, duration: p3y.rotateY.duration, times: p3y.rotateY.times, ease: p3y.rotateY.ease },
+                  opacity: { delay: p3y.opacity.delay, duration: p3y.opacity.duration, times: p3y.opacity.times, ease: p3y.opacity.ease },
                 }}
               />
 
-              {/* Company name - rotateX */}
+              {/* Company name — rotateX */}
               <motion.span
-                className="font-headline text-2xl md:text-3xl font-bold tracking-tight text-white"
+                className="font-headline text-3xl md:text-4xl font-bold tracking-tight text-white"
                 style={{ transformStyle: 'preserve-3d', backfaceVisibility: 'hidden' }}
                 initial={{ rotateX: -90, opacity: 0 }}
                 animate={{
-                  rotateX: [ -90,   0,    0,   90 ],
-                  opacity:  [   0,   1,    1,    1 ],
+                  rotateX: p3x.rotateX.values,
+                  opacity: p3x.opacity.values,
                 }}
                 transition={{
-                  delay: T3_IN,
-                  duration: T3_OUT + PHASE_DURATION - T3_IN,
-                  times: [
-                    0,
-                    PHASE_DURATION / (T3_OUT + PHASE_DURATION - T3_IN),
-                    (T3_OUT - T3_IN) / (T3_OUT + PHASE_DURATION - T3_IN),
-                    1,
-                  ],
-                  ease: [0.4, 0, 0.2, 1],
+                  rotateX: { delay: p3x.rotateX.delay, duration: p3x.rotateX.duration, times: p3x.rotateX.times, ease: p3x.rotateX.ease },
+                  opacity: { delay: p3x.opacity.delay, duration: p3x.opacity.duration, times: p3x.opacity.times, ease: p3x.opacity.ease },
                 }}
                 onAnimationComplete={() => setDone(true)}
               >

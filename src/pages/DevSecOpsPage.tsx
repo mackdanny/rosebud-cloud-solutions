@@ -1,6 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
+import { SEO } from '../components/SEO';
+import { pageMeta, serviceSchema, breadcrumbSchema } from '../data/seoMeta';
 import { TiltCard } from '../components/TiltCard';
 
 // ─── Animation Variants ───────────────────────────────────────────────────────
@@ -363,7 +366,7 @@ const PipelineDashboardGraphic: React.FC = () => (
         { icon: 'policy', label: 'Policies', status: '31 Enforced' },
       ].map(({ icon, label, status }) => (
         <div key={label} className="bg-surface p-2.5 rounded-lg border border-outline/20 text-center">
-          <span className="material-symbols-outlined text-primary block mb-1" style={{ fontSize: '1.1rem' }}>
+          <span aria-hidden="true" className="material-symbols-outlined text-primary block mb-1" style={{ fontSize: '1.1rem' }}>
             {icon}
           </span>
           <div className="text-[9px] text-on-surface-variant font-label">{label}</div>
@@ -1066,9 +1069,24 @@ interface DevSecOpsPageProps {
 export const DevSecOpsPage: React.FC<DevSecOpsPageProps> = ({ className = '' }) => {
   return (
     <main className={`pt-24 ${className}`}>
+      <SEO
+        {...pageMeta.devSecOps}
+        schema={[
+          serviceSchema({
+            name: 'DevSecOps Consulting',
+            description: pageMeta.devSecOps.description,
+            path: pageMeta.devSecOps.path,
+            serviceType: 'DevSecOps',
+          }),
+          breadcrumbSchema([
+            { name: 'Home', path: '/' },
+            { name: 'DevSecOps', path: pageMeta.devSecOps.path },
+          ]),
+        ]}
+      />
 
       {/* ── Hero ──────────────────────────────────────────────────────── */}
-      <section className="relative min-h-screen flex items-center px-8 md:px-24 overflow-hidden bg-background">
+      <section className="relative pt-28 pb-20 flex items-center px-8 md:px-24 overflow-hidden bg-background">
         {/* Ambient glows */}
         <motion.div
           className="absolute top-[-5%] right-[-8%] w-[650px] h-[650px] rounded-full pointer-events-none"
@@ -1093,7 +1111,7 @@ export const DevSecOpsPage: React.FC<DevSecOpsPageProps> = ({ className = '' }) 
         />
 
         <div className="relative z-10 max-w-[1440px] mx-auto w-full">
-          <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+          <div className="flex flex-col lg:flex-row items-center lg:items-start gap-16 lg:gap-24">
 
             {/* Left: Text */}
             <div className="flex-1 max-w-3xl">
@@ -1111,23 +1129,24 @@ export const DevSecOpsPage: React.FC<DevSecOpsPageProps> = ({ className = '' }) 
               </motion.div>
 
               {/* Headline */}
-              <div className="font-headline text-[3.2rem] md:text-[5rem] leading-[1.0] font-extrabold tracking-tighter mb-8">
-                <motion.div
+              <h1 className="font-headline text-[3.2rem] md:text-[5rem] leading-[1.0] font-extrabold tracking-tighter mb-8">
+                <motion.span
+                  className="block"
                   initial={{ opacity: 0, y: 60 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.7, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] }}
                 >
                   Security Built
-                </motion.div>
-                <motion.div
-                  className="text-gradient-primary"
+                </motion.span>
+                <motion.span
+                  className="block text-gradient-primary"
                   initial={{ opacity: 0, y: 60 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.7, delay: 0.44, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] }}
                 >
                   Into Every Pipeline
-                </motion.div>
-              </div>
+                </motion.span>
+              </h1>
 
               {/* Subtitle */}
               <motion.p
@@ -1199,12 +1218,16 @@ export const DevSecOpsPage: React.FC<DevSecOpsPageProps> = ({ className = '' }) 
             </ScrollReveal>
           </div>
 
-          {/* Dashboard Graphic */}
+          {/* Image */}
           <ScrollReveal delay={2}>
             <div className="relative">
               <div className="absolute -inset-6 bg-primary/5 rounded-3xl blur-3xl pointer-events-none" />
-              <div className="relative shadow-2xl rounded-2xl border border-outline/30 overflow-hidden">
-                <PipelineDashboardGraphic />
+              <div className="relative bg-surface-container-highest p-4 rounded-2xl shadow-2xl border border-outline/30">
+                <img
+                  src={`${import.meta.env.BASE_URL}service-devsecops.png`}
+                  alt="Secure DevOps & Automation"
+                  className="rounded-xl w-full h-[460px] object-cover"
+                />
               </div>
             </div>
           </ScrollReveal>
@@ -1239,7 +1262,7 @@ export const DevSecOpsPage: React.FC<DevSecOpsPageProps> = ({ className = '' }) 
                   <div className="absolute top-0 right-0 w-48 h-48 bg-primary/5 rounded-full blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
                   <div className="relative z-10">
                     <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/25 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
-                      <span className="material-symbols-outlined text-primary" style={{ fontSize: '1.4rem' }}>
+                      <span aria-hidden="true" className="material-symbols-outlined text-primary" style={{ fontSize: '1.4rem' }}>
                         {icon}
                       </span>
                     </div>
@@ -1300,7 +1323,7 @@ export const DevSecOpsPage: React.FC<DevSecOpsPageProps> = ({ className = '' }) 
                   <ScrollReveal key={title} delay={3 + i}>
                     <div className="flex items-start gap-4 p-5 bg-surface-container rounded-xl border border-outline/30 hover:border-primary/30 transition-colors group">
                       <div className="bg-primary/15 p-2.5 rounded-lg text-primary shrink-0 group-hover:bg-primary/25 transition-colors">
-                        <span className="material-symbols-outlined" style={{ fontSize: '1.2rem' }}>
+                        <span aria-hidden="true" className="material-symbols-outlined" style={{ fontSize: '1.2rem' }}>
                           {icon}
                         </span>
                       </div>
@@ -1369,7 +1392,7 @@ export const DevSecOpsPage: React.FC<DevSecOpsPageProps> = ({ className = '' }) 
                   <div className="absolute inset-0 flex flex-col justify-end p-8 z-10">
                     <div className="flex items-center gap-3 mb-3">
                       <div className="w-8 h-8 rounded-lg bg-primary/20 border border-primary/30 flex items-center justify-center shrink-0 group-hover:bg-primary/40 transition-colors">
-                        <span className="material-symbols-outlined text-primary" style={{ fontSize: '1rem' }}>
+                        <span aria-hidden="true" className="material-symbols-outlined text-primary" style={{ fontSize: '1rem' }}>
                           {icon}
                         </span>
                       </div>
@@ -1418,20 +1441,24 @@ export const DevSecOpsPage: React.FC<DevSecOpsPageProps> = ({ className = '' }) 
           </ScrollReveal>
           <ScrollReveal delay={2}>
             <div className="flex flex-col md:flex-row justify-center items-center gap-6">
-              <motion.button
-                className="btn-animated text-white font-headline font-bold px-14 py-6 rounded-lg text-xl tracking-tight"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                Start the Conversation
-              </motion.button>
-              <motion.button
-                className="border border-outline/50 hover:border-primary/40 text-on-surface font-headline font-bold px-14 py-6 rounded-lg text-xl tracking-tight transition-colors"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                View All Services
-              </motion.button>
+              <Link to="/contact" className="no-underline">
+                <motion.button
+                  className="btn-animated text-white font-headline font-bold px-14 py-6 rounded-lg text-xl tracking-tight"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                >
+                  Book a Consultation
+                </motion.button>
+              </Link>
+              <Link to="/how-we-work" className="no-underline">
+                <motion.button
+                  className="border border-outline/50 hover:border-primary/40 text-on-surface font-headline font-bold px-14 py-6 rounded-lg text-xl tracking-tight transition-colors"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                >
+                  View Our Process
+                </motion.button>
+              </Link>
             </div>
           </ScrollReveal>
         </div>

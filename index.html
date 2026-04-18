@@ -4,7 +4,49 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>rosebud-react</title>
+    <meta name="theme-color" content="#0B0F2A" />
+
+    <!-- Preconnect to font hosts for faster delivery -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Fonts — loaded via <link> (faster than CSS @import) -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    />
+
+    <!-- Default title + description — Helmet overrides these per-route at runtime. -->
+    <!-- Canonical, Open Graph, and Twitter tags are set per-page by react-helmet-async (see src/components/SEO.tsx) to avoid duplicates. -->
+    <title>Rosebud Cloud Solutions | Enterprise Azure & Cloud Security</title>
+    <meta name="description" content="Rosebud Cloud Solutions — Enterprise Azure architecture, cloud security, DevSecOps, and managed cloud services. Microsoft-certified consultancy delivering secure, scalable infrastructure." />
+
+    <!-- Organization schema — static fallback for non-JS crawlers -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "@id": "https://www.rosebudcloudsolutions.co.uk/#organization",
+        "name": "Rosebud Cloud Solutions",
+        "url": "https://www.rosebudcloudsolutions.co.uk",
+        "logo": "https://www.rosebudcloudsolutions.co.uk/rcs-logo-full.png",
+        "image": "https://www.rosebudcloudsolutions.co.uk/rcs-logo-full.png",
+        "description": "Enterprise Azure architecture, cloud security, DevSecOps, and managed cloud services. Microsoft-certified consultancy delivering secure, scalable infrastructure.",
+        "areaServed": "United Kingdom",
+        "serviceType": [
+          "Azure Landing Zones",
+          "Cloud Security",
+          "DevSecOps",
+          "Cloud Optimisation",
+          "Managed Cloud Services",
+          "Advisory & Consulting"
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

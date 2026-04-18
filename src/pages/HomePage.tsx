@@ -2,6 +2,8 @@ import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
+import { SEO } from '../components/SEO';
+import { pageMeta, organisationSchema, websiteSchema } from '../data/seoMeta';
 import { ParticleBackground } from '../components/ParticleBackground';
 import { TiltCard } from '../components/TiltCard';
 import { useMouseSpotlight } from '../hooks/useMouseSpotlight';
@@ -64,7 +66,7 @@ const LearnMoreButton: React.FC<{ to?: string; label?: string }> = ({ to, label 
         </motion.span>
       </span>
       {/* Arrow — also swaps to white on hover */}
-      <motion.span
+      <motion.span aria-hidden="true"
         className="material-symbols-outlined text-[14px]"
         animate={{ color: hovered ? '#ffffff' : 'var(--color-primary)', x: hovered ? 2 : 0 }}
         transition={{ duration: 0.18, delay: hovered ? 0.14 : 0 }}
@@ -108,6 +110,7 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
 
   return (
     <main className={className}>
+      <SEO {...pageMeta.home} schema={[organisationSchema, websiteSchema]} />
 
       {/* ── Hero ─────────────────────────────────────────────────────── */}
       <section
@@ -137,7 +140,7 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
 
             {/* Logo — drop-shadow traces the actual flower silhouette */}
             <motion.img
-              src="/rcs-logo.png"
+              src={`${import.meta.env.BASE_URL}rcs-logo.png`}
               alt=""
               aria-hidden="true"
               className="relative z-20 w-full h-full object-contain opacity-40 mix-blend-lighten select-none"
@@ -168,10 +171,11 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
             </motion.span>
 
             {/* Headline — staggered lines */}
-            <div className="font-headline text-[3.5rem] md:text-[5.25rem] leading-[1.05] font-extrabold tracking-tighter mb-12">
+            <h1 className="font-headline text-[2.5rem] md:text-[5.25rem] leading-[1.05] font-extrabold tracking-tighter mb-12">
               {heroContent.headline.map((line, i) => (
-                <motion.div
+                <motion.span
                   key={i}
+                  className="block"
                   initial={{ opacity: 0, y: 60 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{
@@ -185,9 +189,9 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
                   ) : (
                     <span>{line}</span>
                   )}
-                </motion.div>
+                </motion.span>
               ))}
-            </div>
+            </h1>
 
             {/* CTA row */}
             <motion.div
@@ -196,13 +200,15 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.9 }}
             >
-              <motion.button
-                className="btn-animated text-white font-headline font-bold px-12 py-5 rounded-lg text-lg tracking-tight"
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                {heroContent.cta}
-              </motion.button>
+              <Link to="/contact" className="no-underline">
+                <motion.button
+                  className="btn-animated text-white font-headline font-bold px-12 py-5 rounded-lg text-lg tracking-tight"
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.97 }}
+                >
+                  {heroContent.cta}
+                </motion.button>
+              </Link>
               <div className="max-w-xl">
                 <p className="text-on-surface-variant text-base leading-relaxed border-l-2 border-primary/20 pl-6">
                   {heroContent.body}
@@ -243,7 +249,15 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
                 style={{ filter: 'drop-shadow(0 0 0px rgba(160,0,181,0))' }}
                 title={alt}
               >
-                <img src={src} alt={alt} className="w-full h-full object-contain" />
+                <img
+                  src={`${import.meta.env.BASE_URL}${src.replace(/^\//, '')}`}
+                  alt={alt}
+                  loading="lazy"
+                  decoding="async"
+                  width={176}
+                  height={176}
+                  className="w-full h-full object-contain"
+                />
               </motion.div>
             ))}
           </motion.div>
@@ -278,13 +292,13 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
                 <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
                 {/* Ghost icon */}
                 <div className="absolute right-[-2rem] bottom-[-2rem] opacity-[0.035] group-hover:opacity-[0.07] transition-opacity duration-700 pointer-events-none select-none">
-                  <span className="material-symbols-outlined" style={{ fontSize: '22rem' }}>architecture</span>
+                  <span aria-hidden="true" className="material-symbols-outlined" style={{ fontSize: '22rem' }}>architecture</span>
                 </div>
 
                 <div className="relative z-10 p-10 flex flex-col h-full">
                   {/* Icon */}
                   <div className="w-14 h-14 rounded-xl bg-primary/10 border border-primary/25 flex items-center justify-center mb-8 shrink-0">
-                    <span className="material-symbols-outlined text-primary" style={{ fontSize: '1.6rem' }}>architecture</span>
+                    <span aria-hidden="true" className="material-symbols-outlined text-primary" style={{ fontSize: '1.6rem' }}>architecture</span>
                   </div>
                   {/* Eyebrow */}
                   <span className="text-[9px] font-label uppercase tracking-[0.28em] text-primary/70 mb-3 block">Core Service</span>
@@ -309,7 +323,7 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
 
                 <div className="relative z-10 p-10 flex flex-col h-full">
                   <div className="w-14 h-14 rounded-xl bg-primary/10 border border-primary/25 flex items-center justify-center mb-8 shrink-0">
-                    <span className="material-symbols-outlined text-primary" style={{ fontSize: '1.6rem' }}>security</span>
+                    <span aria-hidden="true" className="material-symbols-outlined text-primary" style={{ fontSize: '1.6rem' }}>security</span>
                   </div>
                   <span className="text-[9px] font-label uppercase tracking-[0.28em] text-primary/70 mb-3 block">Core Service</span>
                   <h3 className="font-headline text-2xl font-bold mb-4">Cloud Security &amp; Compliance</h3>
@@ -333,7 +347,7 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
 
                 <div className="relative z-10 p-10 flex flex-col h-full">
                   <div className="w-14 h-14 rounded-xl bg-primary/10 border border-primary/25 flex items-center justify-center mb-8 shrink-0">
-                    <span className="material-symbols-outlined text-primary" style={{ fontSize: '1.6rem' }}>shield</span>
+                    <span aria-hidden="true" className="material-symbols-outlined text-primary" style={{ fontSize: '1.6rem' }}>shield</span>
                   </div>
                   <span className="text-[9px] font-label uppercase tracking-[0.28em] text-primary/70 mb-3 block">Core Service</span>
                   <h3 className="font-headline text-2xl font-bold mb-4">Managed Cloud &amp; Security Support</h3>
@@ -357,7 +371,7 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
 
                 <div className="relative z-10 p-10 flex flex-col h-full">
                   <div className="w-14 h-14 rounded-xl bg-primary/10 border border-primary/25 flex items-center justify-center mb-8 shrink-0">
-                    <span className="material-symbols-outlined text-primary" style={{ fontSize: '1.6rem' }}>route</span>
+                    <span aria-hidden="true" className="material-symbols-outlined text-primary" style={{ fontSize: '1.6rem' }}>route</span>
                   </div>
                   <span className="text-[9px] font-label uppercase tracking-[0.28em] text-primary/70 mb-3 block">Approach</span>
                   <h3 className="font-headline text-2xl font-bold mb-3">How We Deliver Secure Azure Platforms</h3>
@@ -417,7 +431,7 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
               <ScrollReveal>
                 <div className="flex items-center gap-3 mb-2">
                   <div className="w-10 h-10 rounded-lg bg-primary/15 border border-primary/25 flex items-center justify-center">
-                    <span className="material-symbols-outlined text-primary" style={{ fontSize: '1.2rem' }}>hub</span>
+                    <span aria-hidden="true" className="material-symbols-outlined text-primary" style={{ fontSize: '1.2rem' }}>hub</span>
                   </div>
                   <span className="text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label">
                     Strategic Triage Engine
@@ -493,7 +507,7 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
                           transition={{ delay: 0.4 + i * 0.12 }}
                         >
                           <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/25 flex items-center justify-center">
-                            <span className="material-symbols-outlined text-primary" style={{ fontSize: '1.2rem' }}>{icon}</span>
+                            <span aria-hidden="true" className="material-symbols-outlined text-primary" style={{ fontSize: '1.2rem' }}>{icon}</span>
                           </div>
                           <span className="text-[9px] font-label uppercase tracking-wider text-on-surface-variant/60">{label}</span>
                         </motion.div>
@@ -504,7 +518,7 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
                     <div className="flex items-center gap-3 justify-center">
                       <div className="flex-1 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
                       <div className="w-8 h-8 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center">
-                        <span className="material-symbols-outlined text-primary" style={{ fontSize: '0.9rem' }}>auto_fix_high</span>
+                        <span aria-hidden="true" className="material-symbols-outlined text-primary" style={{ fontSize: '0.9rem' }}>auto_fix_high</span>
                       </div>
                       <div className="flex-1 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
                     </div>
@@ -512,12 +526,12 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
                     {/* Output row */}
                     <div className="flex items-center justify-center gap-6">
                       <div className="flex items-center gap-2 px-4 py-2.5 bg-primary/10 rounded-lg border border-primary/20">
-                        <span className="material-symbols-outlined text-primary" style={{ fontSize: '1rem' }}>bolt</span>
+                        <span aria-hidden="true" className="material-symbols-outlined text-primary" style={{ fontSize: '1rem' }}>bolt</span>
                         <span className="text-xs font-label font-bold text-primary">80%</span>
                         <span className="text-[10px] text-on-surface-variant">Auto-triaged</span>
                       </div>
                       <div className="flex items-center gap-2 px-4 py-2.5 bg-surface-container rounded-lg border border-outline/30">
-                        <span className="material-symbols-outlined text-on-surface-variant" style={{ fontSize: '1rem' }}>supervisor_account</span>
+                        <span aria-hidden="true" className="material-symbols-outlined text-on-surface-variant" style={{ fontSize: '1rem' }}>supervisor_account</span>
                         <span className="text-xs font-label font-bold">20%</span>
                         <span className="text-[10px] text-on-surface-variant">Leader review</span>
                       </div>
@@ -561,21 +575,25 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
             </p>
           </ScrollReveal>
           <ScrollReveal delay={2}>
-            <div className="flex flex-col md:flex-row justify-center items-center gap-6">
-              <motion.button
-                className="btn-animated text-white font-headline font-bold px-14 py-6 rounded-lg text-xl tracking-tight"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                Start a Consultation
-              </motion.button>
-              <motion.button
-                className="text-white font-headline font-bold px-14 py-6 border border-outline hover:bg-white/5 rounded-lg text-xl transition-all"
-                whileHover={{ scale: 1.05, borderColor: 'rgba(160,0,181,0.5)' }}
-                whileTap={{ scale: 0.97 }}
-              >
-                Our Philosophy
-              </motion.button>
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+              <Link to="/contact" className="no-underline">
+                <motion.button
+                  className="btn-animated text-white font-headline font-bold px-10 py-4 rounded-lg text-base tracking-tight"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.97 }}
+                >
+                  Start a Consultation
+                </motion.button>
+              </Link>
+              <Link to="/how-we-work" className="no-underline">
+                <motion.button
+                  className="text-white font-headline font-bold px-10 py-4 border border-outline hover:bg-white/5 rounded-lg text-base transition-all"
+                  whileHover={{ scale: 1.05, borderColor: 'rgba(160,0,181,0.5)' }}
+                  whileTap={{ scale: 0.97 }}
+                >
+                  Our Philosophy
+                </motion.button>
+              </Link>
             </div>
           </ScrollReveal>
         </div>

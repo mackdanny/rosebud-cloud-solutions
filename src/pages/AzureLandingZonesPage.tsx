@@ -1,5 +1,8 @@
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
+import { SEO } from '../components/SEO';
+import { pageMeta, serviceSchema, breadcrumbSchema } from '../data/seoMeta';
 import { TiltCard } from '../components/TiltCard';
 import AnoAI from '../components/ui/animated-shader-background';
 
@@ -148,9 +151,24 @@ interface AzureLandingZonesPageProps {
 export const AzureLandingZonesPage: React.FC<AzureLandingZonesPageProps> = ({ className = '' }) => {
   return (
     <main className={`pt-24 ${className}`}>
+      <SEO
+        {...pageMeta.azureLandingZones}
+        schema={[
+          serviceSchema({
+            name: 'Azure Landing Zones',
+            description: pageMeta.azureLandingZones.description,
+            path: pageMeta.azureLandingZones.path,
+            serviceType: 'Cloud Platform Architecture',
+          }),
+          breadcrumbSchema([
+            { name: 'Home', path: '/' },
+            { name: 'Azure Landing Zones', path: pageMeta.azureLandingZones.path },
+          ]),
+        ]}
+      />
 
       {/* ── Hero ─────────────────────────────────────────────────────── */}
-      <section className="relative min-h-screen flex items-center px-8 md:px-24 overflow-hidden bg-background">
+      <section className="relative pt-28 pb-36 flex items-center px-8 md:px-24 overflow-hidden bg-background">
         {/* Shader background */}
         <AnoAI />
 
@@ -195,23 +213,24 @@ export const AzureLandingZonesPage: React.FC<AzureLandingZonesPageProps> = ({ cl
             </motion.div>
 
             {/* Headline */}
-            <div className="font-headline text-[3.5rem] md:text-[5.5rem] leading-[1.0] font-extrabold tracking-tighter mb-8">
-              <motion.div
+            <h1 className="font-headline text-[3.5rem] md:text-[5.5rem] leading-[1.0] font-extrabold tracking-tighter mb-8">
+              <motion.span
+                className="block"
                 initial={{ opacity: 0, y: 60 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] }}
               >
                 Azure Foundation &amp;
-              </motion.div>
-              <motion.div
-                className="text-gradient-primary"
+              </motion.span>
+              <motion.span
+                className="block text-gradient-primary"
                 initial={{ opacity: 0, y: 60 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.44, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] }}
               >
                 Landing Zones
-              </motion.div>
-            </div>
+              </motion.span>
+            </h1>
 
             {/* Subtitle */}
             <motion.p
@@ -315,7 +334,7 @@ export const AzureLandingZonesPage: React.FC<AzureLandingZonesPageProps> = ({ cl
 
                   <div className="relative z-10">
                     <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/25 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
-                      <span className="material-symbols-outlined text-primary" style={{ fontSize: '1.4rem' }}>
+                      <span aria-hidden="true" className="material-symbols-outlined text-primary" style={{ fontSize: '1.4rem' }}>
                         {icon}
                       </span>
                     </div>
@@ -380,7 +399,7 @@ export const AzureLandingZonesPage: React.FC<AzureLandingZonesPageProps> = ({ cl
                   <ScrollReveal key={title} delay={3 + i}>
                     <div className="flex items-start gap-4 p-5 bg-surface-container rounded-xl border border-outline/30 hover:border-primary/30 transition-colors group">
                       <div className="bg-primary/15 p-2.5 rounded-lg text-primary shrink-0 group-hover:bg-primary/25 transition-colors">
-                        <span className="material-symbols-outlined" style={{ fontSize: '1.2rem' }}>
+                        <span aria-hidden="true" className="material-symbols-outlined" style={{ fontSize: '1.2rem' }}>
                           {icon}
                         </span>
                       </div>
@@ -442,7 +461,7 @@ export const AzureLandingZonesPage: React.FC<AzureLandingZonesPageProps> = ({ cl
                 <div className="absolute inset-0 flex flex-col justify-end p-8 z-10">
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-8 h-8 rounded-lg bg-primary/20 border border-primary/30 flex items-center justify-center shrink-0 group-hover:bg-primary/40 transition-colors">
-                      <span className="material-symbols-outlined text-primary" style={{ fontSize: '1rem' }}>
+                      <span aria-hidden="true" className="material-symbols-outlined text-primary" style={{ fontSize: '1rem' }}>
                         {icon}
                       </span>
                     </div>
@@ -490,20 +509,24 @@ export const AzureLandingZonesPage: React.FC<AzureLandingZonesPageProps> = ({ cl
           </ScrollReveal>
           <ScrollReveal delay={2}>
             <div className="flex flex-col md:flex-row justify-center items-center gap-6">
-              <motion.button
-                className="btn-animated text-white font-headline font-bold px-14 py-6 rounded-lg text-xl tracking-tight"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                Book a Workshop
-              </motion.button>
-              <motion.button
-                className="text-white font-headline font-bold px-14 py-6 border border-outline hover:bg-white/5 rounded-lg text-xl transition-all"
-                whileHover={{ scale: 1.05, borderColor: 'rgba(160,0,181,0.5)' }}
-                whileTap={{ scale: 0.97 }}
-              >
-                View Our Process
-              </motion.button>
+              <Link to="/contact" className="no-underline">
+                <motion.button
+                  className="btn-animated text-white font-headline font-bold px-14 py-6 rounded-lg text-xl tracking-tight"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                >
+                  Book a Consultation
+                </motion.button>
+              </Link>
+              <Link to="/how-we-work" className="no-underline">
+                <motion.button
+                  className="border border-outline/50 hover:border-primary/40 text-on-surface font-headline font-bold px-14 py-6 rounded-lg text-xl tracking-tight transition-colors"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                >
+                  View Our Process
+                </motion.button>
+              </Link>
             </div>
           </ScrollReveal>
         </div>

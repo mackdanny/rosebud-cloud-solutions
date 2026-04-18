@@ -5,15 +5,18 @@ interface FooterProps {
 }
 
 const footerSolutions = [
-  { label: 'Azure Cloud', href: '/services/azure-landing-zones' },
-  { label: 'AI Engineering', href: '/' },
-  { label: 'Security', href: '/' },
+  { label: 'Azure Landing Zones', href: '/services/azure-landing-zones' },
+  { label: 'Cloud Security', href: '/services/cloud-security' },
+  { label: 'DevSecOps', href: '/services/devsecops' },
+  { label: 'Cloud Optimisation', href: '/services/cloud-optimisation' },
+  { label: 'Managed Cloud', href: '/services/managed-cloud' },
 ];
 
 const footerAdvisory = [
-  { label: 'Our Process', href: '/' },
-  { label: 'Expertise', href: '/' },
-  { label: 'Contact', href: '/' },
+  { label: 'How We Work', href: '/how-we-work' },
+  { label: 'Advisory & Consulting', href: '/services/advisory-consulting' },
+  { label: 'About Us', href: '/about' },
+  { label: 'Contact', href: '/contact' },
 ];
 
 const footerConnect = [
@@ -29,7 +32,7 @@ export const Footer: React.FC<FooterProps> = ({ className = '' }) => {
           {/* Brand */}
           <div className="md:col-span-6">
             <Link to="/" className="flex items-center gap-2 mb-8 hover:opacity-80 transition-opacity">
-              <span className="material-symbols-outlined text-primary text-2xl">filter_vintage</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-primary text-2xl">filter_vintage</span>
               <span className="text-2xl font-bold tracking-tight text-white font-headline">
                 Rosebud Cloud
               </span>
@@ -86,7 +89,7 @@ export const Footer: React.FC<FooterProps> = ({ className = '' }) => {
         {/* Bottom bar */}
         <div className="flex flex-col md:flex-row justify-between items-center py-12 border-t border-outline gap-6">
           <p className="text-[10px] uppercase tracking-widest text-on-surface-variant/60">
-            © 2025 Rosebud Cloud Solutions. Strategic Enterprise Partner.
+            © 2026 Rosebud Cloud Solutions. Strategic Enterprise Partner.
           </p>
           <div className="flex gap-12 text-[10px] uppercase tracking-widest text-on-surface-variant/60">
             <a href="#" className="hover:text-white transition-colors">Privacy</a>

@@ -1,6 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
+import { SEO } from '../components/SEO';
+import { pageMeta, breadcrumbSchema } from '../data/seoMeta';
 
 // ─── Animation Variants ───────────────────────────────────────────────────────
 
@@ -41,35 +43,35 @@ const teamMembers = [
     role: 'Founder & Lead Architect',
     bio: 'Oversees cloud architecture and automation at Rosebud Cloud Solutions, delivering secure, scalable platforms and helping organisations streamline operations. With extensive experience across Microsoft Azure, DevOps and cloud governance, he turns complex challenges into straightforward, reliable solutions that enable teams to move faster and safer.',
     linkedin: 'https://www.linkedin.com/in/alex-hunte-ab716a45/',
-    photo: '/team-alex.png',
+    photo: `${import.meta.env.BASE_URL}team-alex.png`,
   },
   {
     name: 'Hannah Hunte',
     role: 'Co-Founder & Operations Lead',
     bio: 'Leads operations and process assurance at Rosebud Cloud Solutions, ensuring the business and its clients run efficiently, securely and with strong governance. With experience across IT process management, finance and service operations, she helps organisations improve control, clarity and consistency while enabling teams to scale with confidence.',
     linkedin: 'https://www.linkedin.com/in/hannah-hunte-b834a85a/',
-    photo: '/team-hannah.png',
+    photo: `${import.meta.env.BASE_URL}team-hannah.png`,
   },
   {
     name: 'Daniel Macken',
     role: 'Business Development Lead',
     bio: 'Leads business development at Rosebud Cloud Solutions, working closely with clients to understand their goals and translate them into the right cloud and automation solutions. With a focus on relationships, clarity, and long-term value, he helps organisations navigate complex technology decisions with confidence.',
     linkedin: 'https://www.linkedin.com/in/daniel-macken-41869b38b/',
-    photo: '/team-daniel.png',
+    photo: `${import.meta.env.BASE_URL}team-daniel.png`,
   },
   {
     name: 'Hani Jafri',
     role: 'Azure Solutions Architect',
     bio: 'Designs and delivers secure, scalable Azure solutions at Rosebud Cloud Solutions, helping organisations build well-architected cloud platforms aligned to their business goals. With deep expertise across Azure infrastructure, identity, networking and governance, he turns complex requirements into clear, resilient designs built for long-term success.',
     linkedin: 'https://www.linkedin.com/in/hanijafri/',
-    photo: '/team-hani.png',
+    photo: `${import.meta.env.BASE_URL}team-hani.png`,
   },
   {
     name: 'Raza Jafri',
     role: 'Azure Cloud Engineer',
     bio: 'Implements and optimises Azure environments at Rosebud Cloud Solutions, ensuring cloud platforms are reliable, secure and efficiently operated. With hands-on experience across infrastructure, automation and day-to-day operations, he helps organisations run and scale their cloud environments with confidence.',
     linkedin: 'https://www.linkedin.com/in/raza--jafri/',
-    photo: '/team-raza.png',
+    photo: `${import.meta.env.BASE_URL}team-raza.png`,
   },
 ];
 
@@ -82,9 +84,16 @@ interface AboutPageProps {
 export const AboutPage: React.FC<AboutPageProps> = ({ className = '' }) => {
   return (
     <main className={className}>
+      <SEO
+        {...pageMeta.about}
+        schema={breadcrumbSchema([
+          { name: 'Home', path: '/' },
+          { name: 'About', path: pageMeta.about.path },
+        ])}
+      />
 
       {/* ── Hero ─────────────────────────────────────────────────────── */}
-      <section className="relative pt-44 pb-28 overflow-hidden">
+      <section className="relative pt-40 pb-16 overflow-hidden">
         {/* Ambient glow */}
         <motion.div
           className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full pointer-events-none"
