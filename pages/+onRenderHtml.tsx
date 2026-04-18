@@ -1,0 +1,71 @@
+import { renderToString } from 'react-dom/server';
+import { escapeInject, dangerouslySkipEscape } from 'vike/server';
+import type { OnRenderHtmlAsync } from 'vike/types';
+import type { HelmetServerState } from 'react-helmet-async';
+
+interface HelmetContext {
+  helmet?: HelmetServerState;
+}
+
+export const onRenderHtml: OnRenderHtmlAsync = async (pageContext): ReturnType<OnRenderHtmlAsync> => {
+  const Page = pageContext.Page as React.FC<{
+    urlPathname: string;
+    helmetContext: HelmetContext;
+  }>;
+
+  const helmetContext: HelmetContext = {};
+  const appHtml = renderToString(
+    <Page urlPathname={pageContext.urlPathname} helmetContext={helmetContext} />,
+  );
+
+  const { helmet } = helmetContext;
+
+  const headFallback = `
+    <title>Rosebud Cloud Solutions | Enterprise Azure &amp; Cloud Security</title>
+    <meta name="description" content="Rosebud Cloud Solutions — Enterprise Azure architecture, cloud security, DevSecOps, and managed cloud services. Microsoft-certified consultancy delivering secure, scalable infrastructure." />
+  `;
+
+  const helmetTags = helmet
+    ? [
+        helmet.title.toString(),
+        helmet.meta.toString(),
+        helmet.link.toString(),
+        helmet.script.toString(),
+      ].join('\n    ')
+    : headFallback;
+
+  const htmlAttrs = helmet?.htmlAttributes.toString() ?? 'lang="en"';
+  const bodyAttrs = helmet?.bodyAttributes.toString() ?? '';
+
+  return escapeInject`<!doctype html>
+<html ${dangerouslySkipEscape(htmlAttrs)}>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0B0F2A" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" />
+    ${dangerouslySkipEscape(helmetTags)}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "@id": "https://www.rosebudcloudsolutions.co.uk/#organization",
+        "name": "Rosebud Cloud Solutions",
+        "url": "https://www.rosebudcloudsolutions.co.uk",
+        "logo": "https://www.rosebudcloudsolutions.co.uk/rcs-logo-full.png",
+        "image": "https://www.rosebudcloudsolutions.co.uk/rcs-logo-full.png",
+        "description": "Enterprise Azure architecture, cloud security, DevSecOps, and managed cloud services. Microsoft-certified consultancy delivering secure, scalable infrastructure.",
+        "areaServed": "United Kingdom",
+        "serviceType": ["Azure Landing Zones","Cloud Security","DevSecOps","Cloud Optimisation","Managed Cloud Services","Advisory & Consulting"]
+      }
+    </script>
+  </head>
+  <body ${dangerouslySkipEscape(bodyAttrs)}>
+    <div id="root">${dangerouslySkipEscape(appHtml)}</div>
+  </body>
+</html>`;
+};

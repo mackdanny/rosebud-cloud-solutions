@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import { SEO } from '../components/SEO';
+import { ClientOnly } from '../components/ClientOnly';
 import { pageMeta, serviceSchema, breadcrumbSchema } from '../data/seoMeta';
 import { TiltCard } from '../components/TiltCard';
 
@@ -1048,7 +1049,7 @@ export const ManagedCloudPage: React.FC<ManagedCloudPageProps> = ({ className = 
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.5, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] }}
             >
-              <CloudHealthMonitorGraphic />
+              <ClientOnly><CloudHealthMonitorGraphic /></ClientOnly>
             </motion.div>
           </div>
         </div>
@@ -1167,7 +1168,7 @@ export const ManagedCloudPage: React.FC<ManagedCloudPageProps> = ({ className = 
               <div className="relative">
                 <div className="absolute -top-8 -left-8 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
                 <div className="relative bg-surface-container-highest p-4 rounded-2xl shadow-2xl border border-outline/30">
-                  <PlatformHealthMatrix />
+                  <ClientOnly><PlatformHealthMatrix /></ClientOnly>
                 </div>
               </div>
             </ScrollReveal>
@@ -1253,7 +1254,7 @@ export const ManagedCloudPage: React.FC<ManagedCloudPageProps> = ({ className = 
 
                   {/* SVG illustration */}
                   <div className="absolute inset-0 pointer-events-none transition-transform duration-700 group-hover:scale-105 origin-center">
-                    <Illustration />
+                    <ClientOnly><Illustration /></ClientOnly>
                   </div>
 
                   {/* Bottom fade */}
