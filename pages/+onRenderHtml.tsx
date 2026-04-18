@@ -1,10 +1,18 @@
-import { renderToString } from 'react-dom/server';
+import { prerenderToNodeStream } from 'react-dom/static';
 import { escapeInject, dangerouslySkipEscape } from 'vike/server';
 import type { OnRenderHtmlAsync } from 'vike/types';
 import type { HelmetServerState } from 'react-helmet-async';
 
 interface HelmetContext {
   helmet?: HelmetServerState;
+}
+
+async function streamToString(stream: NodeJS.ReadableStream): Promise<string> {
+  let html = '';
+  for await (const chunk of stream) {
+    html += typeof chunk === 'string' ? chunk : chunk.toString('utf8');
+  }
+  return html;
 }
 
 export const onRenderHtml: OnRenderHtmlAsync = async (pageContext): ReturnType<OnRenderHtmlAsync> => {
@@ -14,9 +22,12 @@ export const onRenderHtml: OnRenderHtmlAsync = async (pageContext): ReturnType<O
   }>;
 
   const helmetContext: HelmetContext = {};
-  const appHtml = renderToString(
+  // prerenderToNodeStream waits for all Suspense boundaries (incl. React.lazy)
+  // to resolve before emitting the HTML — required for route-level code splitting.
+  const { prelude } = await prerenderToNodeStream(
     <Page urlPathname={pageContext.urlPathname} helmetContext={helmetContext} />,
   );
+  const appHtml = await streamToString(prelude);
 
   const { helmet } = helmetContext;
 
