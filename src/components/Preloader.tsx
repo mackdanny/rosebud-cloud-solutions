@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 
 // ─── Gating ──────────────────────────────────────────────────────────────────
 // Preloader plays on the homepage.
@@ -13,24 +14,10 @@ const REVIEW_MODE = true;
 const PRELOADER_LAST_SEEN_KEY = 'rcs-preloader-last-seen';
 const PRELOADER_COOLDOWN_MS = 24 * 60 * 60 * 1000;
 
-function shouldShowPreloader(): boolean {
-  if (typeof window === 'undefined') return false;
-  // Normalize pathname against deployment base (e.g. "/rosebud-cloud-solutions/"
-  // on GH Pages, "/" on the production domain). The preloader only plays on the
-  // site's homepage, regardless of which domain/base it's deployed to.
-  const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
-  const pathname = window.location.pathname;
-  const normalizedPath = base && pathname.startsWith(base)
-    ? pathname.slice(base.length) || '/'
-    : pathname;
-  if (normalizedPath !== '/') return false;
-  if (REVIEW_MODE) return true;
-  try {
-    const lastSeen = Number(window.localStorage.getItem(PRELOADER_LAST_SEEN_KEY) ?? 0);
-    return !lastSeen || Date.now() - lastSeen > PRELOADER_COOLDOWN_MS;
-  } catch {
-    return true;
-  }
+// Pure path-based check — safe on SSR and client. localStorage cooldown is
+// handled in a separate client-only effect to keep SSR/CSR trees consistent.
+function isHomepageRoute(pathname: string): boolean {
+  return pathname === '/' || pathname === '';
 }
 
 // ─── Timing constants ────────────────────────────────────────────────────────
@@ -103,17 +90,27 @@ function rotatePhaseY(startDelay: number) {
 // ─── Component ───────────────────────────────────────────────────────────────
 
 export const Preloader: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [done, setDone] = useState(() => !shouldShowPreloader());
+  const { pathname } = useLocation();
+  // useLocation returns React Router's base-relative pathname ("/" for homepage
+  // regardless of deployment), so this works identically on SSR and client.
+  const shouldShow = isHomepageRoute(pathname);
+  const [done, setDone] = useState(!shouldShow);
 
+  // Client-only: enforce 24h cooldown by marking done=true if recently shown.
+  // Runs after hydration, matching server's initial state first (no mismatch).
   useEffect(() => {
-    if (!done && typeof window !== 'undefined') {
-      try {
-        window.localStorage.setItem(PRELOADER_LAST_SEEN_KEY, String(Date.now()));
-      } catch {
-        // localStorage blocked (private mode / quota); fall through silently
+    if (done || REVIEW_MODE || typeof window === 'undefined') return;
+    try {
+      const lastSeen = Number(window.localStorage.getItem(PRELOADER_LAST_SEEN_KEY) ?? 0);
+      if (lastSeen && Date.now() - lastSeen <= PRELOADER_COOLDOWN_MS) {
+        setDone(true);
+        return;
       }
+      window.localStorage.setItem(PRELOADER_LAST_SEEN_KEY, String(Date.now()));
+    } catch {
+      // localStorage blocked — fall through silently, preloader plays
     }
-  }, []);
+  }, [done]);
 
   const p1 = rotatePhase(p1Start);
   const p2 = rotatePhase(p2Start);
