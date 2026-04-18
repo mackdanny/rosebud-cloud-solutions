@@ -15,7 +15,15 @@ const PRELOADER_COOLDOWN_MS = 24 * 60 * 60 * 1000;
 
 function shouldShowPreloader(): boolean {
   if (typeof window === 'undefined') return false;
-  if (window.location.pathname !== '/') return false;
+  // Normalize pathname against deployment base (e.g. "/rosebud-cloud-solutions/"
+  // on GH Pages, "/" on the production domain). The preloader only plays on the
+  // site's homepage, regardless of which domain/base it's deployed to.
+  const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
+  const pathname = window.location.pathname;
+  const normalizedPath = base && pathname.startsWith(base)
+    ? pathname.slice(base.length) || '/'
+    : pathname;
+  if (normalizedPath !== '/') return false;
   if (REVIEW_MODE) return true;
   try {
     const lastSeen = Number(window.localStorage.getItem(PRELOADER_LAST_SEEN_KEY) ?? 0);
