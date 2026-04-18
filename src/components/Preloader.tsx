@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useLocation } from 'react-router-dom';
 
 // ─── Gating ──────────────────────────────────────────────────────────────────
 // Preloader plays on the homepage.
@@ -13,12 +12,6 @@ const REVIEW_MODE = true;
 
 const PRELOADER_LAST_SEEN_KEY = 'rcs-preloader-last-seen';
 const PRELOADER_COOLDOWN_MS = 24 * 60 * 60 * 1000;
-
-// Pure path-based check — safe on SSR and client. localStorage cooldown is
-// handled in a separate client-only effect to keep SSR/CSR trees consistent.
-function isHomepageRoute(pathname: string): boolean {
-  return pathname === '/' || pathname === '';
-}
 
 // ─── Timing constants ────────────────────────────────────────────────────────
 const ROTATE_IN  = 0.45;   // time to rotate from -90 → 0
@@ -90,27 +83,38 @@ function rotatePhaseY(startDelay: number) {
 // ─── Component ───────────────────────────────────────────────────────────────
 
 export const Preloader: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { pathname } = useLocation();
-  // useLocation returns React Router's base-relative pathname ("/" for homepage
-  // regardless of deployment), so this works identically on SSR and client.
-  const shouldShow = isHomepageRoute(pathname);
-  const [done, setDone] = useState(!shouldShow);
+  // SSR-safe initial state: don't render the overlay server-side. On the client,
+  // an effect evaluates the path + localStorage cooldown and flips `done` to
+  // false to trigger the animation. This creates a tiny flash on first paint
+  // where the page content is visible before the preloader covers it, which
+  // is acceptable compared to the alternative (hydration mismatches / dead
+  // preloader markup in the SSR output).
+  const [done, setDone] = useState(true);
 
-  // Client-only: enforce 24h cooldown by marking done=true if recently shown.
-  // Runs after hydration, matching server's initial state first (no mismatch).
   useEffect(() => {
-    if (done || REVIEW_MODE || typeof window === 'undefined') return;
+    if (typeof window === 'undefined') return;
+    // Strip Vite's base prefix so this works on any deployment.
+    const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
+    const rawPath = window.location.pathname;
+    const pathname = base && rawPath.startsWith(base) ? rawPath.slice(base.length) || '/' : rawPath;
+    if (pathname !== '/' && pathname !== '') return;
+
+    if (REVIEW_MODE) {
+      setDone(false);
+      return;
+    }
+
     try {
       const lastSeen = Number(window.localStorage.getItem(PRELOADER_LAST_SEEN_KEY) ?? 0);
-      if (lastSeen && Date.now() - lastSeen <= PRELOADER_COOLDOWN_MS) {
-        setDone(true);
-        return;
+      if (!lastSeen || Date.now() - lastSeen > PRELOADER_COOLDOWN_MS) {
+        window.localStorage.setItem(PRELOADER_LAST_SEEN_KEY, String(Date.now()));
+        setDone(false);
       }
-      window.localStorage.setItem(PRELOADER_LAST_SEEN_KEY, String(Date.now()));
     } catch {
-      // localStorage blocked — fall through silently, preloader plays
+      // localStorage blocked — still show the preloader
+      setDone(false);
     }
-  }, [done]);
+  }, []);
 
   const p1 = rotatePhase(p1Start);
   const p2 = rotatePhase(p2Start);

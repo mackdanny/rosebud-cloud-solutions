@@ -15,10 +15,12 @@ const basename = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
 export function Page({ urlPathname, helmetContext }: PageProps) {
   const isServer = typeof window === 'undefined';
 
-  // SSR: urlPathname already omits the base prefix (Vike normalizes it).
-  // Client: BrowserRouter strips the basename from window.location.pathname.
+  // SSR: Vike's urlPathname is already base-relative (e.g. "/about", not
+  // "/rosebud-cloud-solutions/about"), so StaticRouter doesn't need a basename.
+  // Client: window.location.pathname is absolute, so BrowserRouter uses basename
+  // to strip the deployment prefix before matching routes.
   const routed = isServer ? (
-    <StaticRouter location={urlPathname} basename={basename}>
+    <StaticRouter location={urlPathname}>
       <AppRoutes />
     </StaticRouter>
   ) : (
