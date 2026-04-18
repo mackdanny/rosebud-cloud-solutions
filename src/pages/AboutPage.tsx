@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import { SEO } from '../components/SEO';
 import { pageMeta, breadcrumbSchema } from '../data/seoMeta';
+import { SITE_URL } from '../config/site';
 
 // ─── Animation Variants ───────────────────────────────────────────────────────
 
@@ -82,14 +83,28 @@ interface AboutPageProps {
 }
 
 export const AboutPage: React.FC<AboutPageProps> = ({ className = '' }) => {
+  const teamPersonSchemas = teamMembers.map((m) => ({
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: m.name,
+    jobTitle: m.role,
+    image: m.photo,
+    worksFor: { '@id': `${SITE_URL}/#organization` },
+    sameAs: [m.linkedin],
+    description: m.bio,
+  }));
+
   return (
     <main className={className}>
       <SEO
         {...pageMeta.about}
-        schema={breadcrumbSchema([
-          { name: 'Home', path: '/' },
-          { name: 'About', path: pageMeta.about.path },
-        ])}
+        schema={[
+          breadcrumbSchema([
+            { name: 'Home', path: '/' },
+            { name: 'About', path: pageMeta.about.path },
+          ]),
+          ...teamPersonSchemas,
+        ]}
       />
 
       {/* ── Hero ─────────────────────────────────────────────────────── */}

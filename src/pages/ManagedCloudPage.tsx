@@ -1345,6 +1345,28 @@ export const ManagedCloudPage: React.FC<ManagedCloudPageProps> = ({ className = 
         </div>
       </section>
 
+      {/* ── References / Further Reading ─────────────────────────────── */}
+      <div className="max-w-[1440px] mx-auto px-8 pb-10 text-center text-[11px] uppercase tracking-[0.2em] text-on-surface-variant/50 font-label">
+        Further reading:{' '}
+        <a
+          href="https://learn.microsoft.com/azure/azure-monitor/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:text-primary transition-colors underline-offset-4 hover:underline"
+        >
+          Azure Monitor
+        </a>
+        {' · '}
+        <a
+          href="https://learn.microsoft.com/azure/advisor/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:text-primary transition-colors underline-offset-4 hover:underline"
+        >
+          Azure Advisor
+        </a>
+      </div>
+
     </main>
   );
 };

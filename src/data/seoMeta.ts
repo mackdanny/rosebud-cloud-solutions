@@ -6,59 +6,60 @@ export interface PageMeta {
   readonly path: string;
 }
 
+// All descriptions kept ≤155 chars to avoid SERP truncation on mobile Google.
 export const pageMeta = {
   home: {
     title: `${SITE_NAME} | Enterprise Azure & Cloud Security`,
     description:
-      'Rosebud Cloud Solutions — Enterprise Azure architecture, cloud security, DevSecOps, and managed cloud services. Microsoft-certified consultancy delivering secure, scalable infrastructure.',
+      'Enterprise Azure architecture, cloud security, DevSecOps, and managed cloud services. Microsoft-certified UK consultancy for regulated industries.',
     path: '/',
   },
   azureLandingZones: {
     title: 'Azure Landing Zones & Foundation Architecture',
     description:
-      'Structured Azure landing zones that deliver control, security, and scalability from day one. Management groups, policy frameworks, and Infrastructure-as-Code by Microsoft-certified architects.',
+      'Structured Azure landing zones delivering control, security, and scalability from day one. Management groups, policy, and IaC by certified architects.',
     path: '/services/azure-landing-zones',
   },
   cloudSecurity: {
     title: 'Azure Cloud Security & Compliance',
     description:
-      'Identify cloud security gaps and align your Azure platform to recognised security and compliance standards. Zero-trust architectures, Microsoft Defender, and continuous compliance monitoring.',
+      'Identify cloud security gaps and align Azure to recognised standards. Zero-trust architecture, Microsoft Defender, and continuous compliance monitoring.',
     path: '/services/cloud-security',
   },
   devSecOps: {
     title: 'DevSecOps Consulting for Azure',
     description:
-      'Embed security into delivery pipelines with automated policy enforcement, secret management, and vulnerability scanning. DevSecOps for Azure DevOps and GitHub Actions.',
+      'Embed security into Azure DevOps and GitHub Actions pipelines — automated policy enforcement, secret management, and vulnerability scanning.',
     path: '/services/devsecops',
   },
   cloudOptimisation: {
     title: 'Azure Cloud Optimisation & FinOps',
     description:
-      'Reduce Azure spend and improve performance through architectural review, FinOps discipline, and automated optimisation. Measurable cost reductions without compromising reliability.',
+      'Reduce Azure spend and improve performance through architectural review, FinOps, and automation. Measurable cost cuts without compromising reliability.',
     path: '/services/cloud-optimisation',
   },
   advisoryConsulting: {
     title: 'Azure Advisory & Consulting Services',
     description:
-      'Strategic Azure advisory for cloud adoption, platform architecture, and modernisation. Independent guidance from Microsoft-certified architects with decades of enterprise delivery experience.',
+      'Strategic Azure advisory for cloud adoption, architecture, and modernisation. Independent guidance from Microsoft-certified enterprise architects.',
     path: '/services/advisory-consulting',
   },
   managedCloud: {
     title: 'Managed Cloud & Security Support',
     description:
-      'Ongoing management, monitoring, and improvement to keep your Azure platform secure, compliant, and performing. Proactive operations with enterprise-grade SLAs.',
+      'Ongoing management, monitoring, and improvement to keep Azure secure, compliant, and performing. Proactive operations with enterprise-grade SLAs.',
     path: '/services/managed-cloud',
   },
   strategicTriage: {
     title: 'Strategic Triage Engine | Graph & Ontology Reasoning Platform',
     description:
-      'Compress the evaluation tax from months to minutes. A graph and ontology reasoning platform for operationalising board-level intent with 80/20 automation and forensic signal capture.',
+      'Compress the evaluation tax from months to minutes. A graph and ontology reasoning platform for operationalising board-level intent at scale.',
     path: '/tools/strategic-triage',
   },
   about: {
     title: 'About Rosebud Cloud Solutions',
     description:
-      'Microsoft-certified Azure architects delivering secure, scalable cloud platforms for enterprise clients across financial services, public sector, legal, and retail.',
+      'Microsoft-certified Azure architects delivering secure, scalable cloud platforms for financial services, public sector, legal, and retail clients.',
     path: '/about',
   },
   howWeWork: {
@@ -70,13 +71,13 @@ export const pageMeta = {
   contact: {
     title: 'Contact Rosebud Cloud Solutions',
     description:
-      'Start a consultation with Rosebud Cloud Solutions. Discuss your Azure architecture, cloud security, DevSecOps, or managed services needs with a Microsoft-certified consultancy.',
+      'Start a consultation to discuss your Azure architecture, cloud security, DevSecOps, or managed services needs with a Microsoft-certified team.',
     path: '/contact',
   },
   caseStudies: {
     title: 'Azure & Cloud Case Studies',
     description:
-      'Real-world Azure platform, security, and governance engagements across financial services, public sector, legal, and retail. How Rosebud Cloud Solutions delivers measurable outcomes.',
+      'Real-world Azure platform, security, and governance engagements across financial services, public sector, legal, and retail — with measurable outcomes.',
     path: '/case-studies',
   },
 } as const satisfies Record<string, PageMeta>;
@@ -88,9 +89,20 @@ export const organisationSchema = {
   name: SITE_NAME,
   url: SITE_URL,
   logo: `${SITE_URL}/rcs-logo-full.png`,
-  image: `${SITE_URL}/rcs-logo-full.png`,
+  image: `${SITE_URL}/rcs-og-card.png`,
   description:
-    'Enterprise Azure architecture, cloud security, DevSecOps, and managed cloud services. Microsoft-certified consultancy delivering secure, scalable infrastructure.',
+    'Enterprise Azure architecture, cloud security, DevSecOps, and managed cloud services. Microsoft-certified UK consultancy for regulated industries.',
+  contactPoint: {
+    '@type': 'ContactPoint',
+    email: 'hello@rosebudcloudsolutions.co.uk',
+    contactType: 'customer service',
+    areaServed: 'GB',
+    availableLanguage: ['en'],
+  },
+  address: {
+    '@type': 'PostalAddress',
+    addressCountry: 'GB',
+  },
   sameAs: [] as readonly string[],
   areaServed: 'United Kingdom',
   serviceType: [

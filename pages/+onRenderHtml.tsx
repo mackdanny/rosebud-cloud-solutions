@@ -68,8 +68,19 @@ export const onRenderHtml: OnRenderHtmlAsync = async (pageContext): ReturnType<O
         "name": "Rosebud Cloud Solutions",
         "url": "https://www.rosebudcloudsolutions.co.uk",
         "logo": "https://www.rosebudcloudsolutions.co.uk/rcs-logo-full.png",
-        "image": "https://www.rosebudcloudsolutions.co.uk/rcs-logo-full.png",
-        "description": "Enterprise Azure architecture, cloud security, DevSecOps, and managed cloud services. Microsoft-certified consultancy delivering secure, scalable infrastructure.",
+        "image": "https://www.rosebudcloudsolutions.co.uk/rcs-og-card.png",
+        "description": "Enterprise Azure architecture, cloud security, DevSecOps, and managed cloud services. Microsoft-certified UK consultancy for regulated industries.",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "email": "hello@rosebudcloudsolutions.co.uk",
+          "contactType": "customer service",
+          "areaServed": "GB",
+          "availableLanguage": ["en"]
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "GB"
+        },
         "areaServed": "United Kingdom",
         "serviceType": ["Azure Landing Zones","Cloud Security","DevSecOps","Cloud Optimisation","Managed Cloud Services","Advisory & Consulting"]
       }
