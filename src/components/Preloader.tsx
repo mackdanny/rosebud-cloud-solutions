@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ClientOnly } from './ClientOnly';
 
 // ─── Gating ──────────────────────────────────────────────────────────────────
 // Preloader plays on the homepage.
@@ -82,51 +83,50 @@ function rotatePhaseY(startDelay: number) {
 
 // ─── Component ───────────────────────────────────────────────────────────────
 
-export const Preloader: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // SSR-safe initial state: don't render the overlay server-side. On the client,
-  // an effect evaluates the path + localStorage cooldown and flips `done` to
-  // false to trigger the animation. This creates a tiny flash on first paint
-  // where the page content is visible before the preloader covers it, which
-  // is acceptable compared to the alternative (hydration mismatches / dead
-  // preloader markup in the SSR output).
-  const [done, setDone] = useState(true);
+// Compute initial state ONCE when PreloaderOverlay mounts on the client.
+// Because it's wrapped in <ClientOnly>, this never runs during SSR — window is
+// always defined here. Putting all the gating logic in the useState initializer
+// (instead of a post-mount effect) avoids any flicker/timing issues with
+// AnimatePresence and ensures the overlay mounts in its visible state from the
+// very first render.
+function computeInitialDone(): boolean {
+  const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
+  const rawPath = window.location.pathname;
+  const pathname = base && rawPath.startsWith(base) ? rawPath.slice(base.length) || '/' : rawPath;
+  if (pathname !== '/' && pathname !== '') return true; // non-home: skip
+  if (REVIEW_MODE) return false;
+  try {
+    const lastSeen = Number(window.localStorage.getItem(PRELOADER_LAST_SEEN_KEY) ?? 0);
+    if (lastSeen && Date.now() - lastSeen <= PRELOADER_COOLDOWN_MS) return true;
+  } catch {
+    // localStorage blocked — still show
+  }
+  return false;
+}
+
+const PreloaderOverlay: React.FC = () => {
+  const [done, setDone] = useState(computeInitialDone);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    // Strip Vite's base prefix so this works on any deployment.
-    const base = (import.meta.env.BASE_URL || '/').replace(/\/$/, '');
-    const rawPath = window.location.pathname;
-    const pathname = base && rawPath.startsWith(base) ? rawPath.slice(base.length) || '/' : rawPath;
-    if (pathname !== '/' && pathname !== '') return;
-
-    if (REVIEW_MODE) {
-      setDone(false);
-      return;
-    }
-
-    try {
-      const lastSeen = Number(window.localStorage.getItem(PRELOADER_LAST_SEEN_KEY) ?? 0);
-      if (!lastSeen || Date.now() - lastSeen > PRELOADER_COOLDOWN_MS) {
+    // Record a fresh timestamp when the preloader actually plays.
+    if (!done && !REVIEW_MODE) {
+      try {
         window.localStorage.setItem(PRELOADER_LAST_SEEN_KEY, String(Date.now()));
-        setDone(false);
+      } catch {
+        // ignore
       }
-    } catch {
-      // localStorage blocked — still show the preloader
-      setDone(false);
     }
-  }, []);
+  }, [done]);
 
   const p1 = rotatePhase(p1Start);
   const p2 = rotatePhase(p2Start);
-  const p3x = rotatePhase(p3Start);   // text uses rotateX
-  const p3y = rotatePhaseY(p3Start);  // logo uses rotateY
+  const p3x = rotatePhase(p3Start);
+  const p3y = rotatePhaseY(p3Start);
 
   return (
-    <>
-      {children}
-      <AnimatePresence>
-        {!done && (
-          <motion.div
+    <AnimatePresence>
+      {!done && (
+        <motion.div
             className="fixed inset-0 z-[9999] flex items-center justify-center"
             style={{ backgroundColor: '#0B0F2A', perspective: 800 }}
             initial={{ opacity: 1 }}
@@ -222,8 +222,19 @@ export const Preloader: React.FC<{ children: React.ReactNode }> = ({ children })
           </motion.div>
         )}
       </AnimatePresence>
-    </>
   );
 };
+
+// Public Preloader component — always renders children; overlay is deferred
+// into <ClientOnly> so its useState initializer runs only on the client, with
+// full access to window / localStorage / path, and never executes on SSR.
+export const Preloader: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <>
+    {children}
+    <ClientOnly>
+      <PreloaderOverlay />
+    </ClientOnly>
+  </>
+);
 
 export default Preloader;
