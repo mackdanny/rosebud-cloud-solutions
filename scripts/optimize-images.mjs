@@ -28,6 +28,8 @@ const PLAN = {
   'case-study-04.png':           { maxDim: 1024, webpQuality: 80 },
   'case-study-05.png':           { maxDim: 1024, webpQuality: 80 },
   'case-study-06.png':           { maxDim: 1024, webpQuality: 80 },
+  // Strategic Triage homepage highlight (displayed at ~580px)
+  'strategic-triage.png':        { maxDim: 768, webpQuality: 82 },
   // Service images (used in cards ~400-600px)
   'service-cloud-architecture.png': { maxDim: 768, webpQuality: 82 },
   'service-cloud-optimisation.png': { maxDim: 768, webpQuality: 82 },

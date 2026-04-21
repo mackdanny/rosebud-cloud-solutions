@@ -2,7 +2,7 @@
 
 /* ─── Rosebud Design Tokens ─────────────────────────────────────────────── */
 @theme {
-  /* Colors — Home / global palette (deep navy + purple) */
+  /* Colors - Home / global palette (deep navy + purple) */
   --color-background:                #0B0F2A;
   --color-surface:                   #0F1435;
   --color-surface-variant:           #161B3D;
@@ -178,7 +178,7 @@ body {
   }
 }
 
-/* ─── Mobile Performance — disable heavy bg effects ────────────────────── */
+/* ─── Mobile Performance - disable heavy bg effects ────────────────────── */
 @media (max-width: 768px) {
   .rose-diffused-highlight {
     display: none;

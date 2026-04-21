@@ -1,10 +1,12 @@
 import { lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { MotionConfig } from 'framer-motion';
 import { Nav } from './components/Nav';
 import { Footer } from './components/Footer';
 import { Preloader } from './components/Preloader';
+import { STRATEGIC_TRIAGE_ENABLED } from './config/features';
 
-// Lazy-loaded routes — each emits its own chunk. Hydration uses Suspense fallback.
+// Lazy-loaded routes - each emits its own chunk. Hydration uses Suspense fallback.
 const HomePage = lazy(() => import('./pages/HomePage').then((m) => ({ default: m.HomePage })));
 const AzureLandingZonesPage = lazy(() =>
   import('./pages/AzureLandingZonesPage').then((m) => ({ default: m.AzureLandingZonesPage })),
@@ -45,12 +47,28 @@ const NotFoundPage = lazy(() =>
 );
 
 function ScrollToTop() {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window === 'undefined') return;
+    if (!hash) {
       window.scrollTo(0, 0);
+      return;
     }
-  }, [pathname]);
+    // Lazy routes mount after navigation — retry across frames until the
+    // target renders (or give up after ~0.5s).
+    let attempts = 0;
+    let raf = 0;
+    const tryScroll = () => {
+      const el = document.querySelector(hash);
+      if (el) {
+        el.scrollIntoView({ block: 'start' });
+        return;
+      }
+      if (++attempts < 30) raf = requestAnimationFrame(tryScroll);
+    };
+    raf = requestAnimationFrame(tryScroll);
+    return () => cancelAnimationFrame(raf);
+  }, [pathname, hash]);
   return null;
 }
 
@@ -69,7 +87,9 @@ export function AppRoutes() {
             <Route path="/services/cloud-optimisation" element={<CloudOptimisationPage />} />
             <Route path="/services/advisory-consulting" element={<AdvisoryConsultingPage />} />
             <Route path="/services/managed-cloud" element={<ManagedCloudPage />} />
-            <Route path="/tools/strategic-triage" element={<StrategicTriagePage />} />
+            {STRATEGIC_TRIAGE_ENABLED && (
+              <Route path="/tools/strategic-triage" element={<StrategicTriagePage />} />
+            )}
             <Route path="/about" element={<AboutPage />} />
             <Route path="/how-we-work" element={<HowWeWorkPage />} />
             <Route path="/contact" element={<ContactPage />} />
@@ -86,9 +106,13 @@ export function AppRoutes() {
 
 function App() {
   return (
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
-      <AppRoutes />
-    </BrowserRouter>
+    // reducedMotion="user" honours OS-level prefers-reduced-motion across every
+    // Framer animation - no per-component guards needed.
+    <MotionConfig reducedMotion="user">
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
+        <AppRoutes />
+      </BrowserRouter>
+    </MotionConfig>
   );
 }
 

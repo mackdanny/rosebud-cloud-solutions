@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import { SEO } from '../components/SEO';
 import { pageMeta, breadcrumbSchema } from '../data/seoMeta';
+import { STRATEGIC_TRIAGE_ENABLED } from '../config/features';
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 40 },
@@ -33,12 +34,53 @@ export const ContactPage: React.FC = () => {
     company: '',
     service: '',
     message: '',
+    botcheck: '',
   });
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    if (formState.botcheck) return;
+
+    const accessKey = import.meta.env.VITE_WEB3FORMS_KEY;
+    if (!accessKey) {
+      setStatus('error');
+      setErrorMessage('Contact form is not configured. Please email hello@rosebudcloudsolutions.co.uk directly.');
+      return;
+    }
+
+    setStatus('sending');
+    setErrorMessage('');
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: accessKey,
+          subject: `New enquiry from ${formState.name} - Rosebud website`,
+          from_name: formState.name,
+          name: formState.name,
+          email: formState.email,
+          company: formState.company,
+          service: formState.service,
+          message: formState.message,
+          botcheck: formState.botcheck,
+        }),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setStatus('success');
+      } else {
+        setStatus('error');
+        setErrorMessage(data.message || 'Something went wrong. Please try again or email us directly.');
+      }
+    } catch {
+      setStatus('error');
+      setErrorMessage('Unable to send message. Please check your connection or email us directly.');
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -64,7 +106,7 @@ export const ContactPage: React.FC = () => {
         <div className="max-w-[1440px] mx-auto px-4 md:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
 
-            {/* Left — Info */}
+            {/* Left - Info */}
             <div>
               <ScrollReveal>
                 <span className="text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label mb-4 block">
@@ -76,7 +118,7 @@ export const ContactPage: React.FC = () => {
                 </h1>
                 <p className="text-on-surface-variant text-lg leading-relaxed mb-12 max-w-lg">
                   Whether you're starting a cloud transformation, need a security assessment, or want to
-                  optimise your Azure estate — we're here to help.
+                  optimise your Azure estate - we're here to help.
                 </p>
               </ScrollReveal>
 
@@ -101,12 +143,12 @@ export const ContactPage: React.FC = () => {
               </ScrollReveal>
             </div>
 
-            {/* Right — Form */}
+            {/* Right - Form */}
             <ScrollReveal delay={1}>
               <div className="relative">
                 <div className="absolute -inset-4 bg-primary/5 rounded-3xl blur-2xl pointer-events-none" />
                 <div className="relative bg-surface p-8 md:p-10 rounded-2xl border border-outline/40">
-                  {submitted ? (
+                  {status === 'success' ? (
                     <div className="text-center py-12">
                       <div className="w-16 h-16 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center mx-auto mb-6">
                         <span aria-hidden="true" className="material-symbols-outlined text-primary" style={{ fontSize: '2rem' }}>check_circle</span>
@@ -116,6 +158,16 @@ export const ContactPage: React.FC = () => {
                     </div>
                   ) : (
                     <form onSubmit={handleSubmit} className="space-y-6">
+                      <input
+                        type="checkbox"
+                        name="botcheck"
+                        checked={!!formState.botcheck}
+                        onChange={e => setFormState(prev => ({ ...prev, botcheck: e.target.checked ? 'on' : '' }))}
+                        style={{ display: 'none' }}
+                        tabIndex={-1}
+                        autoComplete="off"
+                        aria-hidden="true"
+                      />
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
                           <label htmlFor="name" className="block text-xs font-label uppercase tracking-wider text-on-surface-variant/60 mb-2">
@@ -182,7 +234,9 @@ export const ContactPage: React.FC = () => {
                           <option value="cloud-optimisation">Cloud Optimisation</option>
                           <option value="advisory">Advisory & Consulting</option>
                           <option value="managed-cloud">Managed Cloud Support</option>
-                          <option value="strategic-triage">Strategic Triage Engine</option>
+                          {STRATEGIC_TRIAGE_ENABLED && (
+                            <option value="strategic-triage">Strategic Triage Engine</option>
+                          )}
                           <option value="other">Other</option>
                         </select>
                       </div>
@@ -203,13 +257,20 @@ export const ContactPage: React.FC = () => {
                         />
                       </div>
 
+                      {status === 'error' && (
+                        <div className="rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+                          {errorMessage}
+                        </div>
+                      )}
+
                       <motion.button
                         type="submit"
-                        className="w-full btn-animated text-white font-headline font-bold px-8 py-4 rounded-lg text-base tracking-tight"
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
+                        disabled={status === 'sending'}
+                        className="w-full btn-animated text-white font-headline font-bold px-8 py-4 rounded-lg text-base tracking-tight disabled:opacity-60 disabled:cursor-not-allowed"
+                        whileHover={status === 'sending' ? {} : { scale: 1.02 }}
+                        whileTap={status === 'sending' ? {} : { scale: 0.98 }}
                       >
-                        Send Message
+                        {status === 'sending' ? 'Sending…' : 'Send Message'}
                       </motion.button>
                     </form>
                   )}

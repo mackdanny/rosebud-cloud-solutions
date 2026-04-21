@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { STRATEGIC_TRIAGE_ENABLED } from '../config/features';
 
 interface NavProps {
   readonly className?: string;
@@ -13,8 +14,9 @@ const serviceLinks = [
   { label: 'Cloud Optimisation & Improvement',  href: '/services/cloud-optimisation',    icon: 'trending_up' },
   { label: 'Cloud Architecture & Design',        href: '/services/advisory-consulting',    icon: 'architecture' },
   { label: 'Managed Cloud & Security Support',  href: '/services/managed-cloud',         icon: 'shield' },
-  { label: 'Strategic Triage Engine',           href: '/tools/strategic-triage',         icon: 'hub' },
 ];
+
+const platformLink = { label: 'Strategic Triage', href: '/tools/strategic-triage' };
 
 const otherLinks = [
   { label: 'How We Work',  href: '/how-we-work' },
@@ -32,7 +34,8 @@ export const Nav: React.FC<NavProps> = ({ className = '' }) => {
   const openDropdown  = () => { if (closeTimer.current) clearTimeout(closeTimer.current); setDropdownOpen(true);  };
   const closeDropdown = () => { closeTimer.current = setTimeout(() => setDropdownOpen(false), 120); };
 
-  const isServicesActive = location.pathname.startsWith('/services') || location.pathname.startsWith('/tools');
+  const isServicesActive = location.pathname.startsWith('/services');
+  const isPlatformActive = location.pathname.startsWith('/tools');
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -155,6 +158,27 @@ export const Nav: React.FC<NavProps> = ({ className = '' }) => {
             </AnimatePresence>
           </motion.div>
 
+          {/* ── Platform (standalone product) ────────────────────────── */}
+          {STRATEGIC_TRIAGE_ENABLED && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.36, duration: 0.4 }}
+          >
+            <Link
+              to={platformLink.href}
+              className={`text-base font-medium font-headline transition-colors duration-300 relative group ${
+                isPlatformActive ? 'text-white' : 'text-on-surface-variant hover:text-white'
+              }`}
+            >
+              {platformLink.label}
+              <span className={`absolute -bottom-1 left-0 h-px bg-primary transition-all duration-300 ${
+                isPlatformActive ? 'w-full' : 'w-0 group-hover:w-full'
+              }`} />
+            </Link>
+          </motion.div>
+          )}
+
           {/* ── Other links ──────────────────────────────────────────── */}
           {otherLinks.map(({ label, href }, i) => {
             const isActive = location.pathname === href && href !== '/';
@@ -273,6 +297,18 @@ export const Nav: React.FC<NavProps> = ({ className = '' }) => {
                   </Link>
                 ))}
               </div>
+            )}
+
+            {/* Platform */}
+            {STRATEGIC_TRIAGE_ENABLED && (
+              <Link
+                to={platformLink.href}
+                className={`py-3 text-lg font-headline font-semibold transition-colors ${
+                  isPlatformActive ? 'text-white' : 'text-on-surface-variant'
+                }`}
+              >
+                {platformLink.label}
+              </Link>
             )}
 
             {/* Other links */}

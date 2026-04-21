@@ -24,3 +24,7 @@ dist-ssr
 *.sln
 *.sw?
 dist/
+
+# Local working artefacts
+*.bak
+nanobanana-output/

@@ -8,6 +8,7 @@ import { ParticleBackground } from '../components/ParticleBackground';
 import { TiltCard } from '../components/TiltCard';
 import { useMouseSpotlight } from '../hooks/useMouseSpotlight';
 import { heroContent, certifications } from '../data/mockData';
+import { STRATEGIC_TRIAGE_ENABLED } from '../config/features';
 
 // Lazy-load: SparklesCore pulls in three.js (~500KB). Defer until after the hero
 // text paints so LCP isn't blocked by the animation engine.
@@ -47,7 +48,7 @@ const LearnMoreButton: React.FC<{ to?: string; label?: string }> = ({ to, label 
     >
       {/* Text flip container */}
       <span className="relative inline-block overflow-hidden" style={{ height: '1.3em' }}>
-        {/* Front — primary colour, folds away upward */}
+        {/* Front - primary colour, folds away upward */}
         <motion.span
           className="block text-primary whitespace-nowrap"
           style={{ transformOrigin: '50% 0%' }}
@@ -56,7 +57,7 @@ const LearnMoreButton: React.FC<{ to?: string; label?: string }> = ({ to, label 
         >
           {label}
         </motion.span>
-        {/* Back — white, unfolds in from below */}
+        {/* Back - white, unfolds in from below */}
         <motion.span
           className="absolute inset-0 text-white whitespace-nowrap"
           style={{ transformOrigin: '50% 100%' }}
@@ -70,7 +71,7 @@ const LearnMoreButton: React.FC<{ to?: string; label?: string }> = ({ to, label 
           {label}
         </motion.span>
       </span>
-      {/* Arrow — also swaps to white on hover */}
+      {/* Arrow - also swaps to white on hover */}
       <motion.span aria-hidden="true"
         className="material-symbols-outlined text-[14px]"
         animate={{ color: hovered ? '#ffffff' : 'var(--color-primary)', x: hovered ? 2 : 0 }}
@@ -119,7 +120,11 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
         {...pageMeta.home}
         schema={[organisationSchema, websiteSchema]}
         preloadImages={[
-          { href: '/rcs-logo.webp', type: 'image/webp', fetchPriority: 'high' },
+          {
+            href: `${import.meta.env.BASE_URL}rcs-logo.webp`,
+            type: 'image/webp',
+            fetchPriority: 'high',
+          },
         ]}
       />
 
@@ -134,24 +139,34 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
         {/* Ambient glow */}
         <div className="absolute inset-0 rose-diffused-highlight pointer-events-none" />
 
-        {/* RCS watermark — shape-traced glow + ambient particles */}
+        {/* RCS watermark - shape-traced glow + ambient particles */}
         <div className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none flex items-center justify-center pr-4">
           <div className="relative w-[580px] h-[580px] flex items-center justify-center">
 
-            {/* Ambient sparkles — lazy-loaded after hero text paints */}
-            <Suspense fallback={null}>
-              <SparklesCore
-                className="absolute inset-0 z-10 pointer-events-auto"
-                background="transparent"
-                particleColor="#d946ef"
-                particleDensity={35}
-                minSize={0.6}
-                maxSize={1.6}
-                speed={1.0}
-              />
-            </Suspense>
+            {/* Ambient sparkles - lazy-loaded after hero text paints.
+                Radial mask feathers density at the edges so the container
+                bounds don't read as a hard line. */}
+            <div
+              className="absolute inset-0 z-10 pointer-events-none"
+              style={{
+                maskImage: 'radial-gradient(circle at center, black 50%, transparent 92%)',
+                WebkitMaskImage: 'radial-gradient(circle at center, black 50%, transparent 92%)',
+              }}
+            >
+              <Suspense fallback={null}>
+                <SparklesCore
+                  className="absolute inset-0 pointer-events-auto"
+                  background="transparent"
+                  particleColor="#d946ef"
+                  particleDensity={35}
+                  minSize={0.6}
+                  maxSize={1.6}
+                  speed={1.0}
+                />
+              </Suspense>
+            </div>
 
-            {/* Logo — drop-shadow traces the actual flower silhouette */}
+            {/* Logo - drop-shadow traces the actual flower silhouette */}
             <motion.img
               src={`${import.meta.env.BASE_URL}rcs-logo.webp`}
               alt=""
@@ -183,7 +198,7 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
               {heroContent.eyebrow}
             </motion.span>
 
-            {/* Headline — staggered lines */}
+            {/* Headline - staggered lines */}
             <h1 className="font-headline text-[2.5rem] md:text-[5.25rem] leading-[1.05] font-extrabold tracking-tighter mb-12">
               {heroContent.headline.map((line, i) => (
                 <motion.span
@@ -427,6 +442,7 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
       </section>
 
       {/* ── Strategic Triage Engine Highlight ────────────────────────── */}
+      {STRATEGIC_TRIAGE_ENABLED && (
       <section className="py-32 bg-background relative overflow-hidden border-t border-outline">
         {/* Ambient glow */}
         <motion.div
@@ -439,7 +455,7 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
         <div className="max-w-[1440px] mx-auto px-8 relative z-10">
           <div className="flex flex-col md:flex-row gap-16 items-center">
 
-            {/* Left — Text content */}
+            {/* Left - Text content */}
             <div className="w-full md:w-1/2 space-y-6">
               <ScrollReveal>
                 <div className="flex items-center gap-3 mb-2">
@@ -453,19 +469,19 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
               </ScrollReveal>
               <ScrollReveal delay={1}>
                 <h2 className="font-headline text-4xl md:text-5xl font-extrabold tracking-tighter">
-                  From Intake Paralysis to{' '}
-                  <span className="text-gradient-primary">Operationalised Intent</span>
+                  Too many project requests. Too little time to{' '}
+                  <span className="text-gradient-primary">evaluate them properly</span>.
                 </h2>
               </ScrollReveal>
               <ScrollReveal delay={2}>
                 <p className="text-lg text-on-surface-variant leading-relaxed">
-                  A Graph &amp; Ontology reasoning platform that compresses the Evaluation Tax from
-                  months to minutes — without letting board-level intent evaporate before it reaches the backlog.
+                  An AI triage layer that scores every incoming request against your strategy, compliance, and
+                  cost - so leaders only spend judgment on the 20% that actually matters.
                 </p>
               </ScrollReveal>
               <ScrollReveal delay={3}>
                 <div className="flex flex-wrap gap-3 pt-2">
-                  {['80/20 Automation', 'Forensic Signal Capture', 'GRC by Design'].map((label) => (
+                  {['80% automated', 'Cited decisions', 'Compliance-aware'].map((label) => (
                     <span
                       key={label}
                       className="px-4 py-2 bg-primary/8 border border-primary/20 rounded-lg text-xs font-label uppercase tracking-wider text-on-surface-variant"
@@ -491,65 +507,16 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
               </ScrollReveal>
             </div>
 
-            {/* Right — Visual */}
+            {/* Right - Visual */}
             <ScrollReveal className="w-full md:w-1/2" delay={2}>
               <div className="relative">
                 <div className="absolute -inset-6 bg-primary/5 rounded-3xl blur-3xl pointer-events-none" />
-                <div className="relative bg-surface p-8 rounded-2xl border border-outline/30">
-                  {/* Miniature graph visualisation */}
-                  <div className="space-y-6">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-label uppercase tracking-widest text-primary/60">Strategic Directed Graph</span>
-                      <span className="text-[10px] font-label uppercase tracking-widest text-on-surface-variant/40">Live</span>
-                    </div>
-
-                    {/* Graph nodes row */}
-                    <div className="flex items-center justify-center gap-4">
-                      {[
-                        { icon: 'person', label: 'Customer' },
-                        { icon: 'business', label: 'Business' },
-                        { icon: 'settings', label: 'Process' },
-                        { icon: 'storefront', label: 'Market' },
-                      ].map(({ icon, label }, i) => (
-                        <motion.div
-                          key={label}
-                          className="flex flex-col items-center gap-2"
-                          initial={{ opacity: 0, y: 20 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: 0.4 + i * 0.12 }}
-                        >
-                          <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/25 flex items-center justify-center">
-                            <span aria-hidden="true" className="material-symbols-outlined text-primary" style={{ fontSize: '1.2rem' }}>{icon}</span>
-                          </div>
-                          <span className="text-[9px] font-label uppercase tracking-wider text-on-surface-variant/60">{label}</span>
-                        </motion.div>
-                      ))}
-                    </div>
-
-                    {/* Connection lines */}
-                    <div className="flex items-center gap-3 justify-center">
-                      <div className="flex-1 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
-                      <div className="w-8 h-8 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center">
-                        <span aria-hidden="true" className="material-symbols-outlined text-primary" style={{ fontSize: '0.9rem' }}>auto_fix_high</span>
-                      </div>
-                      <div className="flex-1 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
-                    </div>
-
-                    {/* Output row */}
-                    <div className="flex items-center justify-center gap-6">
-                      <div className="flex items-center gap-2 px-4 py-2.5 bg-primary/10 rounded-lg border border-primary/20">
-                        <span aria-hidden="true" className="material-symbols-outlined text-primary" style={{ fontSize: '1rem' }}>bolt</span>
-                        <span className="text-xs font-label font-bold text-primary">80%</span>
-                        <span className="text-[10px] text-on-surface-variant">Auto-triaged</span>
-                      </div>
-                      <div className="flex items-center gap-2 px-4 py-2.5 bg-surface-container rounded-lg border border-outline/30">
-                        <span aria-hidden="true" className="material-symbols-outlined text-on-surface-variant" style={{ fontSize: '1rem' }}>supervisor_account</span>
-                        <span className="text-xs font-label font-bold">20%</span>
-                        <span className="text-[10px] text-on-surface-variant">Leader review</span>
-                      </div>
-                    </div>
-                  </div>
+                <div className="relative bg-surface-container-highest p-4 rounded-2xl shadow-2xl border border-outline/30">
+                  <img
+                    src={`${import.meta.env.BASE_URL}strategic-triage.webp`}
+                    alt="Strategic Triage Engine"
+                    className="rounded-xl w-full aspect-square object-cover"
+                  />
                 </div>
               </div>
             </ScrollReveal>
@@ -557,6 +524,7 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
           </div>
         </div>
       </section>
+      )}
 
       {/* ── CTA ───────────────────────────────────────────────────────── */}
       <section className="py-44 bg-surface relative overflow-hidden border-t border-outline">

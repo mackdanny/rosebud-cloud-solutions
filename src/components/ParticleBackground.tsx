@@ -67,7 +67,7 @@ export const ParticleBackground: React.FC<ParticleBackgroundProps> = ({ classNam
         },
         detectRetina: true,
       }}
-      // @ts-expect-error — older tsparticles versions use `init` prop
+      // @ts-expect-error - older tsparticles versions use `init` prop
       init={init}
     />
   );

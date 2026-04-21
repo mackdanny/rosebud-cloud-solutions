@@ -74,21 +74,33 @@ export const SparklesCore = (props: ParticlesProps) => {
               events: {
                 onClick: {
                   enable: true,
-                  mode: "push",
+                  mode: ["push", "repulse"],
                 },
                 onHover: {
-                  enable: false,
-                  mode: "repulse",
+                  enable: true,
+                  mode: "attract",
+                  parallax: { enable: false, force: 60, smooth: 10 },
                 },
                 resize: true as any,
               },
               modes: {
                 push: {
-                  quantity: 4,
+                  quantity: 18,
                 },
                 repulse: {
-                  distance: 200,
+                  distance: 160,
+                  duration: 0.8,
+                  factor: 120,
+                  speed: 1,
+                  easing: "ease-out-quad",
+                },
+                attract: {
+                  distance: 180,
                   duration: 0.4,
+                  factor: 2,
+                  speed: 0.6,
+                  maxSpeed: 1.5,
+                  easing: "ease-out-quad",
                 },
               },
             },

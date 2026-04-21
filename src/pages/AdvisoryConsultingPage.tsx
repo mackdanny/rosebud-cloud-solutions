@@ -419,7 +419,7 @@ const DecisionMatrixGraphic: React.FC = () => {
 
 // ─── Use Case Illustrations ──────────────────────────────────────────────────
 
-/** 1. Planning New Cloud Initiatives — roadmap with milestones */
+/** 1. Planning New Cloud Initiatives - roadmap with milestones */
 const IllustrationNewInitiatives: React.FC = () => (
   <svg viewBox="0 0 400 320" className="w-full h-full" fill="none">
     <defs>
@@ -468,7 +468,7 @@ const IllustrationNewInitiatives: React.FC = () => (
   </svg>
 );
 
-/** 2. Architecture Reviews — magnifying glass scanning layers */
+/** 2. Architecture Reviews - magnifying glass scanning layers */
 const IllustrationArchReview: React.FC = () => (
   <svg viewBox="0 0 400 320" className="w-full h-full" fill="none">
     <defs>
@@ -526,7 +526,7 @@ const IllustrationArchReview: React.FC = () => (
   </svg>
 );
 
-/** 3. Complex Solution Design — multi-service interconnected architecture */
+/** 3. Complex Solution Design - multi-service interconnected architecture */
 const IllustrationSolutionDesign: React.FC = () => {
   const services = [
     { x: 200, y: 50, label: 'API GW', color: 'rgba(56,189,248,0.8)' },
@@ -577,7 +577,7 @@ const IllustrationSolutionDesign: React.FC = () => {
   );
 };
 
-/** 4. Cloud Migration Strategy — phased migration flow */
+/** 4. Cloud Migration Strategy - phased migration flow */
 const IllustrationMigrationStrategy: React.FC = () => (
   <svg viewBox="0 0 400 320" className="w-full h-full" fill="none">
     <defs>
@@ -651,7 +651,7 @@ const IllustrationMigrationStrategy: React.FC = () => (
   </svg>
 );
 
-/** 5. Technical Decision Support — branching decision tree */
+/** 5. Technical Decision Support - branching decision tree */
 const IllustrationDecisionSupport: React.FC = () => {
   const tree = [
     { x: 200, y: 40, label: 'DECISION', w: 70, h: 28, color: 'rgba(160,0,181,0.8)' },
@@ -700,7 +700,7 @@ const IllustrationDecisionSupport: React.FC = () => {
   );
 };
 
-/** 6. Supporting Internal Teams — team augmentation */
+/** 6. Supporting Internal Teams - team augmentation */
 const IllustrationTeamSupport: React.FC = () => {
   const internalTeam = [
     { x: 80, y: 100 }, { x: 140, y: 80 }, { x: 110, y: 160 },
@@ -1037,7 +1037,7 @@ export const AdvisoryConsultingPage: React.FC<AdvisoryConsultingPageProps> = ({ 
             <ScrollReveal delay={2}>
               <p className="text-lg text-on-surface-variant leading-relaxed">
                 Whether you're planning a new initiative, reviewing an existing architecture, or
-                navigating a complex transformation — we bring the experience and insight needed
+                navigating a complex transformation - we bring the experience and insight needed
                 to guide your organisation through every critical decision.
               </p>
             </ScrollReveal>
@@ -1136,7 +1136,7 @@ export const AdvisoryConsultingPage: React.FC<AdvisoryConsultingPageProps> = ({ 
               </ScrollReveal>
               <ScrollReveal delay={2}>
                 <p className="text-lg text-on-surface-variant leading-relaxed">
-                  This reduces risk, avoids costly mistakes, and enables more confident execution —
+                  This reduces risk, avoids costly mistakes, and enables more confident execution -
                   giving your teams the clarity and direction they need to deliver with purpose.
                 </p>
               </ScrollReveal>

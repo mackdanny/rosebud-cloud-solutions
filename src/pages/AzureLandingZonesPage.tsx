@@ -39,7 +39,7 @@ const deliverables = [
     icon: 'architecture',
     title: 'Landing Zone Architecture & Deployment',
     description:
-      'Full conceptual and logical design aligned to the Microsoft Cloud Adoption Framework — then delivered directly into your tenant.',
+      'Full conceptual and logical design aligned to the Microsoft Cloud Adoption Framework - then delivered directly into your tenant.',
   },
   {
     icon: 'account_tree',

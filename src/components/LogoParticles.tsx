@@ -99,7 +99,7 @@ function buildDistanceField(
     if (data[i * 4 + 3] >= alphaThreshold) {
       dist[i] = 0; // opaque
     } else if (exterior[i] === 0) {
-      dist[i] = -1; // interior cavity — exclude
+      dist[i] = -1; // interior cavity - exclude
     } else {
       dist[i] = INF; // exterior transparent
     }
@@ -164,8 +164,8 @@ export const LogoParticles: React.FC<LogoParticlesProps> = ({
       for (let y = 0; y < ch; y += step) {
         for (let x = 0; x < cw; x += step) {
           const d = dist[y * cw + x];
-          // d <= 0 means opaque or interior cavity — skip
-          // d > radius means too far — skip
+          // d <= 0 means opaque or interior cavity - skip
+          // d > radius means too far - skip
           if (d <= 0 || d > radius) continue;
           candidates.push({ x, y, d });
         }
@@ -174,7 +174,7 @@ export const LogoParticles: React.FC<LogoParticlesProps> = ({
       if (candidates.length === 0) return [];
 
       // Weight candidates so near-edge pixels are picked more often
-      // Weight = 1/d^1.5 — heavily biased toward the edge
+      // Weight = 1/d^1.5 - heavily biased toward the edge
       const weights: number[] = [];
       let totalWeight = 0;
       for (const c of candidates) {

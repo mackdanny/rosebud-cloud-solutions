@@ -10,18 +10,19 @@ const footerSolutions = [
   { label: 'DevSecOps', href: '/services/devsecops' },
   { label: 'Cloud Optimisation', href: '/services/cloud-optimisation' },
   { label: 'Managed Cloud', href: '/services/managed-cloud' },
+  { label: 'Advisory & Consulting', href: '/services/advisory-consulting' },
 ];
 
-const footerAdvisory = [
+const footerCompany = [
   { label: 'How We Work', href: '/how-we-work' },
-  { label: 'Advisory & Consulting', href: '/services/advisory-consulting' },
   { label: 'About Us', href: '/about' },
+  { label: 'Meet the Team', href: '/about#team' },
   { label: 'Contact', href: '/contact' },
 ];
 
-const footerConnect = [
-  { label: 'LinkedIn', href: '#' },
-  { label: 'Briefing', href: '#' },
+const footerConnect: ReadonlyArray<{ label: string; href: string; external?: boolean }> = [
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/company/rosebud-cloud-solutions-ltd/', external: true },
+  { label: 'Instagram', href: 'https://www.instagram.com/rosebudcloudsolutions/', external: true },
 ];
 
 export const Footer: React.FC<FooterProps> = ({ className = '' }) => {
@@ -31,10 +32,17 @@ export const Footer: React.FC<FooterProps> = ({ className = '' }) => {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-16 mb-24">
           {/* Brand */}
           <div className="md:col-span-6">
-            <Link to="/" className="flex items-center gap-2 mb-8 hover:opacity-80 transition-opacity">
-              <span aria-hidden="true" className="material-symbols-outlined text-primary text-2xl">filter_vintage</span>
+            <Link to="/" className="flex items-center gap-2.5 mb-8 hover:opacity-80 transition-opacity">
+              <img
+                src={`${import.meta.env.BASE_URL}rcs-logo.webp`}
+                alt=""
+                aria-hidden="true"
+                width={48}
+                height={48}
+                className="w-12 h-12 object-contain shrink-0"
+              />
               <span className="text-2xl font-bold tracking-tight text-white font-headline">
-                Rosebud Cloud
+                Rosebud Cloud Solutions
               </span>
             </Link>
             <p className="text-on-surface-variant text-sm max-w-sm leading-relaxed">
@@ -57,13 +65,13 @@ export const Footer: React.FC<FooterProps> = ({ className = '' }) => {
             </ul>
           </div>
 
-          {/* Advisory */}
+          {/* Company */}
           <div className="md:col-span-2">
             <p className="text-[10px] uppercase tracking-[0.2em] text-primary mb-8 font-bold font-label">
-              Advisory
+              Company
             </p>
             <ul className="space-y-4 text-xs uppercase tracking-widest text-on-surface-variant">
-              {footerAdvisory.map(({ label, href }) => (
+              {footerCompany.map(({ label, href }) => (
                 <li key={label}>
                   <Link to={href} className="hover:text-white transition-colors">{label}</Link>
                 </li>
@@ -77,9 +85,15 @@ export const Footer: React.FC<FooterProps> = ({ className = '' }) => {
               Connect
             </p>
             <ul className="space-y-4 text-xs uppercase tracking-widest text-on-surface-variant">
-              {footerConnect.map(({ label, href }) => (
+              {footerConnect.map(({ label, href, external }) => (
                 <li key={label}>
-                  <a href={href} className="hover:text-white transition-colors">{label}</a>
+                  <a
+                    href={href}
+                    {...(external && { target: '_blank', rel: 'noopener noreferrer' })}
+                    className="hover:text-white transition-colors"
+                  >
+                    {label}
+                  </a>
                 </li>
               ))}
             </ul>
@@ -88,13 +102,10 @@ export const Footer: React.FC<FooterProps> = ({ className = '' }) => {
 
         {/* Bottom bar */}
         <div className="flex flex-col md:flex-row justify-between items-center py-12 border-t border-outline gap-6">
-          <p className="text-[10px] uppercase tracking-widest text-on-surface-variant/60">
-            © 2026 Rosebud Cloud Solutions. Strategic Enterprise Partner.
+          <p className="text-[10px] uppercase tracking-widest text-on-surface-variant/80">
+            © 2024–{new Date().getFullYear()} Rosebud Cloud Solutions. Strategic Enterprise Partner.
           </p>
-          <div className="flex gap-12 text-[10px] uppercase tracking-widest text-on-surface-variant/60">
-            <a href="#" className="hover:text-white transition-colors">Privacy</a>
-            <a href="#" className="hover:text-white transition-colors">Compliance</a>
-          </div>
+          {/* Privacy & Compliance links removed pending real pages - re-add when routes exist */}
         </div>
       </div>
     </footer>

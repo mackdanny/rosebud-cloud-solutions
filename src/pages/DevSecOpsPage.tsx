@@ -330,16 +330,16 @@ const PipelineDashboardGraphic: React.FC = () => (
       </div>
       <div>
         <div className="font-headline font-bold text-sm mb-1">Security Gate Status</div>
-        <div className="text-[11px] text-on-surface-variant">247 builds this week — 94% passed all gates</div>
+        <div className="text-[11px] text-on-surface-variant">247 builds this week - 94% passed all gates</div>
         <div className="text-[10px] text-green-400 mt-1.5 font-label font-bold">↓ 63% fewer prod issues</div>
       </div>
     </div>
 
     {/* Scanner results */}
     {[
-      { label: 'SAST — Code Scanning', value: 98, color: 'rgba(34,197,94,0.9)' },
-      { label: 'SCA — Dependency Check', value: 91, color: 'rgba(34,197,94,0.75)' },
-      { label: 'IaC — Template Scanning', value: 96, color: 'rgba(160,0,181,0.9)' },
+      { label: 'SAST - Code Scanning', value: 98, color: 'rgba(34,197,94,0.9)' },
+      { label: 'SCA - Dependency Check', value: 91, color: 'rgba(34,197,94,0.75)' },
+      { label: 'IaC - Template Scanning', value: 96, color: 'rgba(160,0,181,0.9)' },
       { label: 'Policy Gate Compliance', value: 100, color: 'rgba(160,0,181,0.75)' },
     ].map(({ label, value, color }, i) => (
       <div key={label} className="space-y-1.5">
@@ -482,7 +482,7 @@ const ShiftLeftGraphic: React.FC = () => {
           </g>
         ))}
 
-        {/* Security woven through — connecting lines */}
+        {/* Security woven through - connecting lines */}
         {[60, 165, 270, 375].map((x, i) => (
           <motion.path key={x}
             d={`M ${x} 270 Q ${x + 52} 305 ${x + 105} 270`}
@@ -517,7 +517,7 @@ const ShiftLeftGraphic: React.FC = () => {
 
 // ─── Use Case Illustrations ───────────────────────────────────────────────────
 
-/** 1. DevSecOps Transition — converging flows */
+/** 1. DevSecOps Transition - converging flows */
 const IllustrationTransition: React.FC = () => (
   <svg viewBox="0 0 400 320" className="w-full h-full" fill="none">
     <defs>
@@ -579,7 +579,7 @@ const IllustrationTransition: React.FC = () => (
   </svg>
 );
 
-/** 2. CI/CD Pipeline — horizontal flow with stages */
+/** 2. CI/CD Pipeline - horizontal flow with stages */
 const IllustrationCICD: React.FC = () => {
   const stages = ['COMMIT', 'BUILD', 'TEST', 'SCAN', 'STAGE', 'PROD'];
   return (
@@ -652,7 +652,7 @@ const IllustrationCICD: React.FC = () => {
   );
 };
 
-/** 3. Infrastructure as Code — code becoming infrastructure */
+/** 3. Infrastructure as Code - code becoming infrastructure */
 const IllustrationIaC: React.FC = () => {
   const codeLines = [
     'resource "azurerm_vnet"',
@@ -714,7 +714,7 @@ const IllustrationIaC: React.FC = () => {
   );
 };
 
-/** 4. Security Scanning — SAST code analysis */
+/** 4. Security Scanning - SAST code analysis */
 const IllustrationSAST: React.FC = () => {
   const findings = [
     { line: 14, sev: 'HIGH', msg: 'SQL injection risk' },
@@ -735,7 +735,7 @@ const IllustrationSAST: React.FC = () => {
       <rect x="30" y="20" width="200" height="280" rx="8" fill="rgba(160,0,181,0.04)" stroke="rgba(160,0,181,0.15)" strokeWidth="1" />
       <rect x="30" y="20" width="200" height="22" rx="8" fill="rgba(160,0,181,0.1)" />
       <rect x="30" y="34" width="200" height="8" fill="rgba(160,0,181,0.1)" />
-      <text x="130" y="35" textAnchor="middle" fontSize="7.5" fill="rgba(160,0,181,0.8)" fontFamily="monospace" fontWeight="bold">app.py — SAST SCAN</text>
+      <text x="130" y="35" textAnchor="middle" fontSize="7.5" fill="rgba(160,0,181,0.8)" fontFamily="monospace" fontWeight="bold">app.py - SAST SCAN</text>
       {/* Code lines */}
       {Array.from({ length: 12 }).map((_, i) => {
         const y = 52 + i * 20;
@@ -797,10 +797,10 @@ const IllustrationSAST: React.FC = () => {
   );
 };
 
-/** 5. Policy as Code — enforcement rules */
+/** 5. Policy as Code - enforcement rules */
 const IllustrationPolicyCode: React.FC = () => {
   const rules = [
-    { rule: 'deny http — require https', status: 'ENFORCED' },
+    { rule: 'deny http - require https', status: 'ENFORCED' },
     { rule: 'require tags: env, owner', status: 'ENFORCED' },
     { rule: 'no public storage blobs', status: 'ENFORCED' },
     { rule: 'approved regions only', status: 'ENFORCED' },
@@ -869,7 +869,7 @@ const IllustrationPolicyCode: React.FC = () => {
   );
 };
 
-/** 6. Release Process Optimisation — throughput/speed chart */
+/** 6. Release Process Optimisation - throughput/speed chart */
 const IllustrationRelease: React.FC = () => {
   // Before: slow, bumpy. After: fast, smooth
   const beforePath = 'M 30,240 L 80,220 L 110,230 L 140,210 L 180,225 L 210,205 L 240,215';
@@ -898,7 +898,7 @@ const IllustrationRelease: React.FC = () => {
       {/* Divider */}
       <line x1="240" y1="80" x2="240" y2="270" stroke="rgba(160,0,181,0.2)" strokeWidth="1" strokeDasharray="4 8" />
 
-      {/* Before line — slow/flat */}
+      {/* Before line - slow/flat */}
       <motion.polyline points={beforePath}
         stroke="rgba(160,0,181,0.6)" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"
         filter="url(#relGlow)"
@@ -906,7 +906,7 @@ const IllustrationRelease: React.FC = () => {
         transition={{ duration: 3, repeat: Infinity }}
       />
 
-      {/* After line — steeply improving */}
+      {/* After line - steeply improving */}
       <motion.path
         d={`${afterPath} L 390 270 L 240 270 Z`}
         fill="url(#relFill)" opacity="0.6"
@@ -964,7 +964,7 @@ const deliverables = [
     icon: 'account_tree',
     title: 'CI/CD Pipeline Design',
     description:
-      'End-to-end pipeline design and implementation using Azure DevOps or GitHub Actions — enabling fast, consistent, and secure software delivery from day one.',
+      'End-to-end pipeline design and implementation using Azure DevOps or GitHub Actions - enabling fast, consistent, and secure software delivery from day one.',
   },
   {
     icon: 'code_blocks',
@@ -994,7 +994,7 @@ const deliverables = [
     icon: 'integration_instructions',
     title: 'Security in Development Workflows',
     description:
-      'Security integrated as a first-class concern throughout your development workflow — from IDE plugins and pre-commit hooks to automated PR checks.',
+      'Security integrated as a first-class concern throughout your development workflow - from IDE plugins and pre-commit hooks to automated PR checks.',
   },
 ];
 
@@ -1031,7 +1031,7 @@ const useCases = [
     icon: 'policy',
     title: 'Policy-as-Code Enforcement',
     description:
-      'Ensure every deployment automatically meets security and compliance standards — no manual gates required.',
+      'Ensure every deployment automatically meets security and compliance standards - no manual gates required.',
     accent: 'rgba(115,0,150,0.35)',
   },
   {
@@ -1213,7 +1213,7 @@ export const DevSecOpsPage: React.FC<DevSecOpsPageProps> = ({ className = '' }) 
             <ScrollReveal delay={2}>
               <p className="text-lg text-on-surface-variant leading-relaxed">
                 Rather than treating security as a final approval gate, we embed automated scanning,
-                policy enforcement, and compliance controls directly into your pipelines — so security
+                policy enforcement, and compliance controls directly into your pipelines - so security
                 is a continuous property of every release, not an afterthought.
               </p>
             </ScrollReveal>

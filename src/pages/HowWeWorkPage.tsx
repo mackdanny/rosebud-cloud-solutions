@@ -191,7 +191,7 @@ export const HowWeWorkPage: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
             <p className="text-on-surface-variant/80 text-base leading-relaxed">
-              We don't take a one-size-fits-all approach to cloud. Every engagement is designed around your current environment, business goals, and risk profile. Our delivery model combines architecture, automation, and security from the outset — ensuring your Azure platform is built to perform, remain compliant, and scale without unnecessary complexity.
+              We don't take a one-size-fits-all approach to cloud. Every engagement is designed around your current environment, business goals, and risk profile. Our delivery model combines architecture, automation, and security from the outset - ensuring your Azure platform is built to perform, remain compliant, and scale without unnecessary complexity.
             </p>
           </motion.div>
         </div>

@@ -317,7 +317,7 @@ const EfficiencyGraphic: React.FC = () => {
         </defs>
 
         {/* Title */}
-        <text x="250" y="35" textAnchor="middle" fontSize="9" fill="rgba(160,0,181,0.7)" fontFamily="monospace" fontWeight="bold">MONTHLY AZURE SPEND — BEFORE vs AFTER</text>
+        <text x="250" y="35" textAnchor="middle" fontSize="9" fill="rgba(160,0,181,0.7)" fontFamily="monospace" fontWeight="bold">MONTHLY AZURE SPEND - BEFORE vs AFTER</text>
 
         {/* Grid lines */}
         {[80, 130, 180, 230, 280, 330, 380].map(y => (
@@ -392,7 +392,7 @@ const EfficiencyGraphic: React.FC = () => {
 
 // ─── Use Case Illustrations ──────────────────────────────────────────────────
 
-/** 1. Cloud Cost Optimisation — shrinking cost bars */
+/** 1. Cloud Cost Optimisation - shrinking cost bars */
 const IllustrationCostOpt: React.FC = () => {
   const bars = [
     { x: 50, before: 220, after: 120, label: 'VMs' },
@@ -440,13 +440,13 @@ const IllustrationCostOpt: React.FC = () => {
   );
 };
 
-/** 2. Performance & Reliability — heartbeat/uptime monitor */
+/** 2. Performance & Reliability - heartbeat/uptime monitor */
 const IllustrationPerformance: React.FC = () => (
   <svg viewBox="0 0 400 320" className="w-full h-full" fill="none">
     <defs>
       <filter id="perfGlow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
     </defs>
-    {/* Heartbeat line — problematic */}
+    {/* Heartbeat line - problematic */}
     <motion.polyline
       points="20,200 60,200 80,200 90,170 100,240 110,150 120,220 140,200 200,200"
       stroke="rgba(239,68,68,0.5)" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"
@@ -455,7 +455,7 @@ const IllustrationPerformance: React.FC = () => (
     />
     <text x="110" y="130" textAnchor="middle" fontSize="7" fill="rgba(239,68,68,0.6)" fontFamily="monospace">UNSTABLE</text>
 
-    {/* Heartbeat line — optimised */}
+    {/* Heartbeat line - optimised */}
     <motion.polyline
       points="200,200 220,200 230,180 240,210 250,190 260,200 280,200 300,200 310,185 320,205 330,195 340,200 380,200"
       stroke="rgba(34,197,94,0.8)" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"
@@ -493,7 +493,7 @@ const IllustrationPerformance: React.FC = () => (
   </svg>
 );
 
-/** 3. Post-Migration Optimisation — migration journey with cleanup */
+/** 3. Post-Migration Optimisation - migration journey with cleanup */
 const IllustrationPostMigration: React.FC = () => (
   <svg viewBox="0 0 400 320" className="w-full h-full" fill="none">
     <defs>
@@ -561,7 +561,7 @@ const IllustrationPostMigration: React.FC = () => (
   </svg>
 );
 
-/** 4. Rapid Growth Clean-up — tangled to organised */
+/** 4. Rapid Growth Clean-up - tangled to organised */
 const IllustrationGrowthCleanup: React.FC = () => (
   <svg viewBox="0 0 400 320" className="w-full h-full" fill="none">
     <defs>
@@ -629,7 +629,7 @@ const IllustrationGrowthCleanup: React.FC = () => (
   </svg>
 );
 
-/** 5. Architecture Refinement — restructuring blocks */
+/** 5. Architecture Refinement - restructuring blocks */
 const IllustrationArchitecture: React.FC = () => (
   <svg viewBox="0 0 400 320" className="w-full h-full" fill="none">
     <defs>
@@ -685,7 +685,7 @@ const IllustrationArchitecture: React.FC = () => (
   </svg>
 );
 
-/** 6. Governance & Structure — policy controls */
+/** 6. Governance & Structure - policy controls */
 const IllustrationGovernance: React.FC = () => {
   const policies = [
     { label: 'TAG ENFORCEMENT', status: 'ACTIVE' },
@@ -1011,7 +1011,7 @@ export const CloudOptimisationPage: React.FC<CloudOptimisationPageProps> = ({ cl
             <ScrollReveal delay={2}>
               <p className="text-lg text-on-surface-variant leading-relaxed">
                 Whether your environment has grown organically, been through a migration, or simply
-                needs a fresh review — we provide clear, actionable recommendations that make a
+                needs a fresh review - we provide clear, actionable recommendations that make a
                 real difference.
               </p>
             </ScrollReveal>
@@ -1104,7 +1104,7 @@ export const CloudOptimisationPage: React.FC<CloudOptimisationPageProps> = ({ cl
               <ScrollReveal delay={1}>
                 <p className="text-lg text-on-surface-variant leading-relaxed">
                   As cloud environments grow, inefficiencies and unnecessary costs often accumulate.
-                  Resources become oversized, orphaned, or misconfigured — quietly increasing your
+                  Resources become oversized, orphaned, or misconfigured - quietly increasing your
                   monthly spend without delivering value.
                 </p>
               </ScrollReveal>

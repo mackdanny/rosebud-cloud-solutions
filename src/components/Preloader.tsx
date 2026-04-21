@@ -84,7 +84,7 @@ function rotatePhaseY(startDelay: number) {
 // ─── Component ───────────────────────────────────────────────────────────────
 
 // Compute initial state ONCE when PreloaderOverlay mounts on the client.
-// Because it's wrapped in <ClientOnly>, this never runs during SSR — window is
+// Because it's wrapped in <ClientOnly>, this never runs during SSR - window is
 // always defined here. Putting all the gating logic in the useState initializer
 // (instead of a post-mount effect) avoids any flicker/timing issues with
 // AnimatePresence and ensures the overlay mounts in its visible state from the
@@ -99,7 +99,7 @@ function computeInitialDone(): boolean {
     const lastSeen = Number(window.localStorage.getItem(PRELOADER_LAST_SEEN_KEY) ?? 0);
     if (lastSeen && Date.now() - lastSeen <= PRELOADER_COOLDOWN_MS) return true;
   } catch {
-    // localStorage blocked — still show
+    // localStorage blocked - still show
   }
   return false;
 }
@@ -176,7 +176,7 @@ const PreloaderOverlay: React.FC = () => {
               className="absolute flex flex-col items-center"
               style={{ transformStyle: 'preserve-3d' }}
             >
-              {/* Logo image — rotateY */}
+              {/* Logo image - rotateY */}
               <motion.img
                 src={`${import.meta.env.BASE_URL}rcs-logo.webp`}
                 alt="RCS Logo"
@@ -193,7 +193,7 @@ const PreloaderOverlay: React.FC = () => {
                 }}
               />
 
-              {/* Company name — rotateX */}
+              {/* Company name - rotateX */}
               <motion.span
                 className="font-headline text-3xl md:text-4xl font-bold tracking-tight text-white"
                 style={{ transformStyle: 'preserve-3d', backfaceVisibility: 'hidden' }}
@@ -225,7 +225,7 @@ const PreloaderOverlay: React.FC = () => {
   );
 };
 
-// Public Preloader component — always renders children; overlay is deferred
+// Public Preloader component - always renders children; overlay is deferred
 // into <ClientOnly> so its useState initializer runs only on the client, with
 // full access to window / localStorage / path, and never executes on SSR.
 export const Preloader: React.FC<{ children: React.ReactNode }> = ({ children }) => (

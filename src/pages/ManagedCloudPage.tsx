@@ -440,7 +440,7 @@ const PlatformHealthMatrix: React.FC = () => {
 
 // ─── Use Case Illustrations ──────────────────────────────────────────────────
 
-/** 1. Ongoing Management of Production Environments — server rack with pulsing status */
+/** 1. Ongoing Management of Production Environments - server rack with pulsing status */
 const IllustrationProductionMgmt: React.FC = () => (
   <svg viewBox="0 0 400 320" className="w-full h-full" fill="none">
     <defs>
@@ -487,7 +487,7 @@ const IllustrationProductionMgmt: React.FC = () => (
   </svg>
 );
 
-/** 2. Limited In-house Expertise — team extension diagram */
+/** 2. Limited In-house Expertise - team extension diagram */
 const IllustrationExpertise: React.FC = () => {
   const internalTeam = [
     { x: 80, y: 110 }, { x: 140, y: 90 }, { x: 110, y: 170 },
@@ -558,7 +558,7 @@ const IllustrationExpertise: React.FC = () => {
   );
 };
 
-/** 3. Security & Compliance Over Time — timeline with shield checkpoints */
+/** 3. Security & Compliance Over Time - timeline with shield checkpoints */
 const IllustrationSecurityCompliance: React.FC = () => (
   <svg viewBox="0 0 400 320" className="w-full h-full" fill="none">
     <defs>
@@ -621,7 +621,7 @@ const IllustrationSecurityCompliance: React.FC = () => (
   </svg>
 );
 
-/** 4. Continuous Optimisation — iterative improvement spiral */
+/** 4. Continuous Optimisation - iterative improvement spiral */
 const IllustrationOptimisation: React.FC = () => {
   const spiralPoints = Array.from({ length: 60 }).map((_, i) => {
     const angle = (i / 60) * Math.PI * 4;
@@ -681,7 +681,7 @@ const IllustrationOptimisation: React.FC = () => {
   );
 };
 
-/** 5. Post-project Support & Ownership — handoff with continuous loop */
+/** 5. Post-project Support & Ownership - handoff with continuous loop */
 const IllustrationPostProject: React.FC = () => (
   <svg viewBox="0 0 400 320" className="w-full h-full" fill="none">
     <defs>
@@ -712,7 +712,7 @@ const IllustrationPostProject: React.FC = () => (
     />
     <text x="198" y="120" textAnchor="middle" fontSize="6" fill="rgba(56,189,248,0.6)" fontFamily="monospace" fontWeight="bold">HANDOFF</text>
 
-    {/* Managed support phase (right) — circular loop */}
+    {/* Managed support phase (right) - circular loop */}
     <motion.circle cx="310" cy="160" r="70"
       fill="rgba(56,189,248,0.04)" stroke="rgba(56,189,248,0.3)" strokeWidth="1.5"
       strokeDasharray="8 8"
@@ -752,7 +752,7 @@ const IllustrationPostProject: React.FC = () => (
   </svg>
 );
 
-/** 6. Incident Response — alert cascade with resolution */
+/** 6. Incident Response - alert cascade with resolution */
 const IllustrationIncidentResponse: React.FC = () => (
   <svg viewBox="0 0 400 320" className="w-full h-full" fill="none">
     <defs>
@@ -876,7 +876,7 @@ const deliverables = [
     icon: 'support_agent',
     title: 'Incident Support & Troubleshooting',
     description:
-      'Responsive support for issue identification, investigation, and resolution — minimising disruption and restoring normal operations quickly.',
+      'Responsive support for issue identification, investigation, and resolution - minimising disruption and restoring normal operations quickly.',
   },
   {
     icon: 'trending_up',
@@ -1094,7 +1094,7 @@ export const ManagedCloudPage: React.FC<ManagedCloudPageProps> = ({ className = 
             <ScrollReveal delay={2}>
               <p className="text-lg text-on-surface-variant leading-relaxed">
                 From proactive monitoring and security management to cost optimisation and incident
-                response — we take ownership of your platform's ongoing health so your team can focus
+                response - we take ownership of your platform's ongoing health so your team can focus
                 on what matters most.
               </p>
             </ScrollReveal>

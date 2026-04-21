@@ -29,7 +29,7 @@ export const pageMeta = {
   devSecOps: {
     title: 'DevSecOps Consulting for Azure',
     description:
-      'Embed security into Azure DevOps and GitHub Actions pipelines — automated policy enforcement, secret management, and vulnerability scanning.',
+      'Embed security into Azure DevOps and GitHub Actions pipelines - automated policy enforcement, secret management, and vulnerability scanning.',
     path: '/services/devsecops',
   },
   cloudOptimisation: {
@@ -50,6 +50,8 @@ export const pageMeta = {
       'Ongoing management, monitoring, and improvement to keep Azure secure, compliant, and performing. Proactive operations with enterprise-grade SLAs.',
     path: '/services/managed-cloud',
   },
+  // Retained while STRATEGIC_TRIAGE_ENABLED = false (see src/config/features.ts).
+  // Flipping the flag re-exposes the route + nav; this meta is ready to go.
   strategicTriage: {
     title: 'Strategic Triage Engine | Graph & Ontology Reasoning Platform',
     description:
@@ -77,7 +79,7 @@ export const pageMeta = {
   caseStudies: {
     title: 'Azure & Cloud Case Studies',
     description:
-      'Real-world Azure platform, security, and governance engagements across financial services, public sector, legal, and retail — with measurable outcomes.',
+      'Real-world Azure platform, security, and governance engagements across financial services, public sector, legal, and retail - with measurable outcomes.',
     path: '/case-studies',
   },
 } as const satisfies Record<string, PageMeta>;
@@ -153,5 +155,19 @@ export function serviceSchema(args: {
     serviceType: args.serviceType,
     provider: { '@id': `${SITE_URL}/#organization` },
     areaServed: 'United Kingdom',
+  };
+}
+
+// FAQ schema. Pass into <SEO schema={[...]}> on any page with visible FAQ copy -
+// Google only shows rich results when on-page Q&A text matches.
+export function faqSchema(items: readonly { question: string; answer: string }[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map(({ question, answer }) => ({
+      '@type': 'Question',
+      name: question,
+      acceptedAnswer: { '@type': 'Answer', text: answer },
+    })),
   };
 }

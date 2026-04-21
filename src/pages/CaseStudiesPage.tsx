@@ -113,7 +113,7 @@ export const CaseStudiesPage: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
             <p className="text-on-surface-variant/80 text-base leading-relaxed">
-              From Tier-1 financial institutions to public sector regulators and global retailers, our case studies show how RCS embeds security, governance, and DevSecOps into every Azure platform we deliver — so the outcomes last long after the engagement ends.
+              From Tier-1 financial institutions to public sector regulators and global retailers, our case studies show how RCS embeds security, governance, and DevSecOps into every Azure platform we deliver - so the outcomes last long after the engagement ends.
             </p>
           </motion.div>
         </div>
@@ -138,7 +138,7 @@ export const CaseStudiesPage: React.FC = () => {
                 Secure Azure, <span className="text-gradient-primary">Delivered</span>
               </h2>
               <p className="text-on-surface-variant text-lg max-w-2xl mx-auto leading-relaxed">
-                Each engagement is grounded in the same principles — security by design, Infrastructure as Code, and governance built in from day one.
+                Each engagement is grounded in the same principles - security by design, Infrastructure as Code, and governance built in from day one.
               </p>
             </div>
           </ScrollReveal>
@@ -171,6 +171,9 @@ export const CaseStudiesPage: React.FC = () => {
                       src={`${import.meta.env.BASE_URL}${study.image}`}
                       alt={study.title}
                       loading="lazy"
+                      decoding="async"
+                      width={960}
+                      height={600}
                       className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                     />
                     {/* Image gradient overlay for legibility of the icon badge */}

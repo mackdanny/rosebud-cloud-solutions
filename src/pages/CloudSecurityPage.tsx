@@ -489,7 +489,7 @@ const ThreatNetworkGraphic: React.FC = () => {
 
 // ─── Use Case Card Illustrations ─────────────────────────────────────────────
 
-/** 1. Security Posture Assessments — horizontal scan beam sweeping a grid of tiles */
+/** 1. Security Posture Assessments - horizontal scan beam sweeping a grid of tiles */
 const IllustrationPosture: React.FC = () => (
   <svg viewBox="0 0 400 320" className="w-full h-full" fill="none">
     <defs>
@@ -551,7 +551,7 @@ const IllustrationPosture: React.FC = () => (
   </svg>
 );
 
-/** 2. Compliance Readiness — glowing checklist being validated */
+/** 2. Compliance Readiness - glowing checklist being validated */
 const IllustrationCompliance: React.FC = () => (
   <svg viewBox="0 0 400 320" className="w-full h-full" fill="none">
     <defs>
@@ -606,7 +606,7 @@ const IllustrationCompliance: React.FC = () => (
   </svg>
 );
 
-/** 3. Environment Hardening — concentric hexagons solidifying inward */
+/** 3. Environment Hardening - concentric hexagons solidifying inward */
 const IllustrationHardening: React.FC = () => {
   const hex = (cx: number, cy: number, r: number) => {
     return Array.from({ length: 6 }, (_, i) => {
@@ -667,7 +667,7 @@ const IllustrationHardening: React.FC = () => {
   );
 };
 
-/** 4. Identity & Access Control — fingerprint arcs + scan beam */
+/** 4. Identity & Access Control - fingerprint arcs + scan beam */
 const IllustrationIdentity: React.FC = () => (
   <svg viewBox="0 0 400 320" className="w-full h-full" fill="none">
     <defs>
@@ -737,7 +737,7 @@ const IllustrationIdentity: React.FC = () => (
   </svg>
 );
 
-/** 5. Threat Detection & Monitoring — EKG waveform with threat spike */
+/** 5. Threat Detection & Monitoring - EKG waveform with threat spike */
 const IllustrationThreat: React.FC = () => {
   // Normal flat waveform points
   const basePoints = '0,160 40,160 60,140 80,180 100,160 120,160 140,155 160,165 180,160';
@@ -773,7 +773,7 @@ const IllustrationThreat: React.FC = () => {
         transition={{ duration: 2.5, repeat: Infinity }}
       />
 
-      {/* Threat spike — animates in */}
+      {/* Threat spike - animates in */}
       <motion.polyline
         points="180,160 200,60 220,240 240,160"
         stroke="rgba(239,68,68,0.95)" strokeWidth="2.5" fill="none" strokeLinecap="round"
@@ -817,7 +817,7 @@ const IllustrationThreat: React.FC = () => {
   );
 };
 
-/** 6. Policy & Governance Enforcement — tree of policy rules propagating down */
+/** 6. Policy & Governance Enforcement - tree of policy rules propagating down */
 const IllustrationPolicy: React.FC = () => {
   const nodes = [
     { id: 'root', x: 200, y: 42, label: 'ROOT POLICY' },
@@ -1130,7 +1130,7 @@ export const CloudSecurityPage: React.FC<CloudSecurityPageProps> = ({ className 
                 transition={{ duration: 0.7, delay: 0.62 }}
               >
                 Embed security into your cloud environment from the ground up.
-                Continuous visibility, control, and protection — by design.
+                Continuous visibility, control, and protection - by design.
               </motion.p>
             </div>
 
@@ -1181,7 +1181,7 @@ export const CloudSecurityPage: React.FC<CloudSecurityPageProps> = ({ className 
               <p className="text-lg text-on-surface-variant leading-relaxed">
                 We help organisations secure their Azure environments by aligning with Microsoft
                 best practices and industry frameworks. Security is integrated directly into your
-                platform — providing continuous visibility, control, and protection from day one.
+                platform - providing continuous visibility, control, and protection from day one.
               </p>
             </ScrollReveal>
             <ScrollReveal delay={2}>
@@ -1280,7 +1280,7 @@ export const CloudSecurityPage: React.FC<CloudSecurityPageProps> = ({ className 
               <ScrollReveal delay={1}>
                 <p className="text-lg text-on-surface-variant leading-relaxed">
                   Without a structured approach, cloud security becomes reactive and difficult to
-                  manage — leaving your environment exposed to misconfigurations, threats, and
+                  manage - leaving your environment exposed to misconfigurations, threats, and
                   compliance failures.
                 </p>
               </ScrollReveal>

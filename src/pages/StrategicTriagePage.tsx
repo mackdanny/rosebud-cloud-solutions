@@ -38,7 +38,7 @@ const capabilities = [
     icon: 'auto_fix_high',
     title: '80/20 Automation',
     description:
-      'Gen-AI agents and the Strategic Directed Graph absorb the 80% of busy-work — mapping signals to strategy, running GRC checks, scoring fit.',
+      'Gen-AI agents and the Strategic Directed Graph absorb the 80% of busy-work - mapping signals to strategy, running GRC checks, scoring fit.',
   },
   {
     icon: 'biotech',
@@ -50,19 +50,19 @@ const capabilities = [
     icon: 'precision_manufacturing',
     title: 'Atomic Value Engineering',
     description:
-      'Decompose requirements to technical Primitives and price the cost of complexity at the atomic level — long before a sprint is committed.',
+      'Decompose requirements to technical Primitives and price the cost of complexity at the atomic level - long before a sprint is committed.',
   },
   {
     icon: 'supervisor_account',
     title: 'Human-In-The-Loop',
     description:
-      'Senior leadership is only interrupted for the Vital 20% — high-risk, high-value decisions, each backed by a fully cited Decision Brief.',
+      'Senior leadership is only interrupted for the Vital 20% - high-risk, high-value decisions, each backed by a fully cited Decision Brief.',
   },
   {
     icon: 'timeline',
     title: 'Strategic Golden Thread',
     description:
-      'Every dollar is traceable from boardroom intent to commit hash — operationalising intent end-to-end through a graph-native lineage.',
+      'Every dollar is traceable from boardroom intent to commit hash - operationalising intent end-to-end through a graph-native lineage.',
   },
   {
     icon: 'verified_user',
@@ -139,7 +139,7 @@ export const StrategicTriagePage: React.FC<StrategicTriagePageProps> = ({ classN
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] }}
               >
-                From Intake Paralysis
+                Too many project requests.
               </motion.span>
               <motion.span
                 className="block"
@@ -147,8 +147,8 @@ export const StrategicTriagePage: React.FC<StrategicTriagePageProps> = ({ classN
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.44, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] }}
               >
-                to{' '}
-                <span className="text-gradient-primary">Operationalised Intent</span>
+                Too little time to{' '}
+                <span className="text-gradient-primary">evaluate them properly</span>.
               </motion.span>
             </h1>
 
@@ -159,8 +159,9 @@ export const StrategicTriagePage: React.FC<StrategicTriagePageProps> = ({ classN
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.62 }}
             >
-              A Graph &amp; Ontology reasoning platform for CTOs and Portfolio Managers drowning in a sea of noise.
-              Compress the Evaluation Tax from months to minutes.
+              An AI triage layer for CTOs and portfolio leaders. It scores every incoming request against your
+              strategy, compliance posture, and cost-to-build - then surfaces only the decisions that actually
+              need you, with the reasoning already cited. The routine 80% gets handled. You decide the 20% that matters.
             </motion.p>
 
             {/* CTAs */}
@@ -170,19 +171,21 @@ export const StrategicTriagePage: React.FC<StrategicTriagePageProps> = ({ classN
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.8 }}
             >
-              <motion.button
-                className="btn-animated text-white font-headline font-bold px-10 py-4 rounded-lg text-base tracking-tight"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                Request a Decision Brief
-              </motion.button>
+              <Link to="/contact" className="no-underline">
+                <motion.button
+                  className="btn-animated text-white font-headline font-bold px-10 py-4 rounded-lg text-base tracking-tight"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.97 }}
+                >
+                  Book a 20-minute walk-through
+                </motion.button>
+              </Link>
               <motion.button
                 className="text-white font-headline font-bold px-10 py-4 border border-outline hover:bg-white/5 rounded-lg text-base transition-all"
                 whileHover={{ scale: 1.05, borderColor: 'rgba(160,0,181,0.5)' }}
                 whileTap={{ scale: 0.97 }}
               >
-                See How It Works
+                Watch the demo
               </motion.button>
             </motion.div>
 
@@ -234,7 +237,7 @@ export const StrategicTriagePage: React.FC<StrategicTriagePageProps> = ({ classN
             </ScrollReveal>
           </div>
 
-          {/* Visual — abstract graph illustration */}
+          {/* Visual - abstract graph illustration */}
           <ScrollReveal delay={2}>
             <div className="relative">
               <div className="absolute -inset-6 bg-primary/5 rounded-3xl blur-3xl pointer-events-none" />
