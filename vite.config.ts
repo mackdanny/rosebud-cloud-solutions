@@ -6,7 +6,9 @@ import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: process.env.GITHUB_PAGES ? '/rosebud-cloud-solutions/' : '/',
+  // BASE_PATH wins when set (flexible for any repo name / custom domain).
+  // GITHUB_PAGES preserved for backward compat with the original mackdanny deploy.
+  base: process.env.BASE_PATH ?? (process.env.GITHUB_PAGES ? '/rosebud-cloud-solutions/' : '/'),
   plugins: [react(), tailwindcss(), vike()],
   server: {
     port: 3000,
