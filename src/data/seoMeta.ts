@@ -159,15 +159,20 @@ export function serviceSchema(args: {
 }
 
 // FAQ schema. Pass into <SEO schema={[...]}> on any page with visible FAQ copy -
-// Google only shows rich results when on-page Q&A text matches.
+// Google only shows rich results when on-page Q&A text matches. Answers may
+// include markdown-style links [text](/path); they are stripped to plain text
+// for the schema payload (the Faq component renders them as <Link>/<a>).
+const MARKDOWN_LINK = /\[([^\]]+)\]\([^)]+\)/g;
+const stripLinks = (s: string) => s.replace(MARKDOWN_LINK, '$1');
+
 export function faqSchema(items: readonly { question: string; answer: string }[]) {
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: items.map(({ question, answer }) => ({
       '@type': 'Question',
-      name: question,
-      acceptedAnswer: { '@type': 'Answer', text: answer },
+      name: stripLinks(question),
+      acceptedAnswer: { '@type': 'Answer', text: stripLinks(answer) },
     })),
   };
 }

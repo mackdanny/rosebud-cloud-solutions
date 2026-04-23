@@ -2,7 +2,9 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import { SEO } from '../components/SEO';
-import { pageMeta, breadcrumbSchema } from '../data/seoMeta';
+import { Faq } from '../components/Faq';
+import { pageMeta, breadcrumbSchema, faqSchema } from '../data/seoMeta';
+import { faqs } from '../data/faqs';
 import { SITE_URL } from '../config/site';
 
 // ─── Animation Variants ───────────────────────────────────────────────────────
@@ -104,6 +106,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ className = '' }) => {
             { name: 'About', path: pageMeta.about.path },
           ]),
           ...teamPersonSchemas,
+          faqSchema(faqs.about),
         ]}
       />
 
@@ -236,6 +239,15 @@ export const AboutPage: React.FC<AboutPageProps> = ({ className = '' }) => {
           </motion.div>
         </div>
       </section>
+
+      {/* ── FAQ ───────────────────────────────────────────────────────── */}
+      <Faq
+        items={faqs.about}
+        groupName="faq-about"
+        eyebrow="Questions"
+        heading="Frequently asked questions"
+        description="What prospective clients ask us most often about the team, our approach, and how we work."
+      />
 
     </main>
   );

@@ -1,0 +1,207 @@
+# Rosebud Cloud Solutions — full content for LLMs
+
+> Enterprise Azure architecture, cloud security, DevSecOps, and managed cloud services. Microsoft-certified UK consultancy delivering secure, scalable infrastructure for regulated industries.
+
+This document is the long-form companion to llms.txt. It gives AI agents a single file of authoritative content covering what Rosebud Cloud Solutions does, how we work, and the questions prospective clients ask most often. Content is maintained alongside the website.
+
+---
+
+## About Rosebud Cloud Solutions
+
+Rosebud Cloud Solutions (RCS) is a UK-based Microsoft-certified consultancy specialising in Azure. We design and deliver landing zones, cloud security, DevSecOps, cost optimisation, advisory engagements, and ongoing managed operations.
+
+Clients are typically regulated enterprises - financial services, public sector, legal, retail - where security, compliance, and reliability are non-negotiable. We are comfortable at enterprise scale and equally effective with smaller organisations needing senior input without a large delivery team.
+
+The team is a small, senior group of Azure architects, cloud security specialists, and DevSecOps engineers. Every engagement is led by the people who actually do the work. We deliver primarily for UK clients, though we work comfortably with multinational organisations whose UK entity is the point of engagement. Delivery is usually remote, with on-site presence where security clearances, workshops, or critical incidents require it.
+
+Canonical URL: https://www.rosebudcloudsolutions.co.uk
+Contact: hello@rosebudcloudsolutions.co.uk
+
+---
+
+## Services
+
+### Azure Landing Zones
+URL: https://www.rosebudcloudsolutions.co.uk/services/azure-landing-zones
+
+Structured Azure landing zones delivering control, security, and scalability from day one. Management groups, policy, and Infrastructure-as-Code by certified architects.
+
+An Azure Landing Zone is the foundational platform that sits beneath your workloads - management groups, subscriptions, policy, network topology, identity, and logging, configured to Microsoft's Cloud Adoption Framework. If you plan to run more than a handful of workloads in Azure, building a landing zone early prevents the sprawl, inconsistency, and control gaps that are much harder to fix later.
+
+We design and deploy landing zones as the tangible implementation of the Cloud Adoption Framework. Management groups, Azure Policy, and RBAC are configured at the group level so new subscriptions inherit the same guardrails by default. We use Infrastructure-as-Code (Terraform or Bicep) for every deployment; the landing zone, policies, and baseline resources live in a Git repository with proper change control.
+
+A standard enterprise-scale landing zone takes four to eight weeks to design and deploy, depending on complexity. Smaller or single-region environments can complete in two to four weeks. Retrofitting onto an existing Azure environment is possible but slower - we map what is in place, design a target landing zone, and bring existing workloads in phases.
+
+Common questions on this service:
+- What is an Azure Landing Zone and do we actually need one?
+- What is the difference between a landing zone and Microsoft's Cloud Adoption Framework?
+- Can you retrofit a landing zone onto an existing Azure environment?
+- How is the landing zone actually deployed - Terraform, Bicep, or something else?
+- How long does a landing zone engagement typically take?
+- Do landing zones handle multi-subscription governance automatically?
+
+### Cloud Security & Compliance
+URL: https://www.rosebudcloudsolutions.co.uk/services/cloud-security
+
+Identify cloud security gaps and align Azure to recognised standards. Zero-trust architecture, Microsoft Defender for Cloud, and continuous compliance monitoring.
+
+We cover the full lifecycle of Azure security: identity and access design, policy-based governance, threat detection through Microsoft Defender for Cloud, encryption and key management, network segmentation, and continuous compliance monitoring. Security is integrated into the platform itself - enforced automatically rather than checked manually after the fact.
+
+Rather than bolting on security after deployment, we embed it into the foundation so every new subscription and workload inherits the same policies, network controls, and logging by default. It is enforcement through architecture, not periodic audits.
+
+We align to the frameworks most relevant to each client - typically ISO 27001, NIST CSF, CIS Benchmarks, the Microsoft Cloud Security Benchmark, and sector-specific controls such as FCA guidance for financial services or the NCSC Cloud Security Principles for public sector. Alignment is continuous and monitored, not a point-in-time assessment.
+
+Defender for Cloud is one component, not the whole answer. We configure it as the unified posture and threat-detection layer across subscriptions - tuning recommendations, enabling Defender plans where they add measurable value, and integrating alerts into your monitoring stack.
+
+Most engagements open with a posture assessment against the Microsoft Cloud Security Benchmark and your target frameworks, followed by a prioritised remediation roadmap. Compliance is then maintained continuously with Azure Policy, Defender for Cloud regulatory compliance dashboards, and automated alerting so deviations surface the day they happen. Where appropriate, policies are configured to deny or auto-remediate so non-compliant resources cannot exist in the first place.
+
+Common questions on this service:
+- What does Rosebud's Cloud Security & Compliance service cover?
+- How is this different from adding security to an existing Azure environment later?
+- Which security standards and frameworks do you align to?
+- How does Microsoft Defender for Cloud fit into what you deliver?
+- What does a typical cloud security engagement look like?
+- How do you keep an Azure environment compliant over time?
+
+### DevSecOps
+URL: https://www.rosebudcloudsolutions.co.uk/services/devsecops
+
+Security embedded in delivery pipelines. Automated policy enforcement, secret management, and vulnerability scanning for Azure DevOps and GitHub Actions.
+
+DevSecOps means security controls are built into the delivery pipeline itself, not layered on afterwards. In Azure, that typically covers automated policy enforcement, secret management through Key Vault, vulnerability scanning of code and container images, infrastructure-as-code validation, and compliance checks before anything reaches production.
+
+We work with Azure DevOps and GitHub Actions as primary platforms, which covers most Azure-centric teams. The patterns we implement - pipeline-as-code, policy gates, artifact scanning - are portable, so the same approach translates to other platforms if toolchains change.
+
+Secrets live in Azure Key Vault and are injected at runtime using workload identity federation or managed identities, never stored in pipeline variables or repository files. Pipelines authenticate to Azure without long-lived credentials; every secret access is logged.
+
+Standard coverage includes static code analysis, dependency scanning for known CVEs, container image scanning, infrastructure-as-code validation against Azure Policy, and secret scanning to catch credentials committed by mistake. Results are gated - a pipeline with critical findings cannot promote to production without an explicit, logged override.
+
+We integrate with existing pipelines wherever possible. Most engagements add security stages incrementally so teams keep shipping while controls mature. Full rebuilds are only necessary when existing pipelines are fundamentally unsuitable.
+
+Common questions on this service:
+- What does DevSecOps actually mean in an Azure context?
+- How is DevSecOps different from regular DevOps?
+- Which CI/CD platforms do you work with?
+- How do you handle secrets and credentials in pipelines?
+- What vulnerability scanning and policy enforcement do you typically set up?
+- Can you integrate with existing pipelines, or do we need to rebuild?
+
+### Cloud Optimisation
+URL: https://www.rosebudcloudsolutions.co.uk/services/cloud-optimisation
+
+Reduce Azure spend and improve performance through architectural review, FinOps discipline, and automation. Measurable cost cuts without compromising reliability.
+
+Cloud optimisation covers both cost reduction and performance tuning - the two are usually linked. Cost optimisation includes right-sizing, reserved capacity, spot instances, storage tiering, and eliminating orphaned resources. Performance optimisation covers architectural choices that remove expensive anti-patterns - inefficient data movement, wrong service tiers, poorly designed queries.
+
+Most unoptimised Azure environments carry 20 to 40 percent avoidable spend - idle resources, oversized VMs, unused storage, missed reservation opportunities. The first wave of optimisation typically recovers most of that within a few weeks. Beyond that, savings become architectural; further 10 to 20 percent gains come from redesigning hot-spot workloads.
+
+FinOps is the operating model that keeps cloud costs under control over time - shared accountability between finance, engineering, and operations, with tagging, showback, and budgeting built into everyday delivery. Optimisation without FinOps tends to reverse within quarters; with it, savings are durable.
+
+Every change goes through architectural review and is tested against performance and availability baselines before deployment. We never optimise by removing redundancy, shrinking capacity below real demand, or weakening resilience. Cost savings that create operational risk are not savings - they are deferred incidents.
+
+Common questions on this service:
+- Does cloud optimisation mean cost reduction, performance tuning, or both?
+- What kind of Azure cost reduction is realistic?
+- What is FinOps and how does it fit in?
+- How quickly can we expect to see savings?
+- Can you reduce costs without affecting reliability or performance?
+
+### Advisory & Consulting
+URL: https://www.rosebudcloudsolutions.co.uk/services/advisory-consulting
+
+Strategic Azure advisory for cloud adoption, architecture, and modernisation. Independent guidance from Microsoft-certified enterprise architects.
+
+Advisory is strategic guidance rather than implementation. It covers cloud adoption strategy, platform architecture decisions, target operating models, sourcing and vendor strategy, and independent reviews of existing environments. We act as a trusted technical counterpart for CIOs, heads of platform, and architecture teams who need senior input on direction without a full delivery engagement.
+
+Most advisory engagements are with CIOs, CTOs, heads of platform engineering, enterprise architects, or programme leads. We are comfortable at board and executive level when that is where the decision sits, and equally comfortable working alongside architects in deep technical detail.
+
+Microsoft certification reflects technical competence, not a sales mandate. We do not receive commissions for recommending Microsoft products, and we regularly advise clients against parts of the Microsoft stack when they are not the right fit. Our starting position is the client's constraints and goals - the toolset follows from there.
+
+Engagements are typically short intensive blocks: a two-to-four-week architecture review, a six-week strategy exercise, or ongoing retainer access for decision-level input. Output is usually a written report plus working sessions with the client team to pressure-test conclusions.
+
+Common questions on this service:
+- What does Azure advisory actually cover?
+- How is advisory different from your other services?
+- Who do you typically work with inside the client organisation?
+- Are you genuinely independent, given you are Microsoft-certified?
+- What does a typical advisory engagement look like?
+
+### Managed Cloud
+URL: https://www.rosebudcloudsolutions.co.uk/services/managed-cloud
+
+Ongoing management, monitoring, and improvement to keep Azure secure, compliant, and performing. Proactive operations with enterprise-grade SLAs.
+
+Managed Cloud covers ongoing operations of your Azure environment: 24/7 monitoring, incident response, patching, backup and recovery, security posture management, cost oversight, and regular platform improvements. The goal is a stable, continuously-improving platform without your team carrying the operational weight in-house.
+
+Unlike a traditional MSP ticket-and-fix model, our approach is engineering-led: we improve the platform continuously so incidents happen less often, automate remediation where it is safe, and treat each incident as a signal to make the environment more resilient.
+
+Response-time SLAs are tiered by severity: critical production incidents within 15 minutes, major within one hour, and routine within one business day. Resolution targets depend on the nature of the issue and the client's environment. SLAs are reported monthly and tied to service credits where appropriate.
+
+Engagement models vary. Some clients use us to run the whole platform; others keep an internal team and use us for out-of-hours cover, specialist input, or capacity during busy periods. The model is explicit from the start so ownership, escalation paths, and decision rights are clear.
+
+Most managed engagements start with an environment that already exists. We begin with a discovery and onboarding phase to map the platform, identify risks, document runbooks, and align monitoring to our standards. Significant issues are surfaced transparently with a remediation plan rather than absorbed silently.
+
+Common questions on this service:
+- What does your managed cloud service actually cover?
+- How is this different from a traditional managed service provider?
+- What SLAs do you offer?
+- Do you replace our internal team or work alongside them?
+- Can you manage an environment you did not build?
+- How do you handle incident response out of hours?
+
+---
+
+## How We Work
+
+URL: https://www.rosebudcloudsolutions.co.uk/how-we-work
+
+Most engagements run in three phases: a short discovery to understand the environment and decision context, a design-and-plan phase with clear deliverables, and a delivery phase with defined checkpoints. We prefer fixed-scope blocks over open-ended time and materials - it keeps both sides honest about what is being delivered and when. Scope changes happen explicitly, not by drift.
+
+Delivery is primarily remote, with on-site presence where it adds real value: workshops, security clearances, critical incidents, or new-client kickoffs. Remote delivery is not a compromise; it keeps senior engineers focused and engagement costs proportionate.
+
+Handover is built into every engagement. We document everything as we go (runbooks, decision records, architecture-as-code in Git), work alongside your team during delivery where possible, and run explicit knowledge-transfer sessions before closeout. If we disappear on the last day and your team does not understand what we built, something has gone wrong with the engagement shape.
+
+Day-to-day delivery is visible: weekly written progress updates, decision logs for anything architectural, infrastructure-as-code in the client repository from day one, and regular working sessions with the client team. Clients see work taking shape, challenge it, and course-correct early. Surprises at the end are expensive to recover from.
+
+Success criteria are defined at the start of each engagement, specific and measurable. For a landing zone: deployment completeness, policy compliance, documented handover. For cost optimisation: measurable cost reduction with no reliability regression. We report against those criteria rather than self-assessing subjectively.
+
+Clients work directly with the engineers from the first technical conversation onwards. We do not have a dedicated sales function; initial calls are with the people who will lead your engagement.
+
+---
+
+## About the Company
+
+URL: https://www.rosebudcloudsolutions.co.uk/about
+
+Rosebud Cloud Solutions focuses narrowly on Azure and the Microsoft cloud stack rather than spreading across every cloud and every technology. Depth over breadth. Every senior engineer has Microsoft certifications and real delivery experience at enterprise scale.
+
+The team is deliberately right-sized rather than scaled-for-sales: engagements are led by the people who understand the client environment, not handed off to junior delivery teams after the pitch. The collective Azure experience on the team goes back to Azure's early enterprise adoption - several team members have been building on Azure since before ARM templates.
+
+If you need senior, independent Azure expertise and want engineers rather than a sales team, we are probably a good fit. If you need a generalist cloud consultancy covering AWS, GCP, and everything else, we are not.
+
+---
+
+## Case Studies
+
+URL: https://www.rosebudcloudsolutions.co.uk/case-studies
+
+Anonymised engagements across financial services, public sector, legal, and retail - landing zones, security hardening, FinOps, identity modernisation, and platform migrations. Named references are arranged directly with clients who have agreed to act as referees.
+
+---
+
+## Contact
+
+URL: https://www.rosebudcloudsolutions.co.uk/contact
+Email: hello@rosebudcloudsolutions.co.uk
+
+First conversations are free, short, and under no obligation. We will tell you honestly whether we can help or whether someone else is better placed.
+
+---
+
+## Geographic focus and compliance
+
+Primary delivery for UK clients and UK entities of multinational organisations. Data handling and residency follow UK and EU regulations by default. Sector compliance regularly addressed includes FCA guidance (financial services), NCSC Cloud Security Principles (public sector), ISO 27001, NIST CSF, CIS Benchmarks, and the Microsoft Cloud Security Benchmark.
+
+---
+
+Last updated: 2026-04-22.

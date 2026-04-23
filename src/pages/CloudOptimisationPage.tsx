@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import { SEO } from '../components/SEO';
+import { Faq } from '../components/Faq';
+import { faqs } from '../data/faqs';
 import { ClientOnly } from '../components/ClientOnly';
-import { pageMeta, serviceSchema, breadcrumbSchema } from '../data/seoMeta';
+import { pageMeta, serviceSchema, breadcrumbSchema, faqSchema } from '../data/seoMeta';
 import { TiltCard } from '../components/TiltCard';
 
 // ─── Animation Variants ───────────────────────────────────────────────────────
@@ -881,6 +883,7 @@ export const CloudOptimisationPage: React.FC<CloudOptimisationPageProps> = ({ cl
             { name: 'Home', path: '/' },
             { name: 'Cloud Optimisation', path: pageMeta.cloudOptimisation.path },
           ]),
+          faqSchema(faqs.cloudOptimisation),
         ]}
       />
 
@@ -1024,7 +1027,7 @@ export const CloudOptimisationPage: React.FC<CloudOptimisationPageProps> = ({ cl
               <div className="relative bg-surface-container-highest p-4 rounded-2xl shadow-2xl border border-outline/30">
                 <img
                   src={`${import.meta.env.BASE_URL}service-cloud-optimisation.webp`}
-                  alt="Cloud Optimisation & Improvement"
+                  alt="Azure cloud cost optimisation and FinOps illustration"
                   className="rounded-xl w-full h-[460px] object-cover"
                 />
               </div>
@@ -1209,6 +1212,15 @@ export const CloudOptimisationPage: React.FC<CloudOptimisationPageProps> = ({ cl
           </div>
         </div>
       </section>
+
+      {/* ── FAQ ───────────────────────────────────────────────────────── */}
+      <Faq
+        items={faqs.cloudOptimisation}
+        groupName="faq-cloud-optimisation"
+        eyebrow="Questions"
+        heading="Frequently asked questions"
+        description="What clients ask us most often about reducing Azure spend and keeping it down."
+      />
 
       {/* ── CTA ───────────────────────────────────────────────────────── */}
       <section className="py-44 bg-surface relative overflow-hidden border-t border-outline">

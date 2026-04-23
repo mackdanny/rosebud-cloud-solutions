@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import { SEO } from '../components/SEO';
-import { pageMeta, organisationSchema, websiteSchema } from '../data/seoMeta';
+import { Faq } from '../components/Faq';
+import { pageMeta, organisationSchema, websiteSchema, faqSchema } from '../data/seoMeta';
+import { faqs } from '../data/faqs';
 import { ParticleBackground } from '../components/ParticleBackground';
 import { TiltCard } from '../components/TiltCard';
 import { useMouseSpotlight } from '../hooks/useMouseSpotlight';
@@ -118,7 +120,7 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
     <main className={className}>
       <SEO
         {...pageMeta.home}
-        schema={[organisationSchema, websiteSchema]}
+        schema={[organisationSchema, websiteSchema, faqSchema(faqs.home)]}
         preloadImages={[
           {
             href: `${import.meta.env.BASE_URL}rcs-logo.webp`,
@@ -525,6 +527,15 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
         </div>
       </section>
       )}
+
+      {/* ── FAQ ───────────────────────────────────────────────────────── */}
+      <Faq
+        items={faqs.home}
+        groupName="faq-home"
+        eyebrow="Questions"
+        heading="Frequently asked questions"
+        description="The questions prospective clients tend to ask first - about who we are, where we work, and how to start a conversation."
+      />
 
       {/* ── CTA ───────────────────────────────────────────────────────── */}
       <section className="py-44 bg-surface relative overflow-hidden border-t border-outline">

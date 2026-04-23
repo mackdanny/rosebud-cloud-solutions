@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import { SEO } from '../components/SEO';
+import { Faq } from '../components/Faq';
+import { faqs } from '../data/faqs';
 import { ClientOnly } from '../components/ClientOnly';
-import { pageMeta, serviceSchema, breadcrumbSchema } from '../data/seoMeta';
+import { pageMeta, serviceSchema, breadcrumbSchema, faqSchema } from '../data/seoMeta';
 import { TiltCard } from '../components/TiltCard';
 
 // ─── Animation Variants ───────────────────────────────────────────────────────
@@ -1083,6 +1085,7 @@ export const DevSecOpsPage: React.FC<DevSecOpsPageProps> = ({ className = '' }) 
             { name: 'Home', path: '/' },
             { name: 'DevSecOps', path: pageMeta.devSecOps.path },
           ]),
+          faqSchema(faqs.devSecOps),
         ]}
       />
 
@@ -1226,7 +1229,7 @@ export const DevSecOpsPage: React.FC<DevSecOpsPageProps> = ({ className = '' }) 
               <div className="relative bg-surface-container-highest p-4 rounded-2xl shadow-2xl border border-outline/30">
                 <img
                   src={`${import.meta.env.BASE_URL}service-devsecops.webp`}
-                  alt="Secure DevOps & Automation"
+                  alt="Azure DevSecOps and secure CI/CD pipeline automation illustration"
                   className="rounded-xl w-full h-[460px] object-cover"
                 />
               </div>
@@ -1411,6 +1414,15 @@ export const DevSecOpsPage: React.FC<DevSecOpsPageProps> = ({ className = '' }) 
           </div>
         </div>
       </section>
+
+      {/* ── FAQ ───────────────────────────────────────────────────────── */}
+      <Faq
+        items={faqs.devSecOps}
+        groupName="faq-devsecops"
+        eyebrow="Questions"
+        heading="Frequently asked questions"
+        description="What clients ask us most often about embedding security into Azure delivery pipelines."
+      />
 
       {/* ── CTA ───────────────────────────────────────────────────────── */}
       <section className="py-44 bg-surface relative overflow-hidden border-t border-outline">

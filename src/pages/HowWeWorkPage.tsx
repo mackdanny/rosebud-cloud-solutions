@@ -2,7 +2,9 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import { SEO } from '../components/SEO';
-import { pageMeta, breadcrumbSchema } from '../data/seoMeta';
+import { Faq } from '../components/Faq';
+import { pageMeta, breadcrumbSchema, faqSchema } from '../data/seoMeta';
+import { faqs } from '../data/faqs';
 import { ParticleBackground } from '../components/ParticleBackground';
 
 // ─── Animation Variants ───────────────────────────────────────────────────────
@@ -139,10 +141,13 @@ export const HowWeWorkPage: React.FC = () => {
     <main className="bg-background min-h-screen">
       <SEO
         {...pageMeta.howWeWork}
-        schema={breadcrumbSchema([
-          { name: 'Home', path: '/' },
-          { name: 'How We Work', path: pageMeta.howWeWork.path },
-        ])}
+        schema={[
+          breadcrumbSchema([
+            { name: 'Home', path: '/' },
+            { name: 'How We Work', path: pageMeta.howWeWork.path },
+          ]),
+          faqSchema(faqs.howWeWork),
+        ]}
       />
 
       {/* ── Hero ──────────────────────────────────────────────────────── */}
@@ -485,6 +490,15 @@ export const HowWeWorkPage: React.FC = () => {
           </motion.div>
         </div>
       </section>
+
+      {/* ── FAQ ───────────────────────────────────────────────────────── */}
+      <Faq
+        items={faqs.howWeWork}
+        groupName="faq-how-we-work"
+        eyebrow="Questions"
+        heading="Frequently asked questions"
+        description="How we structure, deliver, and hand over engagements - and what working with us looks like in practice."
+      />
 
       {/* ── CTA ───────────────────────────────────────────────────────── */}
       <section className="py-44 bg-surface relative overflow-hidden border-t border-outline">

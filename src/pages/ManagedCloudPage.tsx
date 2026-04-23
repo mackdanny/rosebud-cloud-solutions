@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import { SEO } from '../components/SEO';
+import { Faq } from '../components/Faq';
+import { faqs } from '../data/faqs';
 import { ClientOnly } from '../components/ClientOnly';
-import { pageMeta, serviceSchema, breadcrumbSchema } from '../data/seoMeta';
+import { pageMeta, serviceSchema, breadcrumbSchema, faqSchema } from '../data/seoMeta';
 import { TiltCard } from '../components/TiltCard';
 
 // ─── Animation Variants ───────────────────────────────────────────────────────
@@ -965,6 +967,7 @@ export const ManagedCloudPage: React.FC<ManagedCloudPageProps> = ({ className = 
             { name: 'Home', path: '/' },
             { name: 'Managed Cloud', path: pageMeta.managedCloud.path },
           ]),
+          faqSchema(faqs.managedCloud),
         ]}
       />
 
@@ -1107,7 +1110,7 @@ export const ManagedCloudPage: React.FC<ManagedCloudPageProps> = ({ className = 
               <div className="relative bg-surface-container-highest p-4 rounded-2xl shadow-2xl border border-outline/30">
                 <img
                   src={`${import.meta.env.BASE_URL}service-managed-cloud.webp`}
-                  alt="Managed Cloud & Security Support"
+                  alt="Azure managed cloud and 24/7 operations support illustration"
                   className="rounded-xl w-full h-[460px] object-cover"
                 />
               </div>
@@ -1291,6 +1294,15 @@ export const ManagedCloudPage: React.FC<ManagedCloudPageProps> = ({ className = 
           </div>
         </div>
       </section>
+
+      {/* ── FAQ ───────────────────────────────────────────────────────── */}
+      <Faq
+        items={faqs.managedCloud}
+        groupName="faq-managed-cloud"
+        eyebrow="Questions"
+        heading="Frequently asked questions"
+        description="What clients ask us most often about ongoing Azure operations and managed support."
+      />
 
       {/* ── CTA ───────────────────────────────────────────────────────── */}
       <section className="py-44 bg-surface relative overflow-hidden border-t border-outline">
