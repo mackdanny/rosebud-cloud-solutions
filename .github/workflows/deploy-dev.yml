@@ -76,7 +76,7 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ steps.get-token.outputs.token }}
           action: upload
-          app_location: dist
+          app_location: dist/client
           skip_app_build: true
           skip_api_build: true
 
