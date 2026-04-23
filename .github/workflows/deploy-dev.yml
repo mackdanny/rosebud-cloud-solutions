@@ -44,13 +44,25 @@ jobs:
           tenant-id: ${{ env.TENANT_ID }}
           subscription-id: ${{ env.SUBSCRIPTION_ID }}
 
-      - name: Deploy to Azure Static Web App
+      - name: Get SWA deployment token
+        id: get-token
         run: |
-          az staticwebapp deploy \
+          token=$(az staticwebapp secrets list \
             --name ${{ vars.SWA_APP_NAME }} \
             --resource-group ${{ vars.RESOURCE_GROUP }} \
-            --source ./dist \
-            --no-build
+            --query "properties.apiKey" \
+            --output tsv)
+          echo "::add-mask::$token"
+          echo "token=$token" >> $GITHUB_OUTPUT
+
+      - name: Deploy to Azure Static Web App
+        uses: azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ steps.get-token.outputs.token }}
+          action: upload
+          app_location: dist
+          skip_app_build: true
+          skip_api_build: true
 
       - name: Azure logout
         if: always()
