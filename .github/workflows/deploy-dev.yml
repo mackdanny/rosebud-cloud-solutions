@@ -41,6 +41,25 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Validate build output
+        run: |
+          echo "=== Build output structure ==="
+          find dist -maxdepth 3 -type f | sort
+
+          echo ""
+          echo "=== Checking required files ==="
+          test -d dist/client          || { echo "FAIL: dist/client/ not found";       exit 1; }
+          test -f dist/client/index.html || { echo "FAIL: dist/client/index.html not found"; exit 1; }
+          echo "PASS: dist/client/index.html exists"
+
+          echo ""
+          echo "=== HTML pages found ==="
+          find dist/client -name "*.html" | sort
+
+          echo ""
+          echo "=== Asset summary ==="
+          find dist/client/assets -type f | wc -l | xargs -I{} echo "{} asset files"
+
       - name: Login to Azure
         uses: azure/login@v2
         with:
