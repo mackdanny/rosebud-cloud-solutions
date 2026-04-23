@@ -11,6 +11,10 @@ on:
 env:
   TENANT_ID: 902841c1-b9f1-4253-91e5-f868aac15774
   SUBSCRIPTION_ID: 495bf684-02f0-4d46-8b31-c82b31aa7943
+  RESOURCE_GROUP: rg-uks-web-001
+  SWA_NAME: swa-uks-web-dev-001
+  SWA_LOCATION: uksouth
+  SWA_SKU: Free
 
 permissions:
   id-token: write
@@ -44,12 +48,24 @@ jobs:
           tenant-id: ${{ env.TENANT_ID }}
           subscription-id: ${{ env.SUBSCRIPTION_ID }}
 
+      - name: Ensure Static Web App exists
+        run: |
+          az staticwebapp show \
+            --name ${{ env.SWA_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --output none 2>/dev/null || \
+          az staticwebapp create \
+            --name ${{ env.SWA_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --location ${{ env.SWA_LOCATION }} \
+            --sku ${{ env.SWA_SKU }}
+
       - name: Get SWA deployment token
         id: get-token
         run: |
           token=$(az staticwebapp secrets list \
-            --name ${{ vars.SWA_APP_NAME }} \
-            --resource-group ${{ vars.RESOURCE_GROUP }} \
+            --name ${{ env.SWA_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
             --query "properties.apiKey" \
             --output tsv)
           echo "::add-mask::$token"
