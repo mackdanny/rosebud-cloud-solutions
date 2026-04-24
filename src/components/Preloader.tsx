@@ -15,9 +15,12 @@ const PRELOADER_LAST_SEEN_KEY = 'rcs-preloader-last-seen';
 const PRELOADER_COOLDOWN_MS = 24 * 60 * 60 * 1000;
 
 // ─── Timing constants ────────────────────────────────────────────────────────
-const ROTATE_IN  = 0.45;   // time to rotate from -90 → 0
-const HOLD       = 0.50;   // time text stays fully visible
-const ROTATE_OUT = 0.40;   // time to rotate from 0 → 90
+// Durations extended so the rotation plays long enough for the extra
+// interpolation frames (below) to actually be perceivable — a faster spin
+// just passes by too quickly to read as "high quality".
+const ROTATE_IN  = 0.65;   // time to rotate from -90 → 0
+const HOLD       = 0.55;   // time text stays fully visible
+const ROTATE_OUT = 0.55;   // time to rotate from 0 → 90
 const GAP        = 0.0;    // no dead-air between phases
 
 const p1Start = 0;
@@ -32,51 +35,111 @@ const p3End   = p3Start + ROTATE_IN + HOLD + ROTATE_OUT;
 // Quick dissolve once phase 3 content has fully rotated away
 const OVERLAY_FADE_DUR = 0.3;
 
-// ─── Smooth rotation keyframes (7 stops, custom ease per segment) ────────────
+// Beat of pure solid-dark between rotation ending and the overlay starting to
+// fade. Guarantees the rotation finishes on an untouched backdrop before any
+// hint of the page underneath starts bleeding through.
+const ROTATION_SETTLE_MS = 180;
+
+// ─── Smooth rotation keyframes ───────────────────────────────────────────────
+// Each rotation phase is densely sampled along a premium ease curve (quint-out
+// for the in-phase, quart-in for the out-phase) and framer is told to linearly
+// interpolate between samples. With ~10 samples per phase, linear segments are
+// short enough that the composite motion is indistinguishable from a single
+// continuous bezier — but the runtime has explicit frames at every 10% of the
+// curve to land on, which reads as higher fidelity on high-refresh displays.
+const IN_STEPS  = 10;  // samples along the rotate-in curve (quint-out)
+const OUT_STEPS = 10;  // samples along the rotate-out curve (quart-in)
+
+// Ease formulas. Using y = 1 - (1-t)^5 for the in-phase gives a long silky
+// deceleration (most of the rotation happens early, then settles smoothly).
+// y = t^4 for the out-phase is a slightly gentler acceleration than t^5 so the
+// exit doesn't feel whip-sharp.
+const easeQuintOut = (t: number) => 1 - Math.pow(1 - t, 5);
+const easeQuartIn  = (t: number) => Math.pow(t, 4);
+
+// Build the {times, values} keyframe arrays for a rotation phase. `fromAngle`
+// and `toAngle` in degrees. Samples densely so motion stays silky at 120fps.
+function buildRotationKeyframes(
+  inEnd: number,
+  holdEnd: number,
+  fromAngle: number,
+  toAngle: number,
+) {
+  const times: number[] = [];
+  const values: number[] = [];
+
+  // Rotate-in: fromAngle → 0, sampled along easeQuintOut.
+  for (let i = 0; i <= IN_STEPS; i++) {
+    const t = i / IN_STEPS;
+    times.push(inEnd * t);
+    values.push(fromAngle + (0 - fromAngle) * easeQuintOut(t));
+  }
+
+  // Hold: explicit anchor at holdEnd keeps the value pinned at 0 through the
+  // hold window (framer otherwise linearly drifts between inEnd and the next
+  // keyframe past holdEnd).
+  times.push(holdEnd);
+  values.push(0);
+
+  // Rotate-out: 0 → toAngle, sampled along easeQuartIn. Start at i=1 so we
+  // don't emit a duplicate keyframe at holdEnd with value 0.
+  for (let i = 1; i <= OUT_STEPS; i++) {
+    const t = i / OUT_STEPS;
+    times.push(holdEnd + (1 - holdEnd) * t);
+    values.push(toAngle * easeQuartIn(t));
+  }
+
+  return { times, values };
+}
 
 function rotatePhase(startDelay: number) {
   const dur = ROTATE_IN + HOLD + ROTATE_OUT;
   const inEnd    = ROTATE_IN / dur;
   const holdEnd  = (ROTATE_IN + HOLD) / dur;
+  const rot = buildRotationKeyframes(inEnd, holdEnd, -90, 90);
 
   return {
     rotateX: {
-      times:    [0,   inEnd * 0.35, inEnd * 0.7,  inEnd,   holdEnd,  holdEnd + (1 - holdEnd) * 0.4,  1],
-      values:   [-90, -52,          -14,           0,       0,        38,                              90],
+      times: rot.times,
+      values: rot.values,
       delay: startDelay,
       duration: dur,
-      ease: ['easeOut', 'easeOut', 'easeOut', 'linear', 'easeIn', 'easeIn'],
+      ease: 'linear', // curve shape lives in the sampled values
     },
     opacity: {
-      times:    [0,    inEnd * 0.25,  holdEnd,   holdEnd + (1 - holdEnd) * 0.7, 1],
-      values:   [0,    1,             1,         0.6,                            0],
+      // Content stays fully opaque until the very last stretch of the rotate-
+      // out so the text never goes ghostly mid-rotation — fade hugs the final
+      // 15% and hits 0 right as the rotation reaches 90° (edge-on, invisible).
+      times:    [0,    inEnd * 0.25, holdEnd, holdEnd + (1 - holdEnd) * 0.85, 1],
+      values:   [0,    1,            1,       1,                              0],
       delay: startDelay,
       duration: dur,
-      ease: ['easeOut', 'linear', 'easeIn', 'easeIn'],
+      ease: ['easeOut', 'linear', 'linear', 'easeIn'],
     },
   };
 }
 
-// Logo uses rotateY instead of rotateX
+// Logo uses rotateY instead of rotateX — same curve shape for visual parity.
 function rotatePhaseY(startDelay: number) {
   const dur = ROTATE_IN + HOLD + ROTATE_OUT;
   const inEnd    = ROTATE_IN / dur;
   const holdEnd  = (ROTATE_IN + HOLD) / dur;
+  const rot = buildRotationKeyframes(inEnd, holdEnd, -90, 90);
 
   return {
     rotateY: {
-      times:    [0,   inEnd * 0.35, inEnd * 0.7,  inEnd,   holdEnd,  holdEnd + (1 - holdEnd) * 0.4,  1],
-      values:   [-90, -52,          -14,           0,       0,        38,                              90],
+      times: rot.times,
+      values: rot.values,
       delay: startDelay,
       duration: dur,
-      ease: ['easeOut', 'easeOut', 'easeOut', 'linear', 'easeIn', 'easeIn'],
+      ease: 'linear',
     },
     opacity: {
-      times:    [0,    inEnd * 0.25,  holdEnd,   holdEnd + (1 - holdEnd) * 0.7, 1],
-      values:   [0,    1,             1,         0.6,                            0],
+      times:    [0,    inEnd * 0.25, holdEnd, holdEnd + (1 - holdEnd) * 0.85, 1],
+      values:   [0,    1,            1,       1,                              0],
       delay: startDelay,
       duration: dur,
-      ease: ['easeOut', 'linear', 'easeIn', 'easeIn'],
+      ease: ['easeOut', 'linear', 'linear', 'easeIn'],
     },
   };
 }
@@ -206,7 +269,13 @@ const PreloaderOverlay: React.FC = () => {
                   rotateX: { delay: p3x.rotateX.delay, duration: p3x.rotateX.duration, times: p3x.rotateX.times, ease: p3x.rotateX.ease },
                   opacity: { delay: p3x.opacity.delay, duration: p3x.opacity.duration, times: p3x.opacity.times, ease: p3x.opacity.ease },
                 }}
-                onAnimationComplete={() => setDone(true)}
+                onAnimationComplete={() => {
+                  // Hold the solid-dark overlay for a beat after the rotation
+                  // physically lands at 90° before letting AnimatePresence fade
+                  // it out. Prevents the page underneath from peeking through
+                  // while the final frames of the rotate-out are still visible.
+                  window.setTimeout(() => setDone(true), ROTATION_SETTLE_MS);
+                }}
               >
                 Rosebud Cloud Solutions
               </motion.span>
