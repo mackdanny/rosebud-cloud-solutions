@@ -82,6 +82,12 @@ export const pageMeta = {
       'Real-world Azure platform, security, and governance engagements across financial services, public sector, legal, and retail - with measurable outcomes.',
     path: '/case-studies',
   },
+  faq: {
+    title: 'Frequently Asked Questions | Rosebud Cloud Solutions',
+    description:
+      'Answers on Azure landing zones, cloud security, DevSecOps, FinOps, and managed cloud - how Rosebud Cloud Solutions engages and delivers for clients.',
+    path: '/faq',
+  },
 } as const satisfies Record<string, PageMeta>;
 
 export const organisationSchema = {
