@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>W4M-RCS Housing Association — Top 50 CTO/CIO/CISO Pain Points</title>
+<style>
+/* ══════════════════════════════════════════════════════════════
+   DS-ONT Design System Tokens — W4M-RCS (Rosebud Cloud Consulting Services)
+   Source of truth: DS-ONT v5.1.0 → ds-css-bridge.ts token map
+   PFI Slug: w4m-rcs | Layer 2 brand switch: RCS Purple minimalist
+   ══════════════════════════════════════════════════════════════ */
+:root {
+  /* ─── Layer 1: PFC Locked (DR-INFG-008, DR-INFG-012) ─── */
+  --ds-surface-default: #ffffff;
+  --ds-surface-subtle: #faf8fc;
+  --ds-surface-elevated: #ffffff;
+  --ds-border-subtle: #e5e0eb;
+  --ds-border-default: #b8b0c4;
+  --ds-radius-sm: 0.375rem;
+  --ds-radius-md: 0.5rem;
+  --ds-radius-lg: 0.75rem;
+  --ds-shadow-sm: 0 1px 2px rgba(83, 20, 171, 0.04);
+  --ds-shadow-md: 0 2px 8px rgba(83, 20, 171, 0.06);
+  --ds-shadow-lg: 0 4px 16px rgba(83, 20, 171, 0.06);
+  --ds-transition-fast: 150ms;
+  --ds-transition-normal: 200ms;
+  --ds-font-family: 'Inter', 'PT Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* ─── Layer 2: W4M-RCS Brand — RCS Purple (DR-INFG-011) ─── */
+  /*   Canonical scale from rcs-aza-alz-hcr-landing-page-demo     */
+  /*   50:#f3e2fd  100:#e9cafb  200:#d696f7  300:#c75ef3           */
+  /*   400:#b220e3  500:#8314ab  600:#641280  700:#4d0e62           */
+  --ds-color-primary: #8314ab;
+  --ds-color-primary-hover: #641280;
+  --ds-color-primary-light: #f3e2fd;
+  --ds-color-secondary: #c574d3;
+  --ds-color-secondary-hover: #b220e3;
+  --ds-color-secondary-light: #f9eefb;
+  --ds-text-primary: #1a1225;
+  --ds-text-secondary: #3d2e52;
+  --ds-text-muted: #7a6b8a;
+  --ds-text-on-brand: #ffffff;
+  --ds-status-success: #059669;
+  --ds-status-success-light: #ecfdf5;
+  --ds-status-warning: #d97706;
+  --ds-status-warning-light: #fffbeb;
+  --ds-status-error: #dc2626;
+  --ds-status-error-light: #fee2e2;
+  --ds-status-info: #2563eb;
+  --ds-status-info-light: #dbeafe;
+
+  /* ─── Layer 3: Minimalist — monochromatic purple shades only ─── */
+  --rcs-900: #25062f;
+  --rcs-700: #4d0e62;
+  --rcs-600: #641280;
+  --rcs-500: #8314ab;
+  --rcs-400: #b220e3;
+  --rcs-300: #c75ef3;
+  --rcs-200: #d696f7;
+  --rcs-100: #e9cafb;
+  --rcs-50:  #f3e2fd;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   RESET & BASE — DR-INFG-001, DR-INFG-007
+   ══════════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--ds-font-family);
+  font-kerning: auto;
+  background: var(--ds-surface-subtle);
+  color: var(--ds-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.infographic { max-width: 1280px; margin: 0 auto; }
+
+/* ══════════════════════════════════════════════════════════════
+   HEADER — DR-INFG-001
+   ══════════════════════════════════════════════════════════════ */
+.header {
+  text-align: center; margin-bottom: 2rem; padding: 2.5rem 2rem;
+  background: var(--ds-surface-default);
+  border-radius: var(--ds-radius-lg);
+  box-shadow: var(--ds-shadow-md);
+  border-top: 4px solid var(--ds-color-primary);
+}
+.header h1 { font-size: 2.25rem; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 0.5rem; }
+.header h1 span { color: var(--ds-color-primary); }
+.header p { color: var(--ds-text-secondary); font-size: 1rem; max-width: 780px; margin: 0 auto; line-height: 1.6; }
+.header .headline { font-size: 1.15rem; font-weight: 700; color: var(--ds-color-primary); margin-bottom: 0.5rem; }
+.header .tags { margin-top: 1.25rem; display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; }
+
+/* ══════════════════════════════════════════════════════════════
+   TAGS — DR-INFG-005
+   ══════════════════════════════════════════════════════════════ */
+.tag {
+  display: inline-flex; align-items: center;
+  padding: 0.25rem 0.75rem; border-radius: 9999px;
+  font-size: 0.7rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.25;
+}
+.tag-primary   { background: var(--ds-color-primary-light); color: var(--ds-color-primary); }
+.tag-secondary { background: var(--ds-color-secondary-light); color: var(--ds-color-secondary-hover); }
+.tag-muted     { background: var(--ds-surface-subtle); color: var(--ds-text-muted); border: 1px solid var(--ds-border-subtle); }
+
+/* ══════════════════════════════════════════════════════════════
+   SECTIONS & LABELS — DR-INFG-002
+   ══════════════════════════════════════════════════════════════ */
+.section { margin-bottom: 2rem; }
+.section-label {
+  font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.1em; line-height: 1.25; color: var(--ds-text-muted);
+  margin-bottom: 0.75rem; padding-left: 0.75rem;
+  border-left: 3px solid var(--ds-color-primary);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   GRIDS — DR-INFG-007
+   ══════════════════════════════════════════════════════════════ */
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; }
+.grid-6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.75rem; }
+
+/* ══════════════════════════════════════════════════════════════
+   STAT STRIP — .stat-card
+   ══════════════════════════════════════════════════════════════ */
+.stat-card {
+  background: var(--ds-surface-default);
+  border-radius: var(--ds-radius-lg);
+  padding: 1rem; border: 1px solid var(--ds-border-subtle);
+  border-top: 3px solid var(--ds-color-primary); text-align: center;
+  box-shadow: var(--ds-shadow-sm);
+}
+.stat-card .val { font-size: 1.75rem; font-weight: 800; letter-spacing: -0.02em; color: var(--ds-color-primary); }
+.stat-card .lbl {
+  font-size: 0.65rem; color: var(--ds-text-muted); margin-top: 0.15rem;
+  text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.25;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   FLOW DIAGRAM — .flow-container, .flow-node, .flow-arrow
+   ══════════════════════════════════════════════════════════════ */
+.flow-container {
+  display: flex; align-items: center; justify-content: center;
+  gap: 0.5rem; flex-wrap: wrap; padding: 1rem;
+  background: var(--ds-surface-default);
+  border-radius: var(--ds-radius-lg);
+  border: 1px solid var(--ds-border-subtle);
+  box-shadow: var(--ds-shadow-sm);
+}
+.flow-node {
+  padding: 0.5rem 1rem; border-radius: var(--ds-radius-md);
+  font-size: 0.75rem; font-weight: 600; text-align: center;
+  background: var(--rcs-50); border: 1px solid var(--rcs-100);
+  color: var(--ds-color-primary);
+}
+.flow-node small { display: block; font-size: 0.6rem; font-weight: 400; letter-spacing: 0.04em; line-height: 1.4; color: var(--ds-text-muted); }
+.flow-arrow { color: var(--rcs-200); font-size: 1rem; }
+
+/* ══════════════════════════════════════════════════════════════
+   CLUSTER / DOMAIN CARDS
+   ══════════════════════════════════════════════════════════════ */
+.domain-card {
+  background: var(--ds-surface-default);
+  border-radius: var(--ds-radius-lg);
+  padding: 1.25rem; border: 1px solid var(--ds-border-subtle);
+  border-top: 4px solid var(--ds-color-primary); box-shadow: var(--ds-shadow-sm);
+}
+.domain-card h3 {
+  font-size: 0.95rem; font-weight: 700; letter-spacing: -0.01em;
+  line-height: 1.3; margin-bottom: 0.25rem; color: var(--ds-color-primary);
+}
+.domain-card .domain-sub {
+  font-size: 0.7rem; color: var(--ds-text-muted); margin-bottom: 0.75rem;
+  letter-spacing: 0.04em; line-height: 1.4;
+}
+.domain-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.35rem 0.5rem; margin-bottom: 0.25rem;
+  background: var(--ds-surface-subtle); border-radius: var(--ds-radius-sm);
+  font-size: 0.7rem; color: var(--ds-text-secondary);
+}
+.domain-item .ref {
+  font-size: 0.6rem; color: var(--ds-text-muted); font-weight: 600;
+  letter-spacing: 0.04em; white-space: nowrap; margin-left: 0.5rem;
+}
+.domain-item .weight-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 1.1rem; height: 1.1rem; border-radius: 50%;
+  font-size: 0.5rem; font-weight: 800; color: white; flex-shrink: 0; margin-left: 0.25rem;
+}
+.w5 { background: var(--rcs-700); }
+.w4 { background: var(--rcs-500); }
+.w3 { background: var(--rcs-300); }
+.kano-badge {
+  display: inline-flex; align-items: center; padding: 0.1rem 0.35rem;
+  border-radius: 9999px; font-size: 0.5rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.04em; flex-shrink: 0; margin-left: 0.25rem;
+}
+.kano-m { background: var(--ds-status-error-light); color: var(--ds-status-error); }
+.kano-o { background: var(--ds-status-info-light); color: var(--ds-status-info); }
+.kano-a { background: var(--ds-status-success-light); color: var(--ds-status-success); }
+
+/* ══════════════════════════════════════════════════════════════
+   BAR CHART — .verdict-row
+   ══════════════════════════════════════════════════════════════ */
+.verdict-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+.verdict-label { font-size: 0.65rem; font-weight: 600; min-width: 180px; color: var(--ds-text-secondary); letter-spacing: 0.05em; }
+.verdict-bar-track {
+  flex: 1; height: 20px; background: var(--rcs-50);
+  border-radius: 9999px; position: relative; overflow: hidden;
+}
+.verdict-bar-fill {
+  height: 100%; border-radius: 9999px; display: flex; align-items: center;
+  padding-left: 0.5rem; font-size: 0.55rem; font-weight: 700; color: white;
+}
+.verdict-result { font-size: 0.65rem; font-weight: 700; min-width: 90px; text-align: right; color: var(--ds-color-primary); }
+
+/* ══════════════════════════════════════════════════════════════
+   COMPARISON MATRIX — .matrix-table
+   ══════════════════════════════════════════════════════════════ */
+.matrix-table {
+  width: 100%; border-collapse: collapse;
+  background: var(--ds-surface-default);
+  border-radius: var(--ds-radius-lg); overflow: hidden;
+  box-shadow: var(--ds-shadow-sm);
+}
+.matrix-table th {
+  background: var(--rcs-50); padding: 0.5rem 0.6rem;
+  font-size: 0.6rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.04em; color: var(--ds-text-muted);
+  text-align: center; border-bottom: 2px solid var(--ds-border-subtle);
+}
+.matrix-table th:first-child { text-align: left; }
+.matrix-table td {
+  padding: 0.45rem 0.6rem; font-size: 0.65rem; color: var(--ds-text-secondary);
+  border-bottom: 1px solid var(--ds-surface-subtle); text-align: center; vertical-align: middle;
+}
+.matrix-table td:first-child { text-align: left; font-weight: 600; color: var(--ds-color-primary); }
+.matrix-table tr:hover td { background: var(--rcs-50); }
+.matrix-table tr.row-winner { background: var(--ds-color-primary-light); }
+.matrix-table tr.row-winner td { font-weight: 600; color: var(--ds-color-primary); }
+.rating-strong { color: var(--rcs-700); font-weight: 700; }
+.rating-medium { color: var(--rcs-500); font-weight: 600; }
+.rating-weak   { color: var(--rcs-300); font-weight: 600; }
+
+/* ══════════════════════════════════════════════════════════════
+   METRIC DASHBOARD — .metric-card
+   ══════════════════════════════════════════════════════════════ */
+.metric-card {
+  background: var(--ds-surface-default);
+  border-radius: var(--ds-radius-lg);
+  padding: 1rem; border: 1px solid var(--ds-border-subtle);
+  border-left: 4px solid var(--ds-color-primary); box-shadow: var(--ds-shadow-sm); text-align: center;
+}
+.metric-card .metric-val { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.02em; color: var(--ds-color-primary); }
+.metric-card .metric-lbl {
+  font-size: 0.6rem; color: var(--ds-text-muted); margin-top: 0.15rem;
+  text-transform: uppercase; letter-spacing: 0.04em; line-height: 1.4;
+}
+.metric-card .metric-src {
+  font-size: 0.55rem; color: var(--ds-text-muted); margin-top: 0.25rem;
+  font-style: italic; letter-spacing: 0.04em;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   DECISION CARDS
+   ══════════════════════════════════════════════════════════════ */
+.decision-card {
+  background: var(--ds-surface-default);
+  border-radius: var(--ds-radius-lg);
+  padding: 1rem; border: 1px solid var(--ds-border-subtle);
+  border-top: 3px solid var(--ds-color-primary); box-shadow: var(--ds-shadow-sm);
+}
+.decision-card .decision-id {
+  font-size: 0.6rem; font-weight: 700;
+  font-family: 'SF Mono', 'Fira Code', monospace; font-kerning: none;
+  color: var(--ds-text-muted); margin-bottom: 0.2rem; letter-spacing: 0em;
+}
+.decision-card h4 { font-size: 0.8rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.3; margin-bottom: 0.3rem; color: var(--ds-color-primary); }
+.decision-card .rationale { font-size: 0.65rem; color: var(--ds-text-muted); line-height: 1.4; }
+
+/* ══════════════════════════════════════════════════════════════
+   NUMBERED PRINCIPLES — .principle, .num
+   ══════════════════════════════════════════════════════════════ */
+.principle {
+  background: var(--ds-surface-default); border-radius: var(--ds-radius-md);
+  padding: 0.75rem 1rem; font-size: 0.8rem; line-height: 1.5;
+  display: flex; align-items: center; gap: 0.75rem;
+  border: 1px solid var(--ds-border-subtle); box-shadow: var(--ds-shadow-sm);
+  color: var(--ds-text-secondary);
+}
+.principle .num {
+  font-size: 1.25rem; font-weight: 900; color: var(--ds-color-primary);
+  min-width: 2rem; text-align: center; flex-shrink: 0;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   RAID STRIP — .raid-item, .raid-badge
+   ══════════════════════════════════════════════════════════════ */
+.raid-item {
+  background: var(--ds-surface-default); border-radius: var(--ds-radius-md);
+  padding: 0.75rem 1rem; font-size: 0.75rem; line-height: 1.5;
+  display: flex; align-items: flex-start; gap: 0.75rem;
+  border: 1px solid var(--ds-border-subtle); box-shadow: var(--ds-shadow-sm);
+  color: var(--ds-text-secondary);
+}
+.raid-badge {
+  font-size: 0.55rem; font-weight: 700; padding: 0.2rem 0.5rem;
+  border-radius: 9999px; white-space: nowrap; flex-shrink: 0;
+  text-transform: uppercase; letter-spacing: 0.04em;
+  background: var(--ds-color-primary-light); color: var(--ds-color-primary);
+}
+.raid-badge.risk { background: var(--ds-status-error-light); color: var(--ds-status-error); }
+.raid-badge.dep  { background: var(--rcs-50); color: var(--rcs-600); }
+
+/* ══════════════════════════════════════════════════════════════
+   REFERENCE GRID — uses .card base
+   ══════════════════════════════════════════════════════════════ */
+.card {
+  background: var(--ds-surface-default);
+  border: 1px solid var(--ds-border-subtle);
+  border-radius: var(--ds-radius-lg);
+  padding: 1.25rem; box-shadow: var(--ds-shadow-sm);
+  transition: box-shadow var(--ds-transition-fast);
+  border-top: 3px solid var(--ds-color-primary);
+}
+.card:hover { box-shadow: var(--ds-shadow-md); }
+.card h3 { font-size: 0.85rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.3; margin-bottom: 0.375rem; color: var(--ds-color-primary); }
+.card p { font-size: 0.75rem; color: var(--ds-text-secondary); line-height: 1.5; }
+
+/* ══════════════════════════════════════════════════════════════
+   FOOTER
+   ══════════════════════════════════════════════════════════════ */
+.footer {
+  text-align: center; padding: 2rem 0; margin-top: 1rem;
+  border-top: 1px solid var(--ds-border-subtle);
+  color: var(--ds-text-muted); font-size: 0.75rem; line-height: 1.5;
+}
+.footer small { font-size: 0.6rem; letter-spacing: 0.04em; }
+
+/* ══════════════════════════════════════════════════════════════
+   PRINT — DR-INFG-010
+   ══════════════════════════════════════════════════════════════ */
+@media print {
+  body { padding: 0.5rem; background: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .card, .stat-card, .domain-card, .decision-card, .metric-card, .principle,
+  .flow-container, .raid-item, .matrix-table, .section {
+    box-shadow: none; break-inside: avoid;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .grid-2, .grid-3, .grid-4, .grid-6 { grid-template-columns: 1fr; }
+  .header h1 { font-size: 1.5rem; }
+  .verdict-label { min-width: 100px; }
+}
+</style>
+</head>
+<body>
+<div class="infographic">
+
+  <!-- ════════════════════════════════════════════════════════════
+       HEADER
+       ════════════════════════════════════════════════════════════ -->
+  <div class="header">
+    <div class="headline">Rosebud Cloud Consulting Services &mdash; Housing Sector Intelligence</div>
+    <h1>Top 50 <span>Pain Points</span> for Housing Association<br>CTO / CIO / CISO Leaders</h1>
+    <p>A comprehensive analysis of the technology, security, data and digital transformation challenges facing UK housing associations. 50 pain points mapped across 6 domains with Kano classification and severity weighting to inform strategic technology investment decisions.</p>
+    <div class="tags">
+      <span class="tag tag-primary">W4M-RCS</span>
+      <span class="tag tag-primary">Housing Sector</span>
+      <span class="tag tag-muted">50 Pain Points</span>
+      <span class="tag tag-muted">CTO / CIO / CISO</span>
+      <span class="tag tag-secondary">Kano Analysis</span>
+      <span class="tag tag-muted">6 Domains</span>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       STAT STRIP — Headline Metrics
+       ════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">Headline Metrics</div>
+    <div class="grid-6">
+      <div class="stat-card">
+        <div class="val">50</div>
+        <div class="lbl">Total Pain Points</div>
+      </div>
+      <div class="stat-card">
+        <div class="val">18</div>
+        <div class="lbl">Critical (Weight 5)</div>
+      </div>
+      <div class="stat-card">
+        <div class="val">23</div>
+        <div class="lbl">High (Weight 4)</div>
+      </div>
+      <div class="stat-card">
+        <div class="val">9</div>
+        <div class="lbl">Moderate (Weight 3)</div>
+      </div>
+      <div class="stat-card">
+        <div class="val">20</div>
+        <div class="lbl">Must-Be (Kano M)</div>
+      </div>
+      <div class="stat-card">
+        <div class="val">4.2</div>
+        <div class="lbl">Avg. Weight</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       FLOW DIAGRAM — The Pain Cascade
+       ════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">The Pain Cascade &mdash; How Challenges Compound</div>
+    <div class="flow-container">
+      <div class="flow-node">Legacy Systems<small>HMS lock-in</small></div>
+      <span class="flow-arrow">&rarr;</span>
+      <div class="flow-node">Data Silos<small>Duplicate, poor quality</small></div>
+      <span class="flow-arrow">&rarr;</span>
+      <div class="flow-node">Poor Tenant UX<small>Fragmented channels</small></div>
+      <span class="flow-arrow">&rarr;</span>
+      <div class="flow-node">Cyber Risk<small>Monitoring gaps</small></div>
+      <span class="flow-arrow">&rarr;</span>
+      <div class="flow-node">Compliance Gap<small>Regulatory exposure</small></div>
+      <span class="flow-arrow">&rarr;</span>
+      <div class="flow-node">Innovation Block<small>Pilots never scale</small></div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       BAR CHART — Pain Concentration by Domain
+       ════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">Pain Concentration by Domain</div>
+    <div style="background: var(--ds-surface-default); border-radius: var(--ds-radius-lg); padding: 1.25rem; border: 1px solid var(--ds-border-subtle); box-shadow: var(--ds-shadow-sm);">
+      <div class="verdict-row">
+        <div class="verdict-label">Cyber Security &amp; Governance</div>
+        <div class="verdict-bar-track">
+          <div class="verdict-bar-fill" style="width: 100%; background: var(--rcs-700);">13 items</div>
+        </div>
+        <div class="verdict-result">Avg 4.5</div>
+      </div>
+      <div class="verdict-row">
+        <div class="verdict-label">Strategy, Culture &amp; Capacity</div>
+        <div class="verdict-bar-track">
+          <div class="verdict-bar-fill" style="width: 77%; background: var(--rcs-600);">10 items</div>
+        </div>
+        <div class="verdict-result">Avg 3.8</div>
+      </div>
+      <div class="verdict-row">
+        <div class="verdict-label">Tenant Experience &amp; Digital</div>
+        <div class="verdict-bar-track">
+          <div class="verdict-bar-fill" style="width: 62%; background: var(--rcs-500);">8 items</div>
+        </div>
+        <div class="verdict-result">Avg 4.4</div>
+      </div>
+      <div class="verdict-row">
+        <div class="verdict-label">Operations, Monitoring &amp; Assurance</div>
+        <div class="verdict-bar-track">
+          <div class="verdict-bar-fill" style="width: 62%; background: var(--rcs-400);">8 items</div>
+        </div>
+        <div class="verdict-result">Avg 3.6</div>
+      </div>
+      <div class="verdict-row">
+        <div class="verdict-label">Data, Compliance &amp; Reporting</div>
+        <div class="verdict-bar-track">
+          <div class="verdict-bar-fill" style="width: 46%; background: var(--rcs-300);">6 items</div>
+        </div>
+        <div class="verdict-result">Avg 4.7</div>
+      </div>
+      <div class="verdict-row">
+        <div class="verdict-label">Legacy Systems &amp; Integration</div>
+        <div class="verdict-bar-track">
+          <div class="verdict-bar-fill" style="width: 38%; background: var(--rcs-200);">5 items</div>
+        </div>
+        <div class="verdict-result">Avg 4.2</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       METRIC DASHBOARD — Kano Breakdown
+       ════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">Kano Classification Breakdown</div>
+    <div class="grid-3">
+      <div class="metric-card">
+        <div class="metric-val">20</div>
+        <div class="metric-lbl">Must-Be (M)</div>
+        <div class="metric-src">Baseline expectations &mdash; cause dissatisfaction if absent</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">27</div>
+        <div class="metric-lbl">One-Dimensional (O)</div>
+        <div class="metric-src">Performance factors &mdash; satisfaction scales linearly with delivery</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">3</div>
+        <div class="metric-lbl">Attractive (A)</div>
+        <div class="metric-src">Delighters &mdash; unexpected value that differentiates</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       DOMAIN 1: CYBER SECURITY & GOVERNANCE (13 items)
+       ════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">Domain 1 &mdash; Cyber Security &amp; Governance (13 Pain Points)</div>
+    <div class="grid-2">
+      <div class="domain-card">
+        <h3>Security Posture &amp; Compliance</h3>
+        <div class="domain-sub">UK governance code, vulnerability management, monitoring</div>
+        <div class="domain-item"><span>#11 UK cyber governance code compliance</span><span class="ref"><span class="weight-badge w5">5</span><span class="kano-badge kano-m">M</span></span></div>
+        <div class="domain-item"><span>#15 IAM complexity (home/remote, contractors)</span><span class="ref"><span class="weight-badge w5">5</span><span class="kano-badge kano-m">M</span></span></div>
+        <div class="domain-item"><span>#17 Disparate vulnerability management</span><span class="ref"><span class="weight-badge w5">5</span><span class="kano-badge kano-m">M</span></span></div>
+        <div class="domain-item"><span>#19 Monitoring fragmentation (hybrid env)</span><span class="ref"><span class="weight-badge w5">5</span><span class="kano-badge kano-m">M</span></span></div>
+        <div class="domain-item"><span>#20 Limited cyber resources vs BAU IT</span><span class="ref"><span class="weight-badge w5">5</span><span class="kano-badge kano-m">M</span></span></div>
+        <div class="domain-item"><span>#16 Inconsistent access reviews / privilege creep</span><span class="ref"><span class="weight-badge w4">4</span><span class="kano-badge kano-m">M</span></span></div>
+        <div class="domain-item"><span>#22 Incident response readiness &amp; playbooks</span><span class="ref"><span class="weight-badge w4">4</span><span class="kano-badge kano-m">M</span></span></div>
+      </div>
+      <div class="domain-card">
+        <h3>Risk, Supply Chain &amp; Assets</h3>
+        <div class="domain-sub">Third-party risk, board language, asset inventory, shadow IT</div>
+        <div class="domain-item"><span>#12 Translating cyber risk for the board</span><span class="ref"><span class="weight-badge w5">5</span><span class="kano-badge kano-o">O</span></span></div>
+        <div class="domain-item"><span>#13 Third-party / supplier cyber risk</span><span class="ref"><span class="weight-badge w4">4</span><span class="kano-badge kano-m">M</span></span></div>
+        <div class="domain-item"><span>#14 Measuring cyber risk consistently</span><span class="ref"><span class="weight-badge w4">4</span><span class="kano-badge kano-o">O</span></span></div>
+        <div class="domain-item"><span>#23 Weak asset inventory (IT, OT, IoT)</span><span class="ref"><span class="weight-badge w4">4</span><span class="kano-badge kano-m">M</span></span></div>
+        <div class="domain-item"><span>#35 Shadow IT / unsanctioned SaaS</span><span class="ref"><span class="weight-badge w4">4</span><span class="kano-badge kano-m">M</span></span></div>
+        <div class="domain-item"><span>#44 Secure hybrid/remote workforce</span><span class="ref"><span class="weight-badge w4">4</span><span class="kano-badge kano-m">M</span></span></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       DOMAIN 2: TENANT EXPERIENCE & DIGITAL (8 items)
+       ════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">Domain 2 &mdash; Tenant Experience &amp; Digital Services (8 Pain Points)</div>
+    <div class="grid-2">
+      <div class="domain-card">
+        <h3>Channel &amp; Service Design</h3>
+        <div class="domain-sub">Omnichannel, tenant portals, digital citizen expectations</div>
+        <div class="domain-item"><span>#3 Slow manual processes (repairs, complaints, ASB)</span><span class="ref"><span class="weight-badge w5">5</span><span class="kano-badge kano-o">O</span></span></div>
+        <div class="domain-item"><span>#7 Poor tenant digital experience vs expectations</span><span class="ref"><span class="weight-badge w5">5</span><span class="kano-badge kano-o">O</span></span></div>
+        <div class="domain-item"><span>#8 Fragmented channels, no single customer view</span><span class="ref"><span class="weight-badge w5">5</span><span class="kano-badge kano-m">M</span></span></div>
+        <div class="domain-item"><span>#24 Legacy telephony / contact centre</span><span class="ref"><span class="weight-badge w4">4</span><span class="kano-badge kano-o">O</span></span></div>
+      </div>
+      <div class="domain-card">
+        <h3>Inclusion &amp; Coordination</h3>
+        <div class="domain-sub">Digital literacy, contractor coordination, incident comms</div>
+        <div class="domain-item"><span>#29 Difficulty coordinating repairs contractors</span><span class="ref"><span class="weight-badge w4">4</span><span class="kano-badge kano-o">O</span></span></div>
+        <div class="domain-item"><span>#40 Multiple portals confusing tenants &amp; staff</span><span class="ref"><span class="weight-badge w4">4</span><span class="kano-badge kano-o">O</span></span></div>
+        <div class="domain-item"><span>#43 Fragmented comms during incidents/repairs</span><span class="ref"><span class="weight-badge w4">4</span><span class="kano-badge kano-o">O</span></span></div>
+        <div class="domain-item"><span>#46 Low digital literacy tenants excluded</span><span class="ref"><span class="weight-badge w4">4</span><span class="kano-badge kano-m">M</span></span></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       DOMAIN 3: DATA, COMPLIANCE & REPORTING (6 items)
+       ════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">Domain 3 &mdash; Data, Compliance &amp; Reporting (6 Pain Points)</div>
+    <div class="grid-2">
+      <div class="domain-card">
+        <h3>Data Quality &amp; Protection</h3>
+        <div class="domain-sub">MDM, GDPR, golden records, property safety</div>
+        <div class="domain-item"><span>#27 Property safety/compliance data accuracy</span><span class="ref"><span class="weight-badge w5">5</span><span class="kano-badge kano-m">M</span></span></div>
+        <div class="domain-item"><span>#28 Data quality across systems (addresses, tenancy)</span><span class="ref"><span class="weight-badge w5">5</span><span class="kano-badge kano-m">M</span></span></div>
+        <div class="domain-item"><span>#36 Data protection &amp; privacy (GDPR)</span><span class="ref"><span class="weight-badge w5">5</span><span class="kano-badge kano-m">M</span></span></div>
+      </div>
+      <div class="domain-card">
+        <h3>Insight &amp; Reporting</h3>
+        <div class="domain-sub">BI, regulatory returns, asset-to-repairs traceability</div>
+        <div class="domain-item"><span>#10 Can't leverage data for decision-making</span><span class="ref"><span class="weight-badge w5">5</span><span class="kano-badge kano-o">O</span></span></div>
+        <div class="domain-item"><span>#26 No connected asset&rarr;repairs&rarr;compliance view</span><span class="ref"><span class="weight-badge w4">4</span><span class="kano-badge kano-o">O</span></span></div>
+        <div class="domain-item"><span>#30 Inadequate reporting to regulators/funders</span><span class="ref"><span class="weight-badge w4">4</span><span class="kano-badge kano-m">M</span></span></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       DOMAIN 4: STRATEGY, CULTURE & CAPACITY (10 items)
+       ════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">Domain 4 &mdash; Strategy, Culture &amp; Capacity (10 Pain Points)</div>
+    <div class="grid-2">
+      <div class="domain-card">
+        <h3>Budget, Skills &amp; Culture</h3>
+        <div class="domain-sub">Tech refresh funding, digital skills gap, change resistance</div>
+        <div class="domain-item"><span>#4 Budget constraints limiting tech refresh &amp; cyber</span><span class="ref"><span class="weight-badge w5">5</span><span class="kano-badge kano-m">M</span></span></div>
+        <div class="domain-item"><span>#5 Lack of digital skills and capacity in-house</span><span class="ref"><span class="weight-badge w5">5</span><span class="kano-badge kano-o">O</span></span></div>
+        <div class="domain-item"><span>#6 Resistance to change / weak digital culture</span><span class="ref"><span class="weight-badge w4">4</span><span class="kano-badge kano-o">O</span></span></div>
+        <div class="domain-item"><span>#33 Over-reliance on key individuals</span><span class="ref"><span class="weight-badge w3">3</span><span class="kano-badge kano-o">O</span></span></div>
+        <div class="domain-item"><span>#34 Difficulty proving ROI from digital projects</span><span class="ref"><span class="weight-badge w4">4</span><span class="kano-badge kano-o">O</span></span></div>
+      </div>
+      <div class="domain-card">
+        <h3>Alignment &amp; Innovation</h3>
+        <div class="domain-sub">Roadmap alignment, service prioritisation, scaling innovation</div>
+        <div class="domain-item"><span>#38 IT roadmaps misaligned with corporate strategy</span><span class="ref"><span class="weight-badge w4">4</span><span class="kano-badge kano-o">O</span></span></div>
+        <div class="domain-item"><span>#48 Unclear ownership of services/data/controls</span><span class="ref"><span class="weight-badge w4">4</span><span class="kano-badge kano-o">O</span></span></div>
+        <div class="domain-item"><span>#47 Can't prioritise which services to digitise</span><span class="ref"><span class="weight-badge w3">3</span><span class="kano-badge kano-o">O</span></span></div>
+        <div class="domain-item"><span>#49 Innovation pilots never scale</span><span class="ref"><span class="weight-badge w3">3</span><span class="kano-badge kano-a">A</span></span></div>
+        <div class="domain-item"><span>#50 Communicating tech narrative to stakeholders</span><span class="ref"><span class="weight-badge w3">3</span><span class="kano-badge kano-a">A</span></span></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       DOMAIN 5: LEGACY SYSTEMS & INTEGRATION (5 items)
+       ════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">Domain 5 &mdash; Legacy Systems &amp; Integration (5 Pain Points)</div>
+    <div class="grid-2">
+      <div class="domain-card">
+        <h3>HMS Lock-in &amp; Silos</h3>
+        <div class="domain-sub">Legacy housing management, duplicate data, vendor interoperability</div>
+        <div class="domain-item"><span>#1 Legacy HMS hard to change or integrate</span><span class="ref"><span class="weight-badge w5">5</span><span class="kano-badge kano-m">M</span></span></div>
+        <div class="domain-item"><span>#2 Siloed systems &amp; duplicate data</span><span class="ref"><span class="weight-badge w5">5</span><span class="kano-badge kano-m">M</span></span></div>
+        <div class="domain-item"><span>#9 Interoperability issues / no open standards</span><span class="ref"><span class="weight-badge w4">4</span><span class="kano-badge kano-o">O</span></span></div>
+      </div>
+      <div class="domain-card">
+        <h3>Architecture &amp; Velocity</h3>
+        <div class="domain-sub">Enterprise architecture gaps, long integration lead times</div>
+        <div class="domain-item"><span>#32 Long lead times for system changes</span><span class="ref"><span class="weight-badge w4">4</span><span class="kano-badge kano-o">O</span></span></div>
+        <div class="domain-item"><span>#42 No clear enterprise architecture view</span><span class="ref"><span class="weight-badge w3">3</span><span class="kano-badge kano-o">O</span></span></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       DOMAIN 6: OPERATIONS, MONITORING & ASSURANCE (8 items)
+       ════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">Domain 6 &mdash; Operations, Monitoring &amp; Assurance (8 Pain Points)</div>
+    <div class="grid-2">
+      <div class="domain-card">
+        <h3>Operational Efficiency</h3>
+        <div class="domain-sub">Staff productivity, SaaS logs, audit burden, portfolio view</div>
+        <div class="domain-item"><span>#25 Internal systems slowing staff / admin load</span><span class="ref"><span class="weight-badge w5">5</span><span class="kano-badge kano-o">O</span></span></div>
+        <div class="domain-item"><span>#18 Difficulty getting SaaS logs for monitoring</span><span class="ref"><span class="weight-badge w4">4</span><span class="kano-badge kano-o">O</span></span></div>
+        <div class="domain-item"><span>#21 Audit and assurance burden</span><span class="ref"><span class="weight-badge w4">4</span><span class="kano-badge kano-o">O</span></span></div>
+        <div class="domain-item"><span>#39 Poor visibility of tech risk across stock</span><span class="ref"><span class="weight-badge w4">4</span><span class="kano-badge kano-o">O</span></span></div>
+      </div>
+      <div class="domain-card">
+        <h3>Modernisation &amp; Feedback</h3>
+        <div class="domain-sub">Cloud adoption, automation, continuous improvement loops</div>
+        <div class="domain-item"><span>#31 Fragmented project / portfolio view</span><span class="ref"><span class="weight-badge w3">3</span><span class="kano-badge kano-o">O</span></span></div>
+        <div class="domain-item"><span>#37 Limited security automation (SOAR)</span><span class="ref"><span class="weight-badge w3">3</span><span class="kano-badge kano-o">O</span></span></div>
+        <div class="domain-item"><span>#41 Slow cloud adoption due to risk concerns</span><span class="ref"><span class="weight-badge w3">3</span><span class="kano-badge kano-o">O</span></span></div>
+        <div class="domain-item"><span>#45 No continuous improvement feedback loop</span><span class="ref"><span class="weight-badge w3">3</span><span class="kano-badge kano-a">A</span></span></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       COMPARISON MATRIX — Kano x Weight Distribution
+       ════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">Kano Classification &times; Severity Matrix</div>
+    <table class="matrix-table">
+      <thead>
+        <tr>
+          <th>Domain</th>
+          <th>Items</th>
+          <th>Weight 5</th>
+          <th>Weight 4</th>
+          <th>Weight 3</th>
+          <th>Must-Be (M)</th>
+          <th>One-Dim (O)</th>
+          <th>Attractive (A)</th>
+          <th>Avg Wt.</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Cyber Security &amp; Governance</td>
+          <td><strong>13</strong></td>
+          <td class="rating-strong">6</td>
+          <td class="rating-medium">7</td>
+          <td>0</td>
+          <td class="rating-strong">11</td>
+          <td>2</td>
+          <td>0</td>
+          <td><strong>4.5</strong></td>
+        </tr>
+        <tr class="row-winner">
+          <td>Data, Compliance &amp; Reporting</td>
+          <td><strong>6</strong></td>
+          <td class="rating-strong">4</td>
+          <td class="rating-medium">2</td>
+          <td>0</td>
+          <td class="rating-strong">4</td>
+          <td>2</td>
+          <td>0</td>
+          <td><strong>4.7</strong></td>
+        </tr>
+        <tr>
+          <td>Tenant Experience &amp; Digital</td>
+          <td><strong>8</strong></td>
+          <td class="rating-strong">3</td>
+          <td class="rating-medium">5</td>
+          <td>0</td>
+          <td>2</td>
+          <td class="rating-strong">6</td>
+          <td>0</td>
+          <td><strong>4.4</strong></td>
+        </tr>
+        <tr>
+          <td>Legacy Systems &amp; Integration</td>
+          <td><strong>5</strong></td>
+          <td class="rating-strong">2</td>
+          <td class="rating-medium">2</td>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>0</td>
+          <td><strong>4.2</strong></td>
+        </tr>
+        <tr>
+          <td>Strategy, Culture &amp; Capacity</td>
+          <td><strong>10</strong></td>
+          <td class="rating-strong">2</td>
+          <td class="rating-medium">4</td>
+          <td>4</td>
+          <td>1</td>
+          <td>7</td>
+          <td>2</td>
+          <td><strong>3.8</strong></td>
+        </tr>
+        <tr>
+          <td>Operations &amp; Assurance</td>
+          <td><strong>8</strong></td>
+          <td class="rating-strong">1</td>
+          <td class="rating-medium">3</td>
+          <td>4</td>
+          <td>0</td>
+          <td>7</td>
+          <td>1</td>
+          <td><strong>3.6</strong></td>
+        </tr>
+        <tr style="background: var(--rcs-50); font-weight: 700;">
+          <td>TOTAL</td>
+          <td><strong>50</strong></td>
+          <td><strong>18</strong></td>
+          <td><strong>23</strong></td>
+          <td><strong>9</strong></td>
+          <td><strong>20</strong></td>
+          <td><strong>27</strong></td>
+          <td><strong>3</strong></td>
+          <td><strong>4.2</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       NUMBERED PRINCIPLES — Top 10 Critical Must-Address
+       ════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">Top 10 Critical Pain Points (Weight 5 + Must-Be)</div>
+    <div class="grid-2">
+      <div class="principle"><span class="num">1</span><span>Legacy HMS hard to change or integrate &mdash; API layer, strangler-fig migration, event bus</span></div>
+      <div class="principle"><span class="num">2</span><span>Siloed systems and duplicate data &mdash; integration platform, MDM, canonical data model</span></div>
+      <div class="principle"><span class="num">4</span><span>Budget constraints limiting tech refresh &mdash; TCO modelling, cloud cost optimisation, ROI dashboards</span></div>
+      <div class="principle"><span class="num">8</span><span>Fragmented channels, no single customer view &mdash; omnichannel inbox, identity-linked history</span></div>
+      <div class="principle"><span class="num">11</span><span>UK cyber governance code compliance &mdash; control library, gap tracker, board-ready reporting</span></div>
+      <div class="principle"><span class="num">15</span><span>IAM complexity across workforce &mdash; central IAM, SSO, RBAC, JML automation, MFA</span></div>
+      <div class="principle"><span class="num">17</span><span>Disparate vulnerability management &mdash; unified intake, risk-based prioritisation, ITSM SLAs</span></div>
+      <div class="principle"><span class="num">19</span><span>Monitoring fragmentation (hybrid) &mdash; central SIEM, topology views, unified alerting</span></div>
+      <div class="principle"><span class="num">20</span><span>Limited cyber resources vs BAU IT &mdash; risk-based roadmap, auto-prioritised backlog</span></div>
+      <div class="principle"><span class="num">27</span><span>Property safety/compliance data accuracy &mdash; compliance register, inspection integration, alerts</span></div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       DECISION CARDS — Strategic Imperatives
+       ════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">Strategic Imperatives &mdash; Where to Invest First</div>
+    <div class="grid-3">
+      <div class="decision-card">
+        <div class="decision-id">IMP-01</div>
+        <h4>Cyber Governance Foundation</h4>
+        <div class="rationale">13 items, highest severity domain. UK governance code compliance is non-negotiable. IAM, vuln management and monitoring fragmentation are all Weight 5 Must-Be &mdash; fix these before anything else.</div>
+      </div>
+      <div class="decision-card">
+        <div class="decision-id">IMP-02</div>
+        <h4>Data Quality &amp; Compliance</h4>
+        <div class="rationale">Highest average weight (4.7) of any domain. Property safety data, GDPR and data quality are all Weight 5 Must-Be. Regulatory risk is direct and immediate &mdash; fines, enforcement, tenant harm.</div>
+      </div>
+      <div class="decision-card">
+        <div class="decision-id">IMP-03</div>
+        <h4>Integration &amp; API Layer</h4>
+        <div class="rationale">Legacy HMS lock-in (#1) and data silos (#2) are root causes that cascade into every other domain. A modern API layer with event bus unlocks tenant UX, data quality and security improvements.</div>
+      </div>
+      <div class="decision-card">
+        <div class="decision-id">IMP-04</div>
+        <h4>Unified Tenant Experience</h4>
+        <div class="rationale">8 items averaging Weight 4.4 with 3 at critical. Tenants expect digital-first services. Omnichannel inbox, single customer view and digital inclusion are competitive differentiators.</div>
+      </div>
+      <div class="decision-card">
+        <div class="decision-id">IMP-05</div>
+        <h4>Strategic Alignment &amp; ROI</h4>
+        <div class="rationale">Budget constraints (#4, Weight 5) underpins everything. Without TCO modelling, benefits tracking and strategy-to-roadmap tooling, every other investment is harder to justify and sustain.</div>
+      </div>
+      <div class="decision-card">
+        <div class="decision-id">IMP-06</div>
+        <h4>Operational Automation</h4>
+        <div class="rationale">8 items at lower average weight (3.6) but high ROI potential. Process mining, SOAR playbooks, SaaS log aggregation and portfolio visibility reduce the manual overhead that starves other initiatives.</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       RAID STRIP — Key Risks If Unaddressed
+       ════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">Key Risks If Pain Points Remain Unaddressed</div>
+    <div class="grid-2">
+      <div class="raid-item">
+        <span class="raid-badge risk">Risk</span>
+        <div><strong>R-01:</strong> Regulatory enforcement &mdash; UK cyber governance code non-compliance and property safety data gaps expose the association to intervention by the Regulator of Social Housing.</div>
+      </div>
+      <div class="raid-item">
+        <span class="raid-badge risk">Risk</span>
+        <div><strong>R-02:</strong> Data breach liability &mdash; GDPR violations from poor data protection controls and fragmented SaaS monitoring could result in ICO enforcement and reputational damage.</div>
+      </div>
+      <div class="raid-item">
+        <span class="raid-badge risk">Risk</span>
+        <div><strong>R-03:</strong> Tenant service failure &mdash; fragmented channels and legacy contact centres drive complaints, tenant dissatisfaction and potential Ombudsman intervention.</div>
+      </div>
+      <div class="raid-item">
+        <span class="raid-badge risk">Risk</span>
+        <div><strong>R-04:</strong> Innovation paralysis &mdash; budget constraints, skills gaps and change resistance compound to create a cycle where pilots never scale and digital debt accumulates.</div>
+      </div>
+      <div class="raid-item">
+        <span class="raid-badge dep">Dependency</span>
+        <div><strong>D-01:</strong> Integration platform prerequisite &mdash; tenant UX, data quality and cyber monitoring improvements all depend on resolving legacy HMS lock-in and data silos first.</div>
+      </div>
+      <div class="raid-item">
+        <span class="raid-badge">Assumption</span>
+        <div><strong>A-01:</strong> Board engagement &mdash; assumes board willingness to invest in technology transformation. 40% of pain points are Must-Be items that the board may not yet recognise as baseline obligations.</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       REFERENCE GRID — Data Sources
+       ════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">Data Sources &amp; References</div>
+    <div class="grid-4">
+      <div class="card">
+        <h3>Inside Housing</h3>
+        <p>Digital transformation coverage, legacy system challenges, skills gap reporting in UK housing sector.</p>
+      </div>
+      <div class="card">
+        <h3>Housing Digital</h3>
+        <p>Sector-specific digital strategy, tenant experience research, channel fragmentation analysis.</p>
+      </div>
+      <div class="card">
+        <h3>Quorum Cyber</h3>
+        <p>UK housing association cyber security landscape, governance code guidance, third-party risk.</p>
+      </div>
+      <div class="card">
+        <h3>Industry CISO Research</h3>
+        <p>Cross-sector CISO pain point analysis, IAM complexity, vulnerability management, SaaS monitoring.</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       FOOTER
+       ════════════════════════════════════════════════════════════ -->
+  <div class="footer">
+    <div>Rosebud Cloud Consulting Services &mdash; Wings4Mind.ai &mdash; Housing Sector Intelligence</div>
+    <small>DS-ONT v5.1.0 &bull; PFI: W4M-RCS &bull; RCS Purple Minimalist &bull; Infographic Schema v1.0.0 &bull; 2026-04-27 &bull; Status: FOR REVIEW</small>
+  </div>
+
+</div>
+</body>
+</html>
