@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import { SEO } from '../components/SEO';
-import { pageMeta, organisationSchema, websiteSchema } from '../data/seoMeta';
+import { Faq } from '../components/Faq';
+import { pageMeta, organisationSchema, websiteSchema, faqSchema } from '../data/seoMeta';
+import { faqs } from '../data/faqs';
 import { ParticleBackground } from '../components/ParticleBackground';
 import { TiltCard } from '../components/TiltCard';
 import { useMouseSpotlight } from '../hooks/useMouseSpotlight';
@@ -110,15 +112,21 @@ interface HomePageProps {
   readonly className?: string;
 }
 
+const HOME_FAQ_VISIBLE = 3;
+
 export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
   const heroRef = useRef<HTMLElement>(null);
   useMouseSpotlight(heroRef);
+
+  // Keep FAQ schema aligned to what's visible on the page — Google requires
+  // rendered-and-visible parity. Full set lives on /faq with its own schema.
+  const homeFaqVisible = faqs.home.slice(0, HOME_FAQ_VISIBLE);
 
   return (
     <main className={className}>
       <SEO
         {...pageMeta.home}
-        schema={[organisationSchema, websiteSchema]}
+        schema={[organisationSchema, websiteSchema, faqSchema(homeFaqVisible)]}
         preloadImages={[
           {
             href: `${import.meta.env.BASE_URL}rcs-logo.webp`,
@@ -250,7 +258,7 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
       </section>
 
       {/* ── Microsoft Certifications ───────────────────────────────── */}
-      <section className="py-24 border-y border-outline bg-surface/30">
+      <section className="py-24 border-y border-outline bg-surface">
         <div className="max-w-[1440px] mx-auto px-8">
           <ScrollReveal className="text-center">
             <p className="text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label mb-3">
@@ -526,8 +534,20 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
       </section>
       )}
 
+      {/* ── FAQ (compact — full set on /faq) ─────────────────────────── */}
+      <Faq
+        items={faqs.home}
+        groupName="faq-home"
+        eyebrow="Quick answers"
+        heading="Common first questions"
+        compact
+        maxItems={HOME_FAQ_VISIBLE}
+        seeAllHref="/faq"
+        seeAllLabel="See all FAQs"
+      />
+
       {/* ── CTA ───────────────────────────────────────────────────────── */}
-      <section className="py-44 bg-surface relative overflow-hidden border-t border-outline">
+      <section className="py-44 bg-background relative overflow-hidden border-t border-outline">
         <motion.div
           className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full blur-[140px] pointer-events-none"
           style={{ background: 'rgba(160, 0, 181, 0.12)' }}

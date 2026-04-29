@@ -82,6 +82,12 @@ export const pageMeta = {
       'Real-world Azure platform, security, and governance engagements across financial services, public sector, legal, and retail - with measurable outcomes.',
     path: '/case-studies',
   },
+  faq: {
+    title: 'Frequently Asked Questions | Rosebud Cloud Solutions',
+    description:
+      'Answers on Azure landing zones, cloud security, DevSecOps, FinOps, and managed cloud - how Rosebud Cloud Solutions engages and delivers for clients.',
+    path: '/faq',
+  },
 } as const satisfies Record<string, PageMeta>;
 
 export const organisationSchema = {
@@ -159,15 +165,20 @@ export function serviceSchema(args: {
 }
 
 // FAQ schema. Pass into <SEO schema={[...]}> on any page with visible FAQ copy -
-// Google only shows rich results when on-page Q&A text matches.
+// Google only shows rich results when on-page Q&A text matches. Answers may
+// include markdown-style links [text](/path); they are stripped to plain text
+// for the schema payload (the Faq component renders them as <Link>/<a>).
+const MARKDOWN_LINK = /\[([^\]]+)\]\([^)]+\)/g;
+const stripLinks = (s: string) => s.replace(MARKDOWN_LINK, '$1');
+
 export function faqSchema(items: readonly { question: string; answer: string }[]) {
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: items.map(({ question, answer }) => ({
       '@type': 'Question',
-      name: question,
-      acceptedAnswer: { '@type': 'Answer', text: answer },
+      name: stripLinks(question),
+      acceptedAnswer: { '@type': 'Answer', text: stripLinks(answer) },
     })),
   };
 }

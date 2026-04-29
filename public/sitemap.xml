@@ -2,87 +2,104 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.rosebudcloudsolutions.co.uk/</loc>
+    <lastmod>2026-04-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://www.rosebudcloudsolutions.co.uk/about</loc>
+    <lastmod>2026-04-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.rosebudcloudsolutions.co.uk/how-we-work</loc>
+    <lastmod>2026-04-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.rosebudcloudsolutions.co.uk/contact</loc>
+    <lastmod>2026-04-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.rosebudcloudsolutions.co.uk/case-studies</loc>
+    <lastmod>2026-04-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.rosebudcloudsolutions.co.uk/services/azure-landing-zones</loc>
+    <lastmod>2026-04-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.rosebudcloudsolutions.co.uk/services/cloud-security</loc>
+    <lastmod>2026-04-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.rosebudcloudsolutions.co.uk/services/devsecops</loc>
+    <lastmod>2026-04-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.rosebudcloudsolutions.co.uk/services/cloud-optimisation</loc>
+    <lastmod>2026-04-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.rosebudcloudsolutions.co.uk/services/advisory-consulting</loc>
+    <lastmod>2026-04-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.rosebudcloudsolutions.co.uk/services/managed-cloud</loc>
+    <lastmod>2026-04-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <!-- /tools/strategic-triage removed while feature-flagged off. Re-add when STRATEGIC_TRIAGE_ENABLED = true. -->
   <url>
     <loc>https://www.rosebudcloudsolutions.co.uk/case-studies/azure-platform-financial-services</loc>
+    <lastmod>2026-04-22</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.rosebudcloudsolutions.co.uk/case-studies/hybrid-identity-public-sector</loc>
+    <lastmod>2026-04-22</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.rosebudcloudsolutions.co.uk/case-studies/azure-virtual-desktop-public-sector</loc>
+    <lastmod>2026-04-22</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.rosebudcloudsolutions.co.uk/case-studies/azure-landing-zone-retail</loc>
+    <lastmod>2026-04-22</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.rosebudcloudsolutions.co.uk/case-studies/azure-governance-financial-services</loc>
+    <lastmod>2026-04-22</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.rosebudcloudsolutions.co.uk/case-studies/azure-data-platform-legal</loc>
+    <lastmod>2026-04-22</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>

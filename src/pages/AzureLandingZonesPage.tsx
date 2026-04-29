@@ -2,7 +2,9 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import { SEO } from '../components/SEO';
-import { pageMeta, serviceSchema, breadcrumbSchema } from '../data/seoMeta';
+import { Faq } from '../components/Faq';
+import { pageMeta, serviceSchema, breadcrumbSchema, faqSchema } from '../data/seoMeta';
+import { faqs } from '../data/faqs';
 import { TiltCard } from '../components/TiltCard';
 import AnoAI from '../components/ui/animated-shader-background';
 
@@ -164,6 +166,7 @@ export const AzureLandingZonesPage: React.FC<AzureLandingZonesPageProps> = ({ cl
             { name: 'Home', path: '/' },
             { name: 'Azure Landing Zones', path: pageMeta.azureLandingZones.path },
           ]),
+          faqSchema(faqs.azureLandingZones),
         ]}
       />
 
@@ -360,7 +363,7 @@ export const AzureLandingZonesPage: React.FC<AzureLandingZonesPageProps> = ({ cl
                 <div className="relative bg-surface-container-highest p-4 rounded-2xl shadow-2xl border border-outline/30">
                   <img
                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuCf8Bhdy6VVOSUT4dTau2cVPcPlmS3Hnw0KM3zWMHQFG6TsxbGVGb0yTDQ6Sc-MD23UA_w2-m45KUZgA_2yzsFNBwlgM2x-B8Cz66cZtIdeneOfSDQ2Sdbz26IPY8-hi76_cEy6pAvybUrfUBZwC8uQk6rPAPE1Qc7v4nIpZi6yw5JVQVIq_QGOr9ZNXHSiaI705-Xn82pHZcw33pEJRcYrss4HYiX6nm0JKEjHCaGuuNSdusvgvTvTTQKTAO1rFTStRslymp1tTOST"
-                    alt="Business impact"
+                    alt="Azure landing zone business impact and governance illustration"
                     className="rounded-xl w-full h-[500px] object-cover"
                   />
                 </div>
@@ -478,6 +481,15 @@ export const AzureLandingZonesPage: React.FC<AzureLandingZonesPageProps> = ({ cl
           </div>
         </div>
       </section>
+
+      {/* ── FAQ ───────────────────────────────────────────────────────── */}
+      <Faq
+        items={faqs.azureLandingZones}
+        groupName="faq-azure-landing-zones"
+        eyebrow="Questions"
+        heading="Frequently asked questions"
+        description="What clients ask us most often about Azure landing zones and platform foundations."
+      />
 
       {/* ── CTA ───────────────────────────────────────────────────────── */}
       <section className="py-44 bg-surface relative overflow-hidden border-t border-outline">

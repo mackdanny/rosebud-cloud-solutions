@@ -17,6 +17,7 @@ const footerCompany = [
   { label: 'How We Work', href: '/how-we-work' },
   { label: 'About Us', href: '/about' },
   { label: 'Meet the Team', href: '/about#team' },
+  { label: 'FAQ', href: '/faq' },
   { label: 'Contact', href: '/contact' },
 ];
 
