@@ -1,0 +1,1 @@
+import{f as e,t}from"./chunk-C3LMioQK.js";var n=e(),r=({children:e,className:r=``,glowColor:i=`rgba(160, 0, 181, 0.4)`})=>(0,n.jsx)(t.div,{whileHover:{boxShadow:`0 0 30px 4px ${i}`,borderColor:`rgba(160, 0, 181, 0.4)`},transition:{duration:.2},className:r,children:e});export{r as t};
