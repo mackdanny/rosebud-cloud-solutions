@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import { SEO } from '../components/SEO';
 import { Faq } from '../components/Faq';
+import { CostEstimator } from '../components/CostEstimator';
+import { PricingPlans } from '../components/PricingPlans';
 import { pageMeta, organisationSchema, websiteSchema, faqSchema } from '../data/seoMeta';
 import { faqs } from '../data/faqs';
 import { ParticleBackground } from '../components/ParticleBackground';
@@ -533,6 +535,36 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
         </div>
       </section>
       )}
+
+      {/* ── Service Plans & Tier Finder ─────────────────────────────── */}
+      <section className="py-32 bg-background relative border-t border-outline">
+        <div className="max-w-[1440px] mx-auto px-8">
+          <ScrollReveal>
+            <div className="text-center mb-6">
+              <span className="text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label mb-4 block">
+                Service Plans
+              </span>
+              <h2 className="font-headline text-4xl md:text-5xl font-extrabold tracking-tighter mb-4">
+                Services that{' '}
+                <span className="text-gradient-primary">scale with you</span>
+              </h2>
+              <p className="text-on-surface-variant text-lg max-w-2xl mx-auto leading-relaxed">
+                From a one-off readiness assessment to fully managed Azure platforms — choose the engagement that fits and we'll size it to your environment.
+              </p>
+            </div>
+          </ScrollReveal>
+
+          {/* Service cards */}
+          <ScrollReveal className="mb-20">
+            <PricingPlans />
+          </ScrollReveal>
+
+          {/* Tier finder */}
+          <ScrollReveal>
+            <CostEstimator />
+          </ScrollReveal>
+        </div>
+      </section>
 
       {/* ── FAQ (compact — full set on /faq) ─────────────────────────── */}
       <Faq

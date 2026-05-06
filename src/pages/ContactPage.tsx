@@ -1,9 +1,74 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
+import { useSearchParams } from 'react-router-dom';
 import { SEO } from '../components/SEO';
 import { pageMeta, breadcrumbSchema } from '../data/seoMeta';
 import { STRATEGIC_TRIAGE_ENABLED } from '../config/features';
+
+// ─── Prefill helpers ──────────────────────────────────────────────────────
+// Build a starter message body from URL params passed by the home-page
+// estimator and pricing cards. Keeps users from having to retype their
+// configuration in the contact form.
+
+const tierLabels: Record<string, { name: string; users: string; lzs: string }> = {
+  small: { name: 'Small', users: '≤50 users', lzs: 'up to 2 Landing Zones' },
+  medium: { name: 'Medium', users: '50–250 users', lzs: 'up to 6 Landing Zones' },
+  large: { name: 'Large', users: '250+ users', lzs: '7+ Landing Zones' },
+};
+
+const addonLabels: Record<string, string> = {
+  'data-lz': 'Additional Data Landing Zone',
+  'sentinel': 'Sentinel Platform Management',
+  'finops': 'FinOps & Cost Optimisation',
+  'audit': 'Audit Evidence Support',
+  'ooh': 'Out-of-Hours Support',
+};
+
+const serviceLabels: Record<string, string> = {
+  'cloud-readiness-assessment': 'Cloud Readiness Assessment',
+  'azure-landing-zones': 'Azure Foundation & Landing Zones',
+  'cloud-security': 'Cloud Security & Compliance',
+  'devsecops': 'Secure DevOps & Automation',
+  'cloud-optimisation': 'Cloud Optimisation',
+  'advisory': 'Advisory & Consulting',
+  'managed-cloud': 'Managed Cloud Support',
+  'strategic-triage': 'Strategic Triage Engine',
+};
+
+// Returns { message, cursorPosition }. The cursor lands at the top of the
+// textarea so the user can start typing their own note straight away; the
+// configuration block sits below a separator so they can edit/remove it if
+// needed.
+const buildPrefillMessage = (
+  service: string | null,
+  tier: string | null,
+  addons: string | null,
+): { message: string; cursorPosition: number } => {
+  if (!service && !tier && !addons) return { message: '', cursorPosition: 0 };
+
+  const configLines: string[] = [];
+  const serviceLabel = service ? serviceLabels[service] : null;
+  if (serviceLabel) configLines.push(`• Service: ${serviceLabel}`);
+
+  const tierInfo = tier ? tierLabels[tier] : null;
+  if (tierInfo) configLines.push(`• Recommended tier: ${tierInfo.name} (${tierInfo.users}, ${tierInfo.lzs})`);
+
+  if (addons) {
+    const labels = addons.split(',').map((k) => addonLabels[k.trim()]).filter(Boolean);
+    if (labels.length > 0) configLines.push(`• Add-ons: ${labels.join(', ')}`);
+  }
+
+  if (configLines.length === 0) return { message: '', cursorPosition: 0 };
+
+  // Two blank lines for the user's note, then a separator, then the config block.
+  const userSpace = '\n\n';
+  const separator = '---\nConfiguration selected from the website:\n';
+  const message = `${userSpace}${separator}${configLines.join('\n')}`;
+
+  // Cursor at position 0 — start of the user's writing space.
+  return { message, cursorPosition: 0 };
+};
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 40 },
@@ -28,6 +93,8 @@ const ScrollReveal: React.FC<{
 );
 
 export const ContactPage: React.FC = () => {
+  const [searchParams] = useSearchParams();
+  const messageRef = useRef<HTMLTextAreaElement>(null);
   const [formState, setFormState] = useState({
     name: '',
     email: '',
@@ -38,6 +105,37 @@ export const ContactPage: React.FC = () => {
   });
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+
+  // Prefill from query params (e.g. /contact?service=managed-cloud&tier=medium&addons=finops,ooh).
+  // Runs once on mount; user edits are not overwritten if they navigate the URL after.
+  useEffect(() => {
+    const service = searchParams.get('service');
+    const tier = searchParams.get('tier');
+    const addons = searchParams.get('addons');
+    if (!service && !tier && !addons) return;
+
+    const validService = service && service in serviceLabels ? service : '';
+    const { message, cursorPosition } = buildPrefillMessage(service, tier, addons);
+
+    setFormState((prev) => ({
+      ...prev,
+      service: prev.service || validService,
+      message: prev.message || message,
+    }));
+
+    // After the textarea renders the prefilled value, drop the cursor at the
+    // user's writing space (top of the textarea) and scroll it into view.
+    if (message) {
+      requestAnimationFrame(() => {
+        const el = messageRef.current;
+        if (!el) return;
+        el.focus({ preventScroll: true });
+        el.setSelectionRange(cursorPosition, cursorPosition);
+        el.scrollTop = 0;
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -228,6 +326,7 @@ export const ContactPage: React.FC = () => {
                           className="w-full bg-surface-container border border-outline/40 rounded-lg px-4 py-3 text-white font-body text-sm focus:outline-none focus:border-primary/60 transition-colors appearance-none"
                         >
                           <option value="">Select a service</option>
+                          <option value="cloud-readiness-assessment">Cloud Readiness Assessment</option>
                           <option value="azure-landing-zones">Azure Foundation & Landing Zones</option>
                           <option value="cloud-security">Cloud Security & Compliance</option>
                           <option value="devsecops">Secure DevOps & Automation</option>
@@ -246,13 +345,14 @@ export const ContactPage: React.FC = () => {
                           Message *
                         </label>
                         <textarea
+                          ref={messageRef}
                           id="message"
                           name="message"
                           required
-                          rows={5}
+                          rows={9}
                           value={formState.message}
                           onChange={handleChange}
-                          className="w-full bg-surface-container border border-outline/40 rounded-lg px-4 py-3 text-white font-body text-sm focus:outline-none focus:border-primary/60 transition-colors resize-none"
+                          className="w-full bg-surface-container border border-outline/40 rounded-lg px-4 py-3 text-white font-body text-sm focus:outline-none focus:border-primary/60 transition-colors resize-y"
                           placeholder="Tell us about your project or challenge..."
                         />
                       </div>
