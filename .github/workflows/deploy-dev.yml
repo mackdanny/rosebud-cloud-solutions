@@ -15,6 +15,7 @@ env:
   SWA_NAME: swa-uks-web-dev-001
   SWA_LOCATION: westeurope
   SWA_SKU: Free
+  CUSTOM_DOMAIN: dev.rosebudcloudsolutions.co.uk
 
 permissions:
   id-token: write
@@ -98,6 +99,22 @@ jobs:
           app_location: dist/client
           skip_app_build: true
           skip_api_build: true
+
+      - name: Bind custom domain
+        run: |
+          existing=$(az staticwebapp hostname list \
+            --name ${{ env.SWA_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --query "[?name=='${{ env.CUSTOM_DOMAIN }}'].name" \
+            --output tsv)
+          if [ -z "$existing" ]; then
+            az staticwebapp hostname set \
+              --name ${{ env.SWA_NAME }} \
+              --resource-group ${{ env.RESOURCE_GROUP }} \
+              --hostname ${{ env.CUSTOM_DOMAIN }}
+          else
+            echo "Custom domain ${{ env.CUSTOM_DOMAIN }} already bound, skipping."
+          fi
 
       - name: Azure logout
         if: always()
