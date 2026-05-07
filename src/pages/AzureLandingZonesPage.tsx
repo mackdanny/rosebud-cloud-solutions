@@ -82,7 +82,7 @@ const useCases = [
     description:
       'Build a secure, scalable foundation from day one using proven architecture and best practices.',
     image:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuDZxmh_rwb9QhWuywZCNFQhonAJMyxc6ClzVLwWqvjcTUD9_gIRxCSKJvWJoIBGHbUZd17CFwwQ-xNDy2gK1VGD5q4r2TQ6CY_LHO4xA8mh5HnkXTruWr3aEOEIhS4WtNSDGgb-1e7jbQ54Je0jrB0cAjHgHK29PxuYCQ2rGlEqWmnXpZYB5f65ok-RoizBmEnTq_6ZZVMqrFXSXCUGpUMwyZQJjSwAhH49kzC91Q7udF5M5HTRNE4_fSSA9AMNU-BoyHlOdUlIR8eR',
+      '/alz/usecase-01.png',
   },
   {
     icon: 'cleaning_services',
@@ -90,7 +90,7 @@ const useCases = [
     description:
       'Redesign poorly structured environments to improve governance, security, and manageability.',
     image:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuAUmVss6YhmHAeZTnY9tgdGjeKObuOdVoKo-eu1QZIw5FbIQCVJha8iAXCpXQhJweMLYRa8CKfmHNDePS_F5f_9H0LxkQ4KCcL7wl2Hy4OtlD1CeEugzv2Pz5E6Oiqyp3WMyo8DdKxLtHdbUEcbKP14Ej8fFJDMXvZxgamz3gSd1wjKrhRjaQkWM4KJ5vfFLvgz-r86xEFicXr04J487MCjN62PsnWKF1RAWXJ14h0t4AaxSf459xLuFgL5rPesoBHCbHuBgnwZIHZB',
+      '/alz/usecase-02.png',
   },
   {
     icon: 'corporate_fare',
@@ -98,7 +98,7 @@ const useCases = [
     description:
       'Establish a consistent, repeatable foundation to support large-scale or multi-team deployments.',
     image:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuDWzsJEMY_tMcgRhpvoarbT9ZfhbqkqebbUDnmpE371QHTZmkkGB__IWNHj3zqfeqmKKSbnnc36FuNcecAdgQiuWumA3HmpgRwwJRY7phbJjIFbwxmn_0J5e_ihoCpkpsGljpa2Xd09Jlc_DyTp1F_uuUQjbuLJpqZ4_xpIX9mE8y1zawdn46RxPbQC_T5KOCU17haH7VcKtpPJ1uJflQVKmBBO_nUfnKMBHSEkJxVeNMD_-H2eshnYtyHaYvYIaOGA2EYw8QLU55PE',
+      '/alz/usecase-03.png',
   },
   {
     icon: 'policy',
@@ -106,7 +106,7 @@ const useCases = [
     description:
       'Enforce standards across subscriptions using Management Groups and Azure Policy.',
     image:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuC9aJE50M4p_v6TJWwWcSO4XXdUGSVLYItrVOZmSZROMedYuds3m3p1yxy7kaPx0O1nUa8JQOOyqHFu0wyBbC_V4QYselKmQ-z7gW4IOKL7Lydi07tVrtwLgLfUAmFNZ0GLQp8VAcG4rP1IyHNCYe9RGl2H1uB9ErLz4GSy_dwt0JFePRBoKlQczmSbDMYBlBu5xY-LfOZoV_kbzqC-84mFnWyEAztXy6dJ_uF_fQxcBCGwHbxtVJawIA1HMweVBrRHPjQN4TXh-zVH',
+      '/alz/usecase-04.png',
   },
   {
     icon: 'lan',
@@ -114,7 +114,7 @@ const useCases = [
     description:
       'Implement Hub & Spoke and private connectivity to reduce exposure and improve control.',
     image:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuCf8Bhdy6VVOSUT4dTau2cVPcPlmS3Hnw0KM3zWMHQFG6TsxbGVGb0yTDQ6Sc-MD23UA_w2-m45KUZgA_2yzsFNBwlgM2x-B8Cz66cZtIdeneOfSDQ2Sdbz26IPY8-hi76_cEy6pAvybUrfUBZwC8uQk6rPAPE1Qc7v4nIpZi6yw5JVQVIq_QGOr9ZNXHSiaI705-Xn82pHZcw33pEJRcYrss4HYiX6nm0JKEjHCaGuuNSdusvgvTvTTQKTAO1rFTStRslymp1tTOST',
+      '/alz/usecase-05.png',
   },
   {
     icon: 'terminal',
@@ -122,7 +122,7 @@ const useCases = [
     description:
       'Move from manual deployments to automated, consistent infrastructure provisioning.',
     image:
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuAKTafSUmVnKw5KVoye-4KYVStxoL0idGrcSauvf5YYg5NQai-tNd3bCEL7Vpt5dzu9j3OK3ejr0xj9eEkewZTrD9UuuzzedfUfgHtq-b_Ugcc6Dnr8b193M0OUfnSFf1OoOBj4RB02s66TYtwgWupnq4Xsyaf75itp0H4Shu1DFzsJbflUVTCo_tKhch0LubuS3lHb0jxTm_viftP3n1iTedvg8BLTkcrY3fYz7semjcF2gn5JoP_WbTFQJvz9CLEOVO6OTDjcX-d1',
+      '/alz/usecase-06.png',
   },
 ];
 
@@ -296,7 +296,7 @@ export const AzureLandingZonesPage: React.FC<AzureLandingZonesPageProps> = ({ cl
               <div className="absolute -inset-6 bg-primary/5 rounded-3xl blur-3xl pointer-events-none" />
               <div className="relative bg-surface-container-highest p-4 rounded-2xl shadow-2xl border border-outline/30">
                 <img
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMH1Y5v6DgUES11qEouC-M_nD9L-9CKIN9Uzje8KET6pOqgLn_52J_eVubzls1ALVJQmPCoVaI1lpk-E4ED6U-wWuvGjk_OcHtwOXJDa9t9OrhjjBQdVcOElizwlSfBUT1hg2ouhPpJwDKeVjfCVd7sXyhytMZJ32KzQPOuuU8HKW0m3gNrv1P_ty3JX3NZ-5vVz1vvLUoyCsMm-h0HtHY40bWw33nxG8FvTAByirXawHnlssX7RYheH2APGB41L3yVhKLXDQLpMGn"
+                  src="/alz/hero.png"
                   alt="Azure architecture overview"
                   className="rounded-xl w-full h-[460px] object-cover"
                 />
@@ -362,7 +362,7 @@ export const AzureLandingZonesPage: React.FC<AzureLandingZonesPageProps> = ({ cl
                 <div className="absolute -top-8 -left-8 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
                 <div className="relative bg-surface-container-highest p-4 rounded-2xl shadow-2xl border border-outline/30">
                   <img
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCf8Bhdy6VVOSUT4dTau2cVPcPlmS3Hnw0KM3zWMHQFG6TsxbGVGb0yTDQ6Sc-MD23UA_w2-m45KUZgA_2yzsFNBwlgM2x-B8Cz66cZtIdeneOfSDQ2Sdbz26IPY8-hi76_cEy6pAvybUrfUBZwC8uQk6rPAPE1Qc7v4nIpZi6yw5JVQVIq_QGOr9ZNXHSiaI705-Xn82pHZcw33pEJRcYrss4HYiX6nm0JKEjHCaGuuNSdusvgvTvTTQKTAO1rFTStRslymp1tTOST"
+                    src="/alz/usecase-05.png"
                     alt="Azure landing zone business impact and governance illustration"
                     className="rounded-xl w-full h-[500px] object-cover"
                   />
