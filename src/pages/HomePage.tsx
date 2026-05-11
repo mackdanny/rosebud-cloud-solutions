@@ -149,9 +149,9 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
         {/* Ambient glow */}
         <div className="absolute inset-0 rose-diffused-highlight pointer-events-none" />
 
-        {/* RCS watermark - shape-traced glow + ambient particles */}
-        <div className="absolute inset-0 md:inset-auto md:right-0 md:top-1/2 md:-translate-y-1/2 pointer-events-none flex items-center justify-center md:pr-4">
-          <div className="relative w-[320px] h-[320px] md:w-[580px] md:h-[580px] flex items-center justify-center">
+        {/* RCS watermark - above text on mobile, right-side background on desktop */}
+        <div className="relative md:absolute mt-24 mb-8 md:mt-0 md:mb-0 md:inset-auto md:right-0 md:top-1/2 md:-translate-y-1/2 pointer-events-none flex items-center justify-center md:pr-4">
+          <div className="relative w-[280px] h-[280px] md:w-[580px] md:h-[580px] flex items-center justify-center">
 
             {/* Ambient sparkles - lazy-loaded after hero text paints.
                 Radial mask feathers density at the edges so the container
