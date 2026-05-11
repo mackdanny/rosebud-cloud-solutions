@@ -150,8 +150,8 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
         <div className="absolute inset-0 rose-diffused-highlight pointer-events-none" />
 
         {/* RCS watermark - shape-traced glow + ambient particles */}
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none flex items-center justify-center pr-4">
-          <div className="relative w-[580px] h-[580px] flex items-center justify-center">
+        <div className="absolute inset-0 md:inset-auto md:right-0 md:top-1/2 md:-translate-y-1/2 pointer-events-none flex items-center justify-center md:pr-4">
+          <div className="relative w-[320px] h-[320px] md:w-[580px] md:h-[580px] flex items-center justify-center">
 
             {/* Ambient sparkles - lazy-loaded after hero text paints.
                 Radial mask feathers density at the edges so the container
@@ -196,7 +196,7 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
 
         {/* Hero content */}
         <div className="max-w-[1440px] mx-auto px-8 w-full relative z-10">
-          <div className="max-w-5xl">
+          <div className="max-w-5xl text-center md:text-left mx-auto md:mx-0">
 
             {/* Eyebrow */}
             <motion.span
@@ -233,7 +233,7 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
 
             {/* CTA row */}
             <motion.div
-              className="flex flex-col md:flex-row items-start md:items-center gap-10"
+              className="flex flex-col md:flex-row items-center gap-10"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.9 }}
