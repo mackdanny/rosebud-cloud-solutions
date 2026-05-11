@@ -27,7 +27,15 @@ export const onRenderHtml: OnRenderHtmlAsync = async (pageContext): ReturnType<O
   const { prelude } = await prerenderToNodeStream(
     <Page urlPathname={pageContext.urlPathname} helmetContext={helmetContext} />,
   );
-  const appHtml = await streamToString(prelude);
+  let appHtml = await streamToString(prelude);
+
+  // Strip Helmet-injected head tags from the prerendered body HTML.
+  // Helmet renders <title>, <meta>, <link> into the React tree AND the
+  // context — we use the context for <head>, so remove the body duplicates.
+  appHtml = appHtml
+    .replace(/<title[^>]*>.*?<\/title>/g, '')
+    .replace(/<meta[^>]*(?:name=|property=|charset=)[^>]*\/?>/g, '')
+    .replace(/<link[^>]*rel="(?:canonical|preload)"[^>]*\/?>/g, '');
 
   const { helmet } = helmetContext;
 
@@ -83,6 +91,7 @@ export const onRenderHtml: OnRenderHtmlAsync = async (pageContext): ReturnType<O
           "@type": "PostalAddress",
           "addressCountry": "GB"
         },
+        "sameAs": ["https://www.linkedin.com/company/rosebud-cloud-solutions-ltd/","https://www.instagram.com/rosebudcloudsolutions/"],
         "areaServed": "United Kingdom",
         "serviceType": ["Azure Landing Zones","Cloud Security","DevSecOps","Cloud Optimisation","Managed Cloud Services","Advisory & Consulting"]
       }

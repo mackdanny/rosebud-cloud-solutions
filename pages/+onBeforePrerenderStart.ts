@@ -14,6 +14,7 @@ export function onBeforePrerenderStart() {
     '/how-we-work',
     '/contact',
     '/case-studies',
+    '/faq',
     // Designed 404 page — hosting platform should serve this file for unknown paths.
     // E.g. Netlify: `/* /404.html 404`; Vercel: `rewrites: [{ source: '/(.*)', destination: '/404.html', statusCode: 404 }]`
     '/404',
