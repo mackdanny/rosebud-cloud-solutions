@@ -82,7 +82,7 @@ const useCases = [
     description:
       'Build a secure, scalable foundation from day one using proven architecture and best practices.',
     image:
-      '/alz/usecase-01.png',
+      '/alz/usecase-01.webp',
   },
   {
     icon: 'cleaning_services',
@@ -90,7 +90,7 @@ const useCases = [
     description:
       'Redesign poorly structured environments to improve governance, security, and manageability.',
     image:
-      '/alz/usecase-02.png',
+      '/alz/usecase-02.webp',
   },
   {
     icon: 'corporate_fare',
@@ -98,7 +98,7 @@ const useCases = [
     description:
       'Establish a consistent, repeatable foundation to support large-scale or multi-team deployments.',
     image:
-      '/alz/usecase-03.png',
+      '/alz/usecase-03.webp',
   },
   {
     icon: 'policy',
@@ -106,7 +106,7 @@ const useCases = [
     description:
       'Enforce standards across subscriptions using Management Groups and Azure Policy.',
     image:
-      '/alz/usecase-04.png',
+      '/alz/usecase-04.webp',
   },
   {
     icon: 'lan',
@@ -114,7 +114,7 @@ const useCases = [
     description:
       'Implement Hub & Spoke and private connectivity to reduce exposure and improve control.',
     image:
-      '/alz/usecase-05.png',
+      '/alz/usecase-05.webp',
   },
   {
     icon: 'terminal',
@@ -122,7 +122,7 @@ const useCases = [
     description:
       'Move from manual deployments to automated, consistent infrastructure provisioning.',
     image:
-      '/alz/usecase-06.png',
+      '/alz/usecase-06.webp',
   },
 ];
 
@@ -296,7 +296,7 @@ export const AzureLandingZonesPage: React.FC<AzureLandingZonesPageProps> = ({ cl
               <div className="absolute -inset-6 bg-primary/5 rounded-3xl blur-3xl pointer-events-none" />
               <div className="relative bg-surface-container-highest p-4 rounded-2xl shadow-2xl border border-outline/30">
                 <img
-                  src="/alz/hero.png"
+                  src="/alz/hero.webp"
                   alt="Azure architecture overview"
                   width={768}
                   height={460}
@@ -364,7 +364,7 @@ export const AzureLandingZonesPage: React.FC<AzureLandingZonesPageProps> = ({ cl
                 <div className="absolute -top-8 -left-8 w-64 h-64 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
                 <div className="relative bg-surface-container-highest p-4 rounded-2xl shadow-2xl border border-outline/30">
                   <img
-                    src="/alz/usecase-05.png"
+                    src="/alz/usecase-05.webp"
                     alt="Azure landing zone business impact and governance illustration"
                     width={768}
                     height={500}

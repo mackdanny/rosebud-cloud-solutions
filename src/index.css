@@ -1,6 +1,5 @@
+@import "./fonts.css";
 @import "tailwindcss";
-@import "@fontsource-variable/manrope";
-@import "@fontsource-variable/inter";
 
 /* ─── Rosebud Design Tokens ─────────────────────────────────────────────── */
 @theme {
