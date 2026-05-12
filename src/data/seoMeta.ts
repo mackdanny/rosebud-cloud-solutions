@@ -111,7 +111,10 @@ export const organisationSchema = {
     '@type': 'PostalAddress',
     addressCountry: 'GB',
   },
-  sameAs: [] as readonly string[],
+  sameAs: [
+    'https://www.linkedin.com/company/rosebud-cloud-solutions-ltd/',
+    'https://www.instagram.com/rosebudcloudsolutions/',
+  ],
   areaServed: 'United Kingdom',
   serviceType: [
     'Azure Landing Zones',

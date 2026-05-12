@@ -1204,6 +1204,8 @@ export const CloudSecurityPage: React.FC<CloudSecurityPageProps> = ({ className 
                 <img
                   src={`${import.meta.env.BASE_URL}service-cloud-security.webp`}
                   alt="Azure cloud security and compliance illustration - Rosebud Cloud Solutions"
+                  width={768}
+                  height={768}
                   className="rounded-xl w-full h-[460px] object-cover"
                 />
               </div>

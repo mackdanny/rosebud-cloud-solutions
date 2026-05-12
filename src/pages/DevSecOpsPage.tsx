@@ -1230,6 +1230,8 @@ export const DevSecOpsPage: React.FC<DevSecOpsPageProps> = ({ className = '' }) 
                 <img
                   src={`${import.meta.env.BASE_URL}service-devsecops.webp`}
                   alt="Azure DevSecOps and secure CI/CD pipeline automation illustration"
+                  width={768}
+                  height={768}
                   className="rounded-xl w-full h-[460px] object-cover"
                 />
               </div>

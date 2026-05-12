@@ -298,6 +298,8 @@ export const AzureLandingZonesPage: React.FC<AzureLandingZonesPageProps> = ({ cl
                 <img
                   src="/alz/hero.png"
                   alt="Azure architecture overview"
+                  width={768}
+                  height={460}
                   className="rounded-xl w-full h-[460px] object-cover"
                 />
               </div>
@@ -364,6 +366,8 @@ export const AzureLandingZonesPage: React.FC<AzureLandingZonesPageProps> = ({ cl
                   <img
                     src="/alz/usecase-05.png"
                     alt="Azure landing zone business impact and governance illustration"
+                    width={768}
+                    height={500}
                     className="rounded-xl w-full h-[500px] object-cover"
                   />
                 </div>
@@ -449,6 +453,8 @@ export const AzureLandingZonesPage: React.FC<AzureLandingZonesPageProps> = ({ cl
                 <img
                   src={image}
                   alt={title}
+                  width={768}
+                  height={320}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 {/* Gradient overlay */}

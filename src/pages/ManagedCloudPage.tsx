@@ -1111,6 +1111,8 @@ export const ManagedCloudPage: React.FC<ManagedCloudPageProps> = ({ className = 
                 <img
                   src={`${import.meta.env.BASE_URL}service-managed-cloud.webp`}
                   alt="Azure managed cloud and 24/7 operations support illustration"
+                  width={768}
+                  height={768}
                   className="rounded-xl w-full h-[460px] object-cover"
                 />
               </div>

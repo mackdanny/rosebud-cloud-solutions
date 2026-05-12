@@ -1,10 +1,11 @@
+import { lazy, Suspense } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import { SEO } from '../components/SEO';
 import { breadcrumbSchema } from '../data/seoMeta';
 import { SITE_URL, SITE_NAME } from '../config/site';
-import { ParticleBackground } from '../components/ParticleBackground';
+const ParticleBackground = lazy(() => import('../components/ParticleBackground'));
 import { caseStudies, getCaseStudyBySlug } from '../data/caseStudies';
 
 // ─── Animation Variants ───────────────────────────────────────────────────────
@@ -95,7 +96,7 @@ export const CaseStudyDetailPage: React.FC = () => {
 
       {/* ── Hero ──────────────────────────────────────────────────────── */}
       <section className="relative pt-28 pb-20 flex items-center overflow-hidden border-b border-outline">
-        <ParticleBackground />
+        <Suspense fallback={null}><ParticleBackground /></Suspense>
 
         <motion.div
           className="absolute top-1/4 right-0 w-[600px] h-[600px] rounded-full blur-[180px] pointer-events-none"
@@ -159,6 +160,8 @@ export const CaseStudyDetailPage: React.FC = () => {
                 <img
                   src={`${import.meta.env.BASE_URL}${study.image}`}
                   alt={study.title}
+                  width={1024}
+                  height={1024}
                   className="absolute inset-0 w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-tr from-background/60 via-transparent to-primary/10 pointer-events-none" />
@@ -494,6 +497,8 @@ export const CaseStudyDetailPage: React.FC = () => {
                 <img
                   src={`${import.meta.env.BASE_URL}${nextStudy.image}`}
                   alt={nextStudy.title}
+                  width={1024}
+                  height={1024}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-surface-container/80 via-transparent to-transparent pointer-events-none" />

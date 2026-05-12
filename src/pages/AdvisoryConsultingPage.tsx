@@ -1054,6 +1054,8 @@ export const AdvisoryConsultingPage: React.FC<AdvisoryConsultingPageProps> = ({ 
                 <img
                   src={`${import.meta.env.BASE_URL}service-cloud-architecture.webp`}
                   alt="Azure advisory, cloud architecture and strategy illustration"
+                  width={768}
+                  height={768}
                   className="rounded-xl w-full h-[460px] object-cover"
                 />
               </div>

@@ -61,7 +61,7 @@ export const Nav: React.FC<NavProps> = ({ className = '' }) => {
 
         {/* Logo */}
         <Link to="/" className="flex items-center hover:opacity-80 transition-opacity">
-          <img src={`${import.meta.env.BASE_URL}rcs-logo-full.webp`} alt="Rosebud Cloud Solutions" className="h-16 md:h-28 w-auto" />
+          <img src={`${import.meta.env.BASE_URL}rcs-logo-full.webp`} alt="Rosebud Cloud Solutions" width={1200} height={630} className="h-16 md:h-28 w-auto" />
         </Link>
 
         {/* Desktop Nav Links */}

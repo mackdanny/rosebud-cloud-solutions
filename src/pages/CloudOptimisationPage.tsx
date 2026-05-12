@@ -1028,6 +1028,8 @@ export const CloudOptimisationPage: React.FC<CloudOptimisationPageProps> = ({ cl
                 <img
                   src={`${import.meta.env.BASE_URL}service-cloud-optimisation.webp`}
                   alt="Azure cloud cost optimisation and FinOps illustration"
+                  width={768}
+                  height={768}
                   className="rounded-xl w-full h-[460px] object-cover"
                 />
               </div>

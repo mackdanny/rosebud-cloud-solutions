@@ -8,7 +8,7 @@ import { CostEstimator } from '../components/CostEstimator';
 import { PricingPlans } from '../components/PricingPlans';
 import { pageMeta, organisationSchema, websiteSchema, faqSchema } from '../data/seoMeta';
 import { faqs } from '../data/faqs';
-import { ParticleBackground } from '../components/ParticleBackground';
+const ParticleBackground = lazy(() => import('../components/ParticleBackground'));
 import { TiltCard } from '../components/TiltCard';
 import { useMouseSpotlight } from '../hooks/useMouseSpotlight';
 import { heroContent, certifications } from '../data/mockData';
@@ -144,7 +144,7 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
         className="spotlight relative min-h-screen flex flex-col justify-center pt-20 overflow-hidden"
       >
         {/* Particle network */}
-        <ParticleBackground />
+        <Suspense fallback={null}><ParticleBackground /></Suspense>
 
         {/* Ambient glow */}
         <div className="absolute inset-0 rose-diffused-highlight pointer-events-none" />
@@ -525,6 +525,8 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
                   <img
                     src={`${import.meta.env.BASE_URL}strategic-triage.webp`}
                     alt="Strategic Triage Engine"
+                    width={768}
+                    height={768}
                     className="rounded-xl w-full aspect-square object-cover"
                   />
                 </div>

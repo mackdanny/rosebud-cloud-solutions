@@ -1,9 +1,10 @@
+import { lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import { SEO } from '../components/SEO';
 import { pageMeta, breadcrumbSchema } from '../data/seoMeta';
-import { ParticleBackground } from '../components/ParticleBackground';
+const ParticleBackground = lazy(() => import('../components/ParticleBackground'));
 import { caseStudies } from '../data/caseStudies';
 import { SITE_URL } from '../config/site';
 
@@ -69,7 +70,7 @@ export const CaseStudiesPage: React.FC = () => {
 
       {/* ── Hero ──────────────────────────────────────────────────────── */}
       <section className="relative pt-28 pb-20 flex items-center overflow-hidden border-b border-outline">
-        <ParticleBackground />
+        <Suspense fallback={null}><ParticleBackground /></Suspense>
 
         {/* Ambient glows */}
         <motion.div
