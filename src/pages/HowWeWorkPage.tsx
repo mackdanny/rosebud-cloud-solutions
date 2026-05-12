@@ -1,4 +1,3 @@
-import { lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
@@ -6,7 +5,6 @@ import { SEO } from '../components/SEO';
 import { Faq } from '../components/Faq';
 import { pageMeta, breadcrumbSchema, faqSchema } from '../data/seoMeta';
 import { faqs } from '../data/faqs';
-const ParticleBackground = lazy(() => import('../components/ParticleBackground'));
 
 // ─── Animation Variants ───────────────────────────────────────────────────────
 
@@ -153,8 +151,6 @@ export const HowWeWorkPage: React.FC = () => {
 
       {/* ── Hero ──────────────────────────────────────────────────────── */}
       <section className="relative pt-28 pb-20 flex items-center overflow-hidden border-b border-outline">
-        <Suspense fallback={null}><ParticleBackground /></Suspense>
-
         {/* Ambient glows */}
         <motion.div
           className="absolute top-1/4 right-0 w-[600px] h-[600px] rounded-full blur-[180px] pointer-events-none"

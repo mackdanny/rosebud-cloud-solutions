@@ -1,11 +1,9 @@
-import { lazy, Suspense } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 import { SEO } from '../components/SEO';
 import { breadcrumbSchema } from '../data/seoMeta';
 import { SITE_URL, SITE_NAME } from '../config/site';
-const ParticleBackground = lazy(() => import('../components/ParticleBackground'));
 import { caseStudies, getCaseStudyBySlug } from '../data/caseStudies';
 
 // ─── Animation Variants ───────────────────────────────────────────────────────
@@ -96,8 +94,6 @@ export const CaseStudyDetailPage: React.FC = () => {
 
       {/* ── Hero ──────────────────────────────────────────────────────── */}
       <section className="relative pt-28 pb-20 flex items-center overflow-hidden border-b border-outline">
-        <Suspense fallback={null}><ParticleBackground /></Suspense>
-
         <motion.div
           className="absolute top-1/4 right-0 w-[600px] h-[600px] rounded-full blur-[180px] pointer-events-none"
           style={{ background: 'rgba(160, 0, 181, 0.15)' }}
