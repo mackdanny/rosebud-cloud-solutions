@@ -109,6 +109,8 @@ export const organisationSchema = {
   },
   address: {
     '@type': 'PostalAddress',
+    addressLocality: 'Worthing',
+    addressRegion: 'West Sussex',
     addressCountry: 'GB',
   },
   sameAs: [

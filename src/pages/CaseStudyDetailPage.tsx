@@ -77,7 +77,8 @@ export const CaseStudyDetailPage: React.FC = () => {
   return (
     <main key={study.slug} className="bg-background min-h-screen">
       <SEO
-        title={`${study.title} | Case Study | ${SITE_NAME}`}
+        title={study.title}
+        titleSuffix="RCS"
         description={study.description}
         path={studyPath}
         image={`/${study.image}`}

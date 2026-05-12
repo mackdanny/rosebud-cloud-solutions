@@ -18,6 +18,7 @@ interface SEOProps {
   readonly type?: 'website' | 'article';
   readonly noindex?: boolean;
   readonly schema?: object | readonly object[];
+  readonly titleSuffix?: string;
   /** Preload hints for critical above-the-fold imagery (typically 1 per page: the LCP candidate). */
   readonly preloadImages?: readonly PreloadImage[];
 }
@@ -30,11 +31,12 @@ export function SEO({
   type = 'website',
   noindex = false,
   schema,
+  titleSuffix,
   preloadImages,
 }: SEOProps) {
   const location = useLocation();
   const canonical = `${SITE_URL}${path ?? location.pathname}`;
-  const fullTitle = title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`;
+  const fullTitle = titleSuffix !== undefined ? `${title} | ${titleSuffix}` : title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`;
   const imageUrl = image.startsWith('http') ? image : `${SITE_URL}${image.startsWith('/') ? '' : '/'}${image}`;
   const schemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
 
