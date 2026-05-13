@@ -170,7 +170,7 @@ export const faqs = {
     {
       question: 'Are you genuinely Microsoft-certified, and what does that mean for clients?',
       answer:
-        'Yes - our architects hold current Microsoft certifications across Azure platform, security, and DevOps disciplines. In practical terms, that means our designs are validated against Microsoft reference architectures, we get early access to Microsoft engineering guidance, and we know when to escalate through Microsoft support for genuinely difficult problems rather than spending client time re-discovering answers.',
+        'Yes - we are a recognised Microsoft Solutions Partner for both Data & AI and Infrastructure on Azure, which is a company-level designation that requires demonstrated technical capability and proven client outcomes. On top of that, our architects hold individual Microsoft certifications across Azure platform, security, and DevOps disciplines. In practical terms, that means our designs are validated against Microsoft reference architectures, we get early access to Microsoft engineering guidance, and we know when to escalate through Microsoft support for genuinely difficult problems rather than spending client time re-discovering answers.',
     },
     {
       question: 'Where are you based and where can you work?',
@@ -187,7 +187,7 @@ export const faqs = {
     {
       question: 'What makes Rosebud Cloud Solutions different from other Azure consultancies?',
       answer:
-        "We focus narrowly on Azure and the Microsoft cloud stack rather than spreading across every cloud and every technology. Depth over breadth. Every senior engineer has Microsoft certifications and real delivery experience at enterprise scale. We do not staff engagements with people learning on the client's time, and we do not take on work that sits outside what we are genuinely expert in.",
+        "We focus narrowly on Azure and the Microsoft cloud stack rather than spreading across every cloud and every technology. Depth over breadth. We hold Microsoft Solutions Partner designations for Data & AI and Infrastructure, and every senior engineer carries individual Microsoft certifications with real delivery experience at enterprise scale. We do not staff engagements with people learning on the client's time, and we do not take on work that sits outside what we are genuinely expert in.",
     },
     {
       question: 'What does your team look like?',
