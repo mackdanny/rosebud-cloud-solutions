@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 const BG = { r: 11, g: 15, b: 42 };
 const SAMPLE_W = 1200;
 const SAMPLE_H = 600;
-const PIXEL_STEPS = 3;
+const PIXEL_STEPS = 2;
 
 const PHASE_2_AT = 2800;
 const PHASE_3_AT = 5600;
@@ -61,7 +61,7 @@ class Particle {
     if (this.colorWeight < 1) this.colorWeight = Math.min(this.colorWeight + this.colorBlendRate, 1);
     const c = this.currentColor();
     ctx.fillStyle = `rgb(${c.r},${c.g},${c.b})`;
-    ctx.fillRect(this.pos.x, this.pos.y, 2, 2);
+    ctx.fillRect(this.pos.x, this.pos.y, 1, 1);
   }
 
   kill(w: number, h: number) {
