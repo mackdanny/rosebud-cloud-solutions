@@ -11,7 +11,7 @@ import { faqs } from '../data/faqs';
 const ParticleBackground = lazy(() => import('../components/ParticleBackground'));
 import { TiltCard } from '../components/TiltCard';
 import { useMouseSpotlight } from '../hooks/useMouseSpotlight';
-import { heroContent, certifications } from '../data/mockData';
+import { heroContent, solutionsPartner, certifications } from '../data/mockData';
 import { STRATEGIC_TRIAGE_ENABLED } from '../config/features';
 
 // Lazy-load: SparklesCore pulls in three.js (~500KB). Defer until after the hero
@@ -141,7 +141,7 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
       {/* ── Hero ─────────────────────────────────────────────────────── */}
       <section
         ref={heroRef}
-        className="spotlight relative min-h-screen flex flex-col justify-center pt-20 overflow-hidden"
+        className="spotlight relative min-h-screen flex flex-col justify-center pt-20 pb-20 overflow-hidden"
       >
         {/* Particle network */}
         <Suspense fallback={null}><ParticleBackground /></Suspense>
@@ -259,12 +259,50 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
 
       </section>
 
-      {/* ── Microsoft Certifications ───────────────────────────────── */}
+      {/* ── Microsoft Partnership & Certifications ─────────────────── */}
       <section className="py-24 border-y border-outline bg-surface">
         <div className="max-w-[1440px] mx-auto px-8">
           <ScrollReveal className="text-center">
             <p className="text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label mb-3">
-              Microsoft-Certified Expertise
+              Microsoft Solutions Partner
+            </p>
+            <p className="text-on-surface-variant text-sm max-w-md mx-auto mb-12">
+              Recognised by Microsoft as a Solutions Partner for Data & AI and Infrastructure on Azure.
+            </p>
+          </ScrollReveal>
+          <motion.div
+            className="flex flex-wrap justify-center items-center gap-10 md:gap-16 mb-20"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-60px' }}
+            variants={staggerContainer}
+          >
+            {solutionsPartner.map(({ src, alt }, i) => (
+              <motion.div
+                key={src}
+                variants={scaleIn}
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.4, delay: i * 0.12, ease: 'easeOut' }}
+                className="bg-white rounded-2xl shadow-lg p-4 w-56 md:w-72 cursor-pointer transition-[filter] duration-400 hover:drop-shadow-[0_0_24px_rgba(160,0,181,0.45)]"
+                style={{ filter: 'drop-shadow(0 0 0px rgba(160,0,181,0))' }}
+                title={alt}
+              >
+                <img
+                  src={`${import.meta.env.BASE_URL}${src.replace(/^\//, '')}`}
+                  alt={alt}
+                  loading="lazy"
+                  decoding="async"
+                  width={280}
+                  height={140}
+                  className="w-full h-auto object-contain"
+                />
+              </motion.div>
+            ))}
+          </motion.div>
+
+          <ScrollReveal className="text-center">
+            <p className="text-[10px] uppercase tracking-[0.3em] text-on-surface-variant/60 font-bold font-label mb-3">
+              Individual Certifications
             </p>
             <p className="text-on-surface-variant text-sm max-w-md mx-auto mb-14">
               Our team holds active Microsoft certifications across Azure infrastructure, AI, networking, and DevOps.

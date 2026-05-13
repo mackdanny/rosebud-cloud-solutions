@@ -8,6 +8,11 @@ export const heroContent = {
   body: 'We architect resilient infrastructure that bridges the gap between legacy complexity and cloud-native agility.',
 };
 
+export const solutionsPartner = [
+  { src: '/partner-data-ai.png', alt: 'Microsoft Solutions Partner: Data & AI (Azure)' },
+  { src: '/partner-infrastructure.png', alt: 'Microsoft Solutions Partner: Infrastructure (Azure)' },
+];
+
 export const certifications = [
   { src: '/cert-01.webp', alt: 'Microsoft Certified: Azure Solutions Architect Expert' },
   { src: '/cert-02.webp', alt: 'Microsoft Certified: DevOps Engineer Expert' },
