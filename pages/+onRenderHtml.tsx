@@ -36,14 +36,28 @@ export const onRenderHtml: OnRenderHtmlAsync = async (pageContext): ReturnType<O
 
   const { helmet } = helmetContext;
 
-  const helmetTags = helmet
-    ? [
-        helmet.title.toString(),
-        helmet.meta.toString(),
-        helmet.link.toString(),
-        helmet.script.toString(),
-      ].join('\n    ')
-    : '';
+  // react-helmet-async v3 + React 19: Helmet becomes a passthrough and no
+  // longer populates the context. Extract hoistable tags directly from the
+  // rendered HTML so social scrapers (LinkedIn, Facebook) find them in <head>.
+  let helmetTags: string;
+  let cleanedAppHtml = appHtml;
+
+  if (helmet) {
+    helmetTags = [
+      helmet.title.toString(),
+      helmet.meta.toString(),
+      helmet.link.toString(),
+      helmet.script.toString(),
+    ].join('\n    ');
+  } else {
+    const extracted: string[] = [];
+    cleanedAppHtml = appHtml
+      .replace(/<title[^>]*>.*?<\/title>/gi, (m) => { extracted.push(m); return ''; })
+      .replace(/<meta\s[^>]*(?:property=["']og:|name=["'](?:description|twitter:|robots))[^>]*\/?>/gi, (m) => { extracted.push(m); return ''; })
+      .replace(/<link\s[^>]*rel=["']canonical["'][^>]*\/?>/gi, (m) => { extracted.push(m); return ''; })
+      .replace(/<script\s[^>]*type=["']application\/ld\+json["'][^>]*>.*?<\/script>/gi, (m) => { extracted.push(m); return ''; });
+    helmetTags = extracted.join('\n    ');
+  }
 
   const htmlAttrs = helmet?.htmlAttributes.toString() ?? 'lang="en"';
   const bodyAttrs = helmet?.bodyAttributes.toString() ?? '';
@@ -61,7 +75,7 @@ export const onRenderHtml: OnRenderHtmlAsync = async (pageContext): ReturnType<O
     ${dangerouslySkipEscape(helmetTags)}
   </head>
   <body ${dangerouslySkipEscape(bodyAttrs)}>
-    <div id="root">${dangerouslySkipEscape(appHtml)}</div>
+    <div id="root">${dangerouslySkipEscape(cleanedAppHtml)}</div>
   </body>
 </html>`;
 };
