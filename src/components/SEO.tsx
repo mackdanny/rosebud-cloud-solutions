@@ -39,6 +39,11 @@ export function SEO({
   const fullTitle = titleSuffix !== undefined ? `${title} | ${titleSuffix}` : title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`;
   const imageUrl = image.startsWith('http') ? image : `${SITE_URL}${image.startsWith('/') ? '' : '/'}${image}`;
   const schemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
+  // JSON-LD is extracted into <head> during SSR pre-rendering. On the client,
+  // react-helmet-async v3 + React 19 acts as a passthrough and would render a
+  // second copy into the DOM, causing "Duplicate field" errors in Rich Results.
+  // Only render JSON-LD on the server to avoid this.
+  const isServer = typeof window === 'undefined';
 
   return (
     <Helmet>
@@ -60,7 +65,7 @@ export function SEO({
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={imageUrl} />
-      {schemas.map((s, i) => (
+      {isServer && schemas.map((s, i) => (
         <script key={i} type="application/ld+json">
           {JSON.stringify(s)}
         </script>
