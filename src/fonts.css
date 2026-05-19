@@ -1,3 +1,12 @@
+/* Material Symbols Outlined – self-hosted to eliminate render-blocking Google Fonts request */
+@font-face {
+  font-family: 'Material Symbols Outlined';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 700;
+  src: url(./assets/material-symbols-outlined.woff2) format('woff2');
+}
+
 /* Manrope Variable – Latin subsets only (saves ~110KB vs full import) */
 @font-face {
   font-family: 'Manrope Variable';
