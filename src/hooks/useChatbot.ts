@@ -65,15 +65,23 @@ export function useChatbot(): UseChatbotReturn {
   const [hasInteracted, setHasInteracted] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
   const transcriptSentRef = useRef(false);
+  const transcriptTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Send transcript when chat is closed after a conversation
-  const prevIsOpenRef = useRef(isOpen);
+  // Send transcript 2 minutes after chat is closed (cancels if reopened)
   useEffect(() => {
-    if (prevIsOpenRef.current && !isOpen && hasInteracted && messages.length > 0 && !transcriptSentRef.current) {
-      transcriptSentRef.current = true;
-      submitTranscript(messages).catch(() => { /* best effort */ });
+    if (!isOpen && hasInteracted && messages.length > 0 && !transcriptSentRef.current) {
+      transcriptTimerRef.current = setTimeout(() => {
+        transcriptSentRef.current = true;
+        submitTranscript(messages).catch(() => { /* best effort */ });
+      }, 120_000);
     }
-    prevIsOpenRef.current = isOpen;
+
+    return () => {
+      if (transcriptTimerRef.current) {
+        clearTimeout(transcriptTimerRef.current);
+        transcriptTimerRef.current = null;
+      }
+    };
   }, [isOpen, hasInteracted, messages]);
 
   const sendMessage = useCallback(async (content: string) => {

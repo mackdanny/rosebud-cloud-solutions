@@ -178,12 +178,12 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
   );
 };
 
-function formatMessage(text: string): React.ReactNode[] {
+function formatInline(text: string, keyOffset: number): React.ReactNode[] {
   const parts: React.ReactNode[] = [];
   const regex = /\*\*(.+?)\*\*/g;
   let lastIndex = 0;
   let match;
-  let key = 0;
+  let key = keyOffset;
 
   while ((match = regex.exec(text)) !== null) {
     if (match.index > lastIndex) {
@@ -196,6 +196,18 @@ function formatMessage(text: string): React.ReactNode[] {
     parts.push(text.slice(lastIndex));
   }
   return parts;
+}
+
+function formatMessage(text: string): React.ReactNode[] {
+  const paragraphs = text.split(/\n\n+/);
+  if (paragraphs.length <= 1) {
+    return formatInline(text, 0);
+  }
+  return paragraphs.map((p, i) => (
+    <p key={i} className={i > 0 ? 'mt-2' : ''}>
+      {formatInline(p, i * 100)}
+    </p>
+  ));
 }
 
 function BotMessage({ content, isStreaming }: { content: string; isStreaming?: boolean }) {
