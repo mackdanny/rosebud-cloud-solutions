@@ -28,9 +28,15 @@ export async function handleTranscript(
 
   const response = await fetch('https://api.web3forms.com/submit', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      Referer: 'https://www.rosebudcloudsolutions.co.uk',
+      Origin: 'https://www.rosebudcloudsolutions.co.uk',
+    },
     body: JSON.stringify({
       access_key: env.WEB3FORMS_KEY,
+      botcheck: '',
       subject: `Chatbot Transcript (${messageCount} visitor messages)`,
       from_name: 'RCS Chatbot',
       name: 'RCS Chatbot',
@@ -40,7 +46,17 @@ export async function handleTranscript(
     }),
   });
 
-  const data = (await response.json()) as { success: boolean };
+  const text = await response.text();
+  let data: { success: boolean };
+  try {
+    data = JSON.parse(text) as { success: boolean };
+  } catch {
+    console.error('Web3Forms response:', text);
+    return new Response(
+      JSON.stringify({ error: `Web3Forms error: ${text.slice(0, 100)}` }),
+      { status: 502, headers: { 'Content-Type': 'application/json', ...corsHeaders } },
+    );
+  }
 
   if (!data.success) {
     return new Response(

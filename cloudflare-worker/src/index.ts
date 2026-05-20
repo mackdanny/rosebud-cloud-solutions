@@ -29,7 +29,13 @@ function getCorsHeaders(request: Request, env: Env): Record<string, string> | nu
   if (!origin) return { 'Access-Control-Allow-Origin': '*' };
 
   const allowed = env.ALLOWED_ORIGINS.split(',').map((o) => o.trim());
-  if (!allowed.includes(origin)) return null;
+  const isAllowed = allowed.some((a) => {
+    if (a === origin) return true;
+    // Support subdomains: https://rcs-preview.pages.dev matches https://*.rcs-preview.pages.dev
+    if (origin.endsWith('.' + new URL(a).host) && new URL(a).protocol === new URL(origin).protocol) return true;
+    return false;
+  });
+  if (!isAllowed) return null;
 
   return {
     'Access-Control-Allow-Origin': origin,
