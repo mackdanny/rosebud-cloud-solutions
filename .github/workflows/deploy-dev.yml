@@ -43,6 +43,7 @@ jobs:
         run: npm run build
         env:
           VITE_WEB3FORMS_KEY: ${{ secrets.VITE_WEB3FORMS_KEY }}
+          VITE_CHATBOT_API_URL: https://rcs-chatbot.rosebudcloudsolutions.workers.dev
 
       - name: Validate build output
         run: |
