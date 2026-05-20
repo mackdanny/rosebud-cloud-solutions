@@ -1,0 +1,6 @@
+name = "rcs-chatbot"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+
+[vars]
+ALLOWED_ORIGINS = "http://localhost:5173,https://www.rosebudcloudsolutions.co.uk"
