@@ -1,5 +1,6 @@
 import { handleChat } from './chat';
 import { handleLead } from './lead';
+import { handleTranscript } from './transcript';
 
 interface Env {
   ANTHROPIC_API_KEY: string;
@@ -86,6 +87,21 @@ export default {
       const body = await request.json() as { name?: string; email?: string; topic?: string };
       return handleLead(
         { name: body.name || '', email: body.email || '', topic: body.topic || '' },
+        env,
+        corsHeaders,
+      );
+    }
+
+    if (url.pathname === '/api/transcript') {
+      const body = await request.json() as { messages?: { role: string; content: string }[] };
+      if (!body.messages || !Array.isArray(body.messages)) {
+        return new Response(
+          JSON.stringify({ error: 'Invalid request: messages array required.' }),
+          { status: 400, headers: { 'Content-Type': 'application/json', ...corsHeaders } },
+        );
+      }
+      return handleTranscript(
+        body.messages as { role: 'user' | 'assistant'; content: string }[],
         env,
         corsHeaders,
       );

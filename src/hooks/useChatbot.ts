@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 
 export interface ChatMessage {
   role: 'user' | 'assistant';
@@ -34,6 +34,21 @@ export function useChatbot(): UseChatbotReturn {
   const [error, setError] = useState<string | null>(null);
   const [hasInteracted, setHasInteracted] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
+  const transcriptSentRef = useRef(false);
+
+  // Send transcript when chat is closed after a conversation
+  const prevIsOpenRef = useRef(isOpen);
+  useEffect(() => {
+    if (prevIsOpenRef.current && !isOpen && hasInteracted && messages.length > 0 && !transcriptSentRef.current) {
+      transcriptSentRef.current = true;
+      fetch(`${API_URL}/api/transcript`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages }),
+      }).catch(() => { /* best effort */ });
+    }
+    prevIsOpenRef.current = isOpen;
+  }, [isOpen, hasInteracted, messages]);
 
   const sendMessage = useCallback(async (content: string) => {
     if (!content.trim() || isStreaming) return;
