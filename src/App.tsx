@@ -1,9 +1,12 @@
 import { lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import { MotionConfig } from 'framer-motion';
+import { AnimatePresence, MotionConfig } from 'framer-motion';
 import { Nav } from './components/Nav';
 import { Footer } from './components/Footer';
 import { Preloader } from './components/Preloader';
+import { ChatBubble } from './components/ChatBubble';
+import { ChatPanel } from './components/ChatPanel';
+import { useChatbot } from './hooks/useChatbot';
 import { STRATEGIC_TRIAGE_ENABLED } from './config/features';
 
 // Lazy-loaded routes - each emits its own chunk. Hydration uses Suspense fallback.
@@ -74,6 +77,8 @@ function ScrollToTop() {
 }
 
 export function AppRoutes() {
+  const chatbot = useChatbot();
+
   return (
     <Preloader>
       <div className="min-h-screen bg-background text-on-background">
@@ -101,6 +106,23 @@ export function AppRoutes() {
           </Routes>
         </Suspense>
         <Footer />
+        <AnimatePresence>
+          {!chatbot.isOpen && (
+            <ChatBubble onClick={() => chatbot.setIsOpen(true)} isOpen={chatbot.isOpen} />
+          )}
+        </AnimatePresence>
+        <AnimatePresence>
+          {chatbot.isOpen && (
+            <ChatPanel
+              messages={chatbot.messages}
+              onSend={chatbot.sendMessage}
+              onClose={() => chatbot.setIsOpen(false)}
+              isStreaming={chatbot.isStreaming}
+              error={chatbot.error}
+              hasInteracted={chatbot.hasInteracted}
+            />
+          )}
+        </AnimatePresence>
       </div>
     </Preloader>
   );
