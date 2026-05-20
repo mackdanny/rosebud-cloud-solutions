@@ -127,6 +127,27 @@ A markdown file (`src/data/chatbotKnowledge.md` or similar) containing curated c
 
 This file is embedded in the Worker's system prompt at deploy time.
 
+## Lead Capture
+
+When a visitor provides their name and email through the chat, the Worker submits the details to the existing Web3Forms integration (same service powering the contact form). No new email service needed.
+
+### Flow
+1. Bot offers to collect details (pricing question, or visitor asks to be contacted)
+2. Bot asks for name and email conversationally (not a form — natural chat flow)
+3. Bot confirms the details back to the visitor before submitting
+4. Worker POSTs to Web3Forms API with:
+   - Name, email, and a summary of what the visitor was asking about
+   - Subject line: "Chatbot Lead: [visitor's topic of interest]"
+   - Source field: "AI Chatbot" (to distinguish from contact form submissions)
+5. Visitor gets confirmation: "Done — someone from the team will be in touch shortly"
+
+### Worker Endpoint
+- `POST /api/lead` — separate from `/api/chat`
+- Request body: `{ name: string, email: string, topic: string }`
+- Submits to Web3Forms using the same API key (passed as Worker env var `WEB3FORMS_KEY`)
+- Returns success/failure to frontend
+- Same rate limiting as chat endpoint
+
 ## Cloudflare Worker
 
 ### Endpoint
@@ -141,6 +162,7 @@ This file is embedded in the Worker's system prompt at deploy time.
 
 ### Environment Variables
 - `ANTHROPIC_API_KEY` — Claude API key
+- `WEB3FORMS_KEY` — Web3Forms API key (same as site's contact form)
 - `ALLOWED_ORIGINS` — comma-separated list of allowed CORS origins
 
 ### Conversation Limits
@@ -221,6 +243,7 @@ cloudflare-worker/                # Separate repo or directory
 ├── src/
 │   ├── index.ts                  # Worker entry point & routing
 │   ├── chat.ts                   # Claude API integration
+│   ├── lead.ts                   # Web3Forms lead submission
 │   └── knowledge.ts              # System prompt + knowledge base
 ├── wrangler.toml                 # Cloudflare Worker config
 └── package.json
