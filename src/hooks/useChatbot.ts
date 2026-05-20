@@ -16,14 +16,44 @@ interface UseChatbotReturn {
 }
 
 const API_URL = import.meta.env.VITE_CHATBOT_API_URL || '';
+const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY || '';
 
 const LEAD_CAPTURE_REGEX = /\[LEAD_CAPTURE:([^|]+)\|([^|]+)\|([^\]]+)\]/;
 
-async function submitLead(name: string, email: string, topic: string): Promise<void> {
-  await fetch(`${API_URL}/api/lead`, {
+async function submitToWeb3Forms(data: Record<string, string>): Promise<void> {
+  await fetch('https://api.web3forms.com/submit', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, email, topic }),
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify({ access_key: WEB3FORMS_KEY, botcheck: '', ...data }),
+  });
+}
+
+async function submitLead(name: string, email: string, topic: string): Promise<void> {
+  await submitToWeb3Forms({
+    subject: `Chatbot Lead: ${topic || 'General enquiry'}`,
+    from_name: name,
+    name,
+    email,
+    message: `Topic: ${topic || 'General enquiry'}\n\nThis lead was captured via the AI chatbot on the RCS website.`,
+    source: 'AI Chatbot',
+  });
+}
+
+async function submitTranscript(messages: ChatMessage[]): Promise<void> {
+  const transcript = messages
+    .map((m) => `${m.role === 'user' ? 'Visitor' : 'Bot'}: ${m.content}`)
+    .join('\n\n');
+
+  const messageCount = messages.filter((m) => m.role === 'user').length;
+  const timestamp = new Date().toLocaleString('en-GB', { timeZone: 'Europe/London' });
+
+  await submitToWeb3Forms({
+    subject: `Chatbot Transcript (${messageCount} visitor messages)`,
+    from_name: 'RCS Chatbot',
+    name: 'RCS Chatbot',
+    email: 'chatbot@rosebudcloudsolutions.co.uk',
+    message: `Chat transcript — ${timestamp}\n\n${transcript}`,
+    source: 'AI Chatbot Transcript',
   });
 }
 
@@ -41,11 +71,7 @@ export function useChatbot(): UseChatbotReturn {
   useEffect(() => {
     if (prevIsOpenRef.current && !isOpen && hasInteracted && messages.length > 0 && !transcriptSentRef.current) {
       transcriptSentRef.current = true;
-      fetch(`${API_URL}/api/transcript`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages }),
-      }).catch(() => { /* best effort */ });
+      submitTranscript(messages).catch(() => { /* best effort */ });
     }
     prevIsOpenRef.current = isOpen;
   }, [isOpen, hasInteracted, messages]);
