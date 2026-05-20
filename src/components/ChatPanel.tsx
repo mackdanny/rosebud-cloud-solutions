@@ -159,6 +159,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
             style={{
               background: '#0F1435',
               borderColor: '#2D345B',
+              fontSize: '16px', // prevents iOS Safari from auto-zooming on focus
             }}
             disabled={isStreaming}
           />
