@@ -51,6 +51,9 @@ export function useChatbot(): UseChatbotReturn {
 
     abortRef.current = new AbortController();
 
+    // Timeout after 30 seconds
+    const timeoutId = setTimeout(() => abortRef.current?.abort(), 30_000);
+
     try {
       const response = await fetch(`${API_URL}/api/chat`, {
         method: 'POST',
@@ -85,16 +88,23 @@ export function useChatbot(): UseChatbotReturn {
           if (data === '[DONE]') continue;
 
           try {
-            const parsed = JSON.parse(data) as { text: string };
-            fullContent += parsed.text;
+            const parsed = JSON.parse(data) as { text?: string; error?: string };
+            if (parsed.error) {
+              throw new Error(parsed.error);
+            }
+            if (parsed.text) {
+              fullContent += parsed.text;
 
-            const displayContent = fullContent.replace(LEAD_CAPTURE_REGEX, '').trimEnd();
-            setMessages((prev) => [
-              ...prev.slice(0, -1),
-              { role: 'assistant', content: displayContent },
-            ]);
-          } catch {
-            // Skip malformed chunks
+              const displayContent = fullContent.replace(LEAD_CAPTURE_REGEX, '').trimEnd();
+              setMessages((prev) => [
+                ...prev.slice(0, -1),
+                { role: 'assistant', content: displayContent },
+              ]);
+            }
+          } catch (parseErr) {
+            if (parseErr instanceof Error && parseErr.message !== 'Skip') {
+              throw parseErr;
+            }
           }
         }
       }
@@ -104,12 +114,17 @@ export function useChatbot(): UseChatbotReturn {
         submitLead(leadMatch[1], leadMatch[2], leadMatch[3]);
       }
     } catch (err) {
-      if (err instanceof Error && err.name === 'AbortError') return;
+      if (err instanceof Error && err.name === 'AbortError') {
+        setError('Response timed out. Please try again.');
+        setMessages((prev) => prev.slice(0, -1));
+        return;
+      }
 
       const message = err instanceof Error ? err.message : 'Something went wrong. Please try again.';
       setError(message);
       setMessages((prev) => prev.slice(0, -1));
     } finally {
+      clearTimeout(timeoutId);
       setIsStreaming(false);
       abortRef.current = null;
     }

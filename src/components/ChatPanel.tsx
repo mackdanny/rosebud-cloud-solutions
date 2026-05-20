@@ -63,9 +63,9 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
       animate={{ opacity: 1, scale: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.9, y: 20 }}
       transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-      className="fixed bottom-6 right-6 z-50 flex w-[calc(100vw-3rem)] flex-col overflow-hidden rounded-2xl border shadow-2xl sm:w-[380px] md:bottom-8 md:right-8"
+      className="fixed bottom-6 right-6 z-50 flex w-[calc(100vw-3rem)] flex-col overflow-hidden rounded-2xl border shadow-2xl sm:w-[420px] md:bottom-8 md:right-8"
       style={{
-        height: 'min(520px, calc(100vh - 6rem))',
+        height: 'min(640px, calc(100vh - 6rem))',
         background: '#0F1435',
         borderColor: 'rgba(160, 0, 181, 0.2)',
         boxShadow: '0 8px 40px rgba(0, 0, 0, 0.5)',
@@ -178,6 +178,26 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({
   );
 };
 
+function formatMessage(text: string): React.ReactNode[] {
+  const parts: React.ReactNode[] = [];
+  const regex = /\*\*(.+?)\*\*/g;
+  let lastIndex = 0;
+  let match;
+  let key = 0;
+
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(text.slice(lastIndex, match.index));
+    }
+    parts.push(<strong key={key++} className="font-semibold">{match[1]}</strong>);
+    lastIndex = regex.lastIndex;
+  }
+  if (lastIndex < text.length) {
+    parts.push(text.slice(lastIndex));
+  }
+  return parts;
+}
+
 function BotMessage({ content, isStreaming }: { content: string; isStreaming?: boolean }) {
   return (
     <div className="mt-3 flex gap-2">
@@ -195,7 +215,7 @@ function BotMessage({ content, isStreaming }: { content: string; isStreaming?: b
           maxWidth: '85%',
         }}
       >
-        {content || (isStreaming ? <StreamingDots /> : null)}
+        {content ? formatMessage(content) : (isStreaming ? <StreamingDots /> : null)}
       </div>
     </div>
   );

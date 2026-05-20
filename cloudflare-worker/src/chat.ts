@@ -69,14 +69,27 @@ export async function handleChat(
                 encoder.encode(`data: ${JSON.stringify({ text: event.delta.text })}\n\n`),
               );
             }
+            if (event.type === 'error') {
+              await writer.write(
+                encoder.encode(`data: ${JSON.stringify({ error: event.error?.message || 'Stream error' })}\n\n`),
+              );
+            }
           } catch {
             // Skip malformed JSON lines
           }
         }
       }
+    } catch (err) {
+      try {
+        await writer.write(
+          encoder.encode(`data: ${JSON.stringify({ error: 'Stream interrupted' })}\n\n`),
+        );
+      } catch { /* writer may be closed */ }
     } finally {
-      await writer.write(encoder.encode('data: [DONE]\n\n'));
-      await writer.close();
+      try {
+        await writer.write(encoder.encode('data: [DONE]\n\n'));
+        await writer.close();
+      } catch { /* writer may already be closed */ }
     }
   };
 
