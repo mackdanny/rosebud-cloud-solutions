@@ -267,7 +267,7 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
               Microsoft Solutions Partner
             </p>
             <p className="text-on-surface-variant text-sm max-w-md mx-auto mb-12">
-              Recognised by Microsoft as a Solutions Partner for Data & AI and Infrastructure on Azure.
+              Recognised by Microsoft as a Solutions Partner for Data & AI, Digital & App Innovation, and Infrastructure on Azure.
             </p>
           </ScrollReveal>
           <motion.div
