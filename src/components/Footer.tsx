@@ -102,11 +102,19 @@ export const Footer: React.FC<FooterProps> = ({ className = '' }) => {
         </div>
 
         {/* Bottom bar */}
-        <div className="flex flex-col md:flex-row justify-between items-center py-12 border-t border-outline gap-6">
+        <div className="flex flex-col items-center py-12 border-t border-outline gap-3 text-center">
           <p className="text-[10px] uppercase tracking-widest text-on-surface-variant/80">
-            © 2024–{new Date().getFullYear()} Rosebud Cloud Solutions. Strategic Enterprise Partner.
+            © 2024–{new Date().getFullYear()} Rosebud Cloud Solutions Ltd
           </p>
-          {/* Privacy & Compliance links removed pending real pages - re-add when routes exist */}
+          <p className="text-[10px] uppercase tracking-widest text-on-surface-variant/50">
+            Company No. 14500087 &nbsp;·&nbsp; VAT No. 439 921 563 &nbsp;·&nbsp; Registered in England & Wales
+          </p>
+          <Link
+            to="/privacy"
+            className="text-[10px] uppercase tracking-widest text-on-surface-variant/50 hover:text-white transition-colors mt-1"
+          >
+            Privacy Policy
+          </Link>
         </div>
       </div>
     </footer>

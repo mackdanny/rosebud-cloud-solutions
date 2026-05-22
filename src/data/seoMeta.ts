@@ -88,6 +88,12 @@ export const pageMeta = {
       'Answers on Azure landing zones, cloud security, DevSecOps, FinOps, and managed cloud - how Rosebud Cloud Solutions engages and delivers for clients.',
     path: '/faq',
   },
+  privacy: {
+    title: 'Privacy Policy | Rosebud Cloud Solutions',
+    description:
+      'How Rosebud Cloud Solutions collects, uses, and protects your personal data. UK GDPR compliant privacy policy for our website and services.',
+    path: '/privacy',
+  },
 } as const satisfies Record<string, PageMeta>;
 
 export const organisationSchema = {
