@@ -340,6 +340,31 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
         </div>
       </section>
 
+      {/* ── Free Posture Check (lead-gen funnel) ──────────────────────── */}
+      <section className="py-28 bg-background relative">
+        <div className="max-w-[1440px] mx-auto px-8">
+          <ScrollReveal>
+            <div className="relative overflow-hidden rounded-3xl border border-outline/60 bg-surface px-8 py-16 md:px-16 md:py-20 text-center">
+              <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-[0.18]" style={{ background: 'radial-gradient(60% 80% at 50% 0%, rgba(160,0,181,0.55), transparent 70%)' }} />
+              <div className="relative">
+                <span className="inline-block text-[10px] uppercase tracking-[0.4em] text-primary font-bold font-label mb-6">Free tool</span>
+                <h2 className="font-headline text-4xl md:text-6xl font-bold tracking-tight mb-6">How exposed is your domain?</h2>
+                <p className="max-w-2xl mx-auto text-on-surface-variant text-lg leading-relaxed mb-10">
+                  Run a free external security scan in seconds. See your email, web and exposure risks from an attacker's point of view. No install, no access to your systems.
+                </p>
+                <a href="https://posture.rosebudcloudsolutions.co.uk/posture-check" target="_blank" rel="noopener noreferrer" className="no-underline inline-block">
+                  <button className="btn-animated text-white font-headline font-bold px-12 py-5 rounded-lg text-lg tracking-tight inline-flex items-center gap-2">
+                    Run my free check
+                    <span aria-hidden="true" className="material-symbols-outlined text-[20px]">arrow_forward</span>
+                  </button>
+                </a>
+                <p className="mt-6 text-sm text-on-surface-variant/70 font-label tracking-wide">~15 seconds · nothing to install</p>
+              </div>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
       {/* ── Services ──────────────────────────────────────────────────── */}
       <section className="py-32 bg-background relative">
         <div className="max-w-[1440px] mx-auto px-8">

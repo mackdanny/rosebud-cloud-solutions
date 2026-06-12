@@ -205,19 +205,33 @@ export const Nav: React.FC<NavProps> = ({ className = '' }) => {
           })}
         </nav>
 
-        {/* Desktop CTA */}
-        <Link to="/contact" className="ml-auto hidden md:block no-underline">
-          <motion.button
-            className="bg-transparent text-white text-sm font-semibold font-headline px-6 py-2 rounded-lg border border-primary/40 hover:bg-primary/10 transition-all duration-300"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.6, duration: 0.4 }}
-            whileHover={{ scale: 1.05, borderColor: 'rgba(160,0,181,0.8)' }}
-            whileTap={{ scale: 0.97 }}
-          >
-            Contact Us
-          </motion.button>
-        </Link>
+        {/* Desktop CTAs */}
+        <div className="ml-auto hidden md:flex items-center gap-3">
+          <a href="https://posture.rosebudcloudsolutions.co.uk/posture-check" target="_blank" rel="noopener noreferrer" className="no-underline">
+            <motion.button
+              className="btn-animated text-white text-sm font-semibold font-headline px-6 py-2.5 rounded-lg"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.55, duration: 0.4 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.97 }}
+            >
+              Free Security Check
+            </motion.button>
+          </a>
+          <Link to="/contact" className="no-underline">
+            <motion.button
+              className="bg-transparent text-white text-sm font-semibold font-headline px-6 py-2 rounded-lg border border-primary/40 hover:bg-primary/10 transition-all duration-300"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.6, duration: 0.4 }}
+              whileHover={{ scale: 1.05, borderColor: 'rgba(160,0,181,0.8)' }}
+              whileTap={{ scale: 0.97 }}
+            >
+              Contact Us
+            </motion.button>
+          </Link>
+        </div>
 
         {/* Mobile hamburger */}
         <button
@@ -327,9 +341,14 @@ export const Nav: React.FC<NavProps> = ({ className = '' }) => {
               );
             })}
 
-            {/* Mobile CTA */}
-            <Link to="/contact" className="mt-6 no-underline">
+            {/* Mobile CTAs */}
+            <a href="https://posture.rosebudcloudsolutions.co.uk/posture-check" target="_blank" rel="noopener noreferrer" className="mt-6 no-underline">
               <button className="w-full btn-animated text-white font-headline font-bold px-6 py-4 rounded-lg text-base">
+                Free Security Check
+              </button>
+            </a>
+            <Link to="/contact" className="mt-3 no-underline">
+              <button className="w-full bg-transparent text-white font-headline font-bold px-6 py-4 rounded-lg text-base border border-primary/40">
                 Contact Us
               </button>
             </Link>
