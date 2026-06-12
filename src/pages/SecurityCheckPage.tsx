@@ -208,7 +208,7 @@ export const SecurityCheckPage: React.FC = () => (
           <div className="text-center rounded-2xl border border-outline/50 bg-surface/60 px-8 py-12">
             <h2 className="font-headline text-2xl md:text-3xl font-bold tracking-tight mb-4">Found something you want fixed?</h2>
             <p className="text-on-surface-variant leading-relaxed max-w-2xl mx-auto mb-8">
-              If your scan shows gaps in email authentication or exposed services, our <Link to="/services/cloud-security" className="text-primary underline-offset-4 hover:underline">cloud security team</Link> can walk you through remediation, or harden the pipeline that caused it with <Link to="/services/devsecops" className="text-primary underline-offset-4 hover:underline">DevSecOps</Link>. A free scan commits you to nothing.
+              If your scan shows gaps in email authentication or exposed services, our <Link to="/services/cloud-security" className="text-primary underline-offset-4 hover:underline">cloud security team</Link> can walk you through remediation, or harden the pipeline that caused it with <Link to="/services/devsecops" className="text-primary underline-offset-4 hover:underline">DevSecOps</Link>. Prefer to fix it yourself? Start with our <Link to="/insights/set-up-dmarc-microsoft-365" className="text-primary underline-offset-4 hover:underline">step-by-step DMARC guide for Microsoft 365</Link>. A free scan commits you to nothing.
             </p>
             <Link to="/contact" className="no-underline inline-block">
               <motion.button

@@ -17,8 +17,14 @@ Rosebud Cloud Solutions (RCS) is a UK-based Microsoft-certified consultancy spec
 - [Advisory & Consulting](https://www.rosebudcloudsolutions.co.uk/services/advisory-consulting): Strategic Azure advisory for cloud adoption, platform architecture, and modernisation.
 - [Managed Cloud](https://www.rosebudcloudsolutions.co.uk/services/managed-cloud): Ongoing management, monitoring, and improvement of Azure platforms with enterprise-grade SLAs.
 
+## Guides
+
+- [SPF, DKIM and DMARC explained in plain English](https://www.rosebudcloudsolutions.co.uk/insights/spf-dkim-dmarc-explained): What the three email authentication standards do, how they work together to stop spoofing, and the five misconfigurations seen most often in UK businesses. By Alex Hunte, Founder and Lead Architect.
+- [How to set up DMARC for Microsoft 365 without breaking your email](https://www.rosebudcloudsolutions.co.uk/insights/set-up-dmarc-microsoft-365): Step-by-step DMARC rollout for Microsoft 365: verify SPF and DKIM, monitor at p=none, fix senders, then tighten to reject safely. By Alex Hunte.
+
 ## Resources
 
+- [Insights](https://www.rosebudcloudsolutions.co.uk/insights): Practical guides on Azure, email authentication, and cloud security, written by the architects who do the work.
 - [FAQ](https://www.rosebudcloudsolutions.co.uk/faq): Detailed answers to common questions about Azure landing zones, cloud security, DevSecOps, FinOps, managed cloud, and how RCS engages with clients.
 - [Case Studies](https://www.rosebudcloudsolutions.co.uk/case-studies): Real engagements across financial services, public sector, legal, and retail, covering Azure platforms, hybrid identity, virtual desktops, governance, and data platforms.
 
@@ -29,4 +35,4 @@ Rosebud Cloud Solutions (RCS) is a UK-based Microsoft-certified consultancy spec
 - [Contact](https://www.rosebudcloudsolutions.co.uk/contact)
 - [LinkedIn](https://www.linkedin.com/company/rosebud-cloud-solutions-ltd/)
 
-<!-- Last updated: 2026-06-12 -->
+<!-- Last updated: 2026-06-12 (added Guides section) -->

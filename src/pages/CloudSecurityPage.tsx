@@ -1201,7 +1201,11 @@ export const CloudSecurityPage: React.FC<CloudSecurityPageProps> = ({ className 
                   free domain security scan
                 </Link>{' '}
                 to see your email authentication, TLS, and external surface from an attacker's
-                point of view in about 15 seconds.
+                point of view in about 15 seconds, or read our{' '}
+                <Link to="/insights/spf-dkim-dmarc-explained" className="text-primary underline-offset-4 hover:underline">
+                  plain-English guide to SPF, DKIM and DMARC
+                </Link>
+                .
               </p>
             </ScrollReveal>
           </div>

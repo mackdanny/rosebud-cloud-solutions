@@ -283,7 +283,7 @@ export const faqs = {
     {
       question: 'What is the difference between SPF, DKIM and DMARC?',
       answer:
-        'SPF lists which mail servers are allowed to send email for your domain. DKIM adds a cryptographic signature to outgoing messages so recipients can verify they have not been tampered with. DMARC ties the two together and sets a policy telling receiving servers to quarantine or reject messages that fail. All three working together is the standard the NCSC recommends.',
+        'SPF lists which mail servers are allowed to send email for your domain. DKIM adds a cryptographic signature to outgoing messages so recipients can verify they have not been tampered with. DMARC ties the two together and sets a policy telling receiving servers to quarantine or reject messages that fail. All three working together is the standard the NCSC recommends. For the full picture, read our [plain-English guide to SPF, DKIM and DMARC](/insights/spf-dkim-dmarc-explained).',
     },
     {
       question: 'Will running this scan affect my website or email?',
