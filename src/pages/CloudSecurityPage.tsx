@@ -1194,6 +1194,16 @@ export const CloudSecurityPage: React.FC<CloudSecurityPageProps> = ({ className 
                 monitoring of risks as your platform grows.
               </p>
             </ScrollReveal>
+            <ScrollReveal delay={3}>
+              <p className="text-lg text-on-surface-variant leading-relaxed">
+                Not sure where your exposure starts? Run our{' '}
+                <Link to="/security-check" className="text-primary underline-offset-4 hover:underline">
+                  free domain security scan
+                </Link>{' '}
+                to see your email authentication, TLS, and external surface from an attacker's
+                point of view in about 15 seconds.
+              </p>
+            </ScrollReveal>
           </div>
 
           {/* Image */}

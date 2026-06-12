@@ -1220,6 +1220,16 @@ export const DevSecOpsPage: React.FC<DevSecOpsPageProps> = ({ className = '' }) 
                 is a continuous property of every release, not an afterthought.
               </p>
             </ScrollReveal>
+            <ScrollReveal delay={3}>
+              <p className="text-lg text-on-surface-variant leading-relaxed">
+                Curious what your delivery pipeline exposes today? Our{' '}
+                <Link to="/security-check" className="text-primary underline-offset-4 hover:underline">
+                  free domain security scan
+                </Link>{' '}
+                checks your email authentication, TLS, and externally visible services in about
+                15 seconds, with no access to your systems.
+              </p>
+            </ScrollReveal>
           </div>
 
           {/* Image */}

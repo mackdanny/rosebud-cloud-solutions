@@ -1101,6 +1101,16 @@ export const ManagedCloudPage: React.FC<ManagedCloudPageProps> = ({ className = 
                 on what matters most.
               </p>
             </ScrollReveal>
+            <ScrollReveal delay={3}>
+              <p className="text-lg text-on-surface-variant leading-relaxed">
+                Start with our{' '}
+                <Link to="/security-check" className="text-primary underline-offset-4 hover:underline">
+                  free domain security check
+                </Link>{' '}
+                to see how your domain looks from the outside, then talk to us about keeping it
+                that way.
+              </p>
+            </ScrollReveal>
           </div>
 
           {/* Image */}

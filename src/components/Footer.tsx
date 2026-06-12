@@ -11,6 +11,7 @@ const footerSolutions = [
   { label: 'Cloud Optimisation', href: '/services/cloud-optimisation' },
   { label: 'Managed Cloud', href: '/services/managed-cloud' },
   { label: 'Advisory & Consulting', href: '/services/advisory-consulting' },
+  { label: 'Free Security Check', href: '/security-check' },
 ];
 
 const footerCompany = [
