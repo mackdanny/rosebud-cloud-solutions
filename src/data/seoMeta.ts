@@ -88,6 +88,12 @@ export const pageMeta = {
       'Real-world Azure platform, security, and governance engagements across financial services, public sector, legal, and retail - with measurable outcomes.',
     path: '/case-studies',
   },
+  insights: {
+    title: 'Insights | Azure & Email Security Guides',
+    description:
+      'Practical guides on Azure, email authentication, and cloud security from Microsoft-certified architects. SPF, DKIM, DMARC and more, in plain English.',
+    path: '/insights',
+  },
   faq: {
     title: 'Frequently Asked Questions | Rosebud Cloud Solutions',
     description:
@@ -197,6 +203,39 @@ export function serviceSchema(args: {
     serviceType: args.serviceType,
     provider: { '@id': `${SITE_URL}/#organization` },
     areaServed: 'United Kingdom',
+  };
+}
+
+// TechArticle schema for /insights articles. Author is a real Person whose
+// identity matches the /about Person schema (same name + LinkedIn sameAs) so
+// the knowledge graph links the article to an established entity.
+export function techArticleSchema(args: {
+  title: string;
+  description: string;
+  path: string;
+  datePublished: string;
+  dateModified: string;
+  authorName: string;
+  authorLinkedIn: string;
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'TechArticle',
+    headline: args.title,
+    description: args.description,
+    url: `${SITE_URL}${args.path}`,
+    image: `${SITE_URL}/rcs-og-card.png`,
+    datePublished: args.datePublished,
+    dateModified: args.dateModified,
+    inLanguage: 'en-GB',
+    author: {
+      '@type': 'Person',
+      name: args.authorName,
+      url: `${SITE_URL}/about`,
+      sameAs: [args.authorLinkedIn],
+    },
+    publisher: { '@id': `${SITE_URL}/#organization` },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': `${SITE_URL}${args.path}` },
   };
 }
 

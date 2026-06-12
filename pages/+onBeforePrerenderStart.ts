@@ -1,4 +1,6 @@
 import { caseStudies } from '../src/data/caseStudies';
+import { articles } from '../src/data/articles';
+import { INSIGHTS_ENABLED } from '../src/config/features';
 
 export function onBeforePrerenderStart() {
   const staticUrls = [
@@ -24,5 +26,10 @@ export function onBeforePrerenderStart() {
     '/404',
   ];
   const caseStudyUrls = caseStudies.map((cs) => `/case-studies/${cs.slug}`);
-  return [...staticUrls, ...caseStudyUrls];
+  // Insights are prerendered only when the feature flag exposes the routes;
+  // prerendering them while the flag is off would emit pages the app 404s on.
+  const insightUrls = INSIGHTS_ENABLED
+    ? ['/insights', ...articles.map((a) => `/insights/${a.slug}`)]
+    : [];
+  return [...staticUrls, ...caseStudyUrls, ...insightUrls];
 }

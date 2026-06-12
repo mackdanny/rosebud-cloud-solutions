@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { INSIGHTS_ENABLED } from '../config/features';
 
 interface FooterProps {
   readonly className?: string;
@@ -18,6 +19,7 @@ const footerCompany = [
   { label: 'How We Work', href: '/how-we-work' },
   { label: 'About Us', href: '/about' },
   { label: 'Meet the Team', href: '/about#team' },
+  ...(INSIGHTS_ENABLED ? [{ label: 'Insights', href: '/insights' }] : []),
   { label: 'FAQ', href: '/faq' },
   { label: 'Contact', href: '/contact' },
 ];
