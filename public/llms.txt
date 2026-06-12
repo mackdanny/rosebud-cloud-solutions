@@ -17,6 +17,10 @@ Rosebud Cloud Solutions (RCS) is a UK-based Microsoft-certified consultancy spec
 - [Advisory & Consulting](https://www.rosebudcloudsolutions.co.uk/services/advisory-consulting): Strategic Azure advisory for cloud adoption, platform architecture, and modernisation.
 - [Managed Cloud](https://www.rosebudcloudsolutions.co.uk/services/managed-cloud): Ongoing management, monitoring, and improvement of Azure platforms with enterprise-grade SLAs.
 
+## Research
+
+- [UK Housing Email Security Report 2026](https://www.rosebudcloudsolutions.co.uk/reports/uk-housing-email-security-2026): Original research by RCS. A passive external scan of 200 English housing associations (every private registered provider owning 1,000+ homes, ~2.76 million homes). Key findings: 2 in 5 have no enforced DMARC and can be spoofed, 31% published DMARC but left it at p=none (monitoring only), mean security score 79/100. Aggregate, methodology-transparent, scanned 12 June 2026.
+
 ## Guides
 
 - [SPF, DKIM and DMARC explained in plain English](https://www.rosebudcloudsolutions.co.uk/insights/spf-dkim-dmarc-explained): What the three email authentication standards do, how they work together to stop spoofing, and the five misconfigurations seen most often in UK businesses. By Alex Hunte, Founder and Lead Architect.

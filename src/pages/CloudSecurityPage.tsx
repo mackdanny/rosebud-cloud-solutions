@@ -1205,6 +1205,10 @@ export const CloudSecurityPage: React.FC<CloudSecurityPageProps> = ({ className 
                 <Link to="/insights/spf-dkim-dmarc-explained" className="text-primary underline-offset-4 hover:underline">
                   plain-English guide to SPF, DKIM and DMARC
                 </Link>
+                . For original sector research, see our{' '}
+                <Link to="/reports/uk-housing-email-security-2026" className="text-primary underline-offset-4 hover:underline">
+                  UK Housing Email Security Report 2026
+                </Link>
                 .
               </p>
             </ScrollReveal>

@@ -112,6 +112,10 @@ export const articles: readonly Article[] = [
       },
       { type: 'h2', text: 'The five misconfigurations we see most often' },
       {
+        type: 'p',
+        text: 'These are not rare. When we scanned 200 of the largest UK housing associations for our [UK Housing Email Security Report 2026](/reports/uk-housing-email-security-2026), 2 in 5 had no enforced DMARC and almost a third had published DMARC but left it at p=none.',
+      },
+      {
         type: 'list',
         ordered: true,
         items: [
