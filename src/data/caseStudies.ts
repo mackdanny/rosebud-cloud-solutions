@@ -37,7 +37,7 @@ export const caseStudies: CaseStudy[] = [
     icon: 'account_balance',
     image: 'case-study-01.webp',
     description:
-      'Delivering a greenfield Azure platform under strict regulatory constraints. RCS embedded DevSecOps practices, automated policy enforcement, and Microsoft security baselines from day one.',
+      'How RCS delivered a secure Azure platform for a Tier-1 UK financial institution, with DevSecOps practices and automated policy enforcement from day one.',
     detail: {
       clientSummary: {
         organisationSize: '1,500–2,000 employees',
@@ -82,7 +82,7 @@ export const caseStudies: CaseStudy[] = [
     icon: 'badge',
     image: 'case-study-02.webp',
     description:
-      'Modernising legacy Active Directory into a secure, governed Azure identity platform aligned to Microsoft security best practice. RCS embedded RBAC, automation, and resilience controls to strengthen audit readiness and reduce operational risk.',
+      'Modernising legacy Active Directory into a governed Azure identity platform for a UK public sector regulator, with RBAC, automation, and audit controls.',
     detail: {
       clientSummary: {
         organisationSize: '>1,000 employees',

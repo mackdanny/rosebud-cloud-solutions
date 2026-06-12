@@ -11,17 +11,17 @@ export const pageMeta = {
   home: {
     title: `${SITE_NAME} | Enterprise Azure & Cloud Security`,
     description:
-      'Enterprise Azure architecture, cloud security, DevSecOps, and managed cloud services. Microsoft-certified UK consultancy for regulated industries.',
+      'Azure architecture, cloud security and DevSecOps from a Microsoft-certified UK consultancy, serving financial services, public sector and legal.',
     path: '/',
   },
   securityCheck: {
-    title: 'Free Security Check | Scan Your Domain',
+    title: 'Free Domain Security Check | SPF, DKIM & DMARC Scanner',
     description:
-      'Run a free external security scan of your domain in seconds. See your email, web and exposure risks from an attacker point of view. No install, no access to your systems.',
+      "Check your domain's SPF, DKIM, DMARC, TLS and exposed services in seconds. A free external security scan from a UK Microsoft-certified consultancy.",
     path: '/security-check',
   },
   azureLandingZones: {
-    title: 'Azure Landing Zones & Foundation Architecture',
+    title: 'Azure Landing Zone Consultancy UK',
     description:
       'Structured Azure landing zones delivering control, security, and scalability from day one. Management groups, policy, and IaC by certified architects.',
     path: '/services/azure-landing-zones',
@@ -45,13 +45,13 @@ export const pageMeta = {
     path: '/services/cloud-optimisation',
   },
   advisoryConsulting: {
-    title: 'Azure Advisory & Consulting Services',
+    title: 'Independent Azure Consulting UK',
     description:
       'Strategic Azure advisory for cloud adoption, architecture, and modernisation. Independent guidance from Microsoft-certified enterprise architects.',
     path: '/services/advisory-consulting',
   },
   managedCloud: {
-    title: 'Managed Cloud & Security Support',
+    title: 'Managed Azure Services UK',
     description:
       'Ongoing management, monitoring, and improvement to keep Azure secure, compliant, and performing. Proactive operations with enterprise-grade SLAs.',
     path: '/services/managed-cloud',
@@ -65,7 +65,7 @@ export const pageMeta = {
     path: '/tools/strategic-triage',
   },
   about: {
-    title: 'About Rosebud Cloud Solutions',
+    title: 'About Us | Azure Consultancy UK',
     description:
       'Microsoft-certified Azure architects delivering secure, scalable cloud platforms for financial services, public sector, legal, and retail clients.',
     path: '/about',
@@ -73,7 +73,7 @@ export const pageMeta = {
   howWeWork: {
     title: 'How We Work | Secure-by-Design Delivery',
     description:
-      'A structured, security-first approach to designing, building, and managing Azure environments that scale properly from day one.',
+      'See how RCS designs, builds, and manages Azure environments to a security-first standard, from initial assessment through to ongoing operations.',
     path: '/how-we-work',
   },
   contact: {
@@ -108,8 +108,25 @@ export const organisationSchema = {
   '@id': `${SITE_URL}/#organization`,
   name: SITE_NAME,
   url: SITE_URL,
-  logo: `${SITE_URL}/rcs-logo-full.png`,
+  logo: {
+    '@type': 'ImageObject',
+    '@id': `${SITE_URL}/#logo`,
+    url: `${SITE_URL}/rcs-logo-full.png`,
+    contentUrl: `${SITE_URL}/rcs-logo-full.png`,
+    caption: SITE_NAME,
+  },
   image: `${SITE_URL}/rcs-og-card.png`,
+  foundingDate: '2022',
+  knowsAbout: [
+    'Microsoft Azure',
+    'Cloud Security',
+    'Azure Landing Zones',
+    'DevSecOps',
+    'FinOps',
+    'Email Security (SPF, DKIM, DMARC)',
+    'Zero Trust Architecture',
+    'Managed Cloud Services',
+  ],
   description:
     'Enterprise Azure architecture, cloud security, DevSecOps, and managed cloud services. Microsoft-certified UK consultancy for regulated industries.',
   contactPoint: {
@@ -128,6 +145,7 @@ export const organisationSchema = {
   sameAs: [
     'https://www.linkedin.com/company/rosebud-cloud-solutions-ltd/',
     'https://www.instagram.com/rosebudcloudsolutions/',
+    'https://find-and-update.company-information.service.gov.uk/company/14500087',
   ],
   areaServed: 'United Kingdom',
   serviceType: [
@@ -172,6 +190,7 @@ export function serviceSchema(args: {
   return {
     '@context': 'https://schema.org',
     '@type': 'Service',
+    '@id': `${SITE_URL}${args.path}#service`,
     name: args.name,
     description: args.description,
     url: `${SITE_URL}${args.path}`,
@@ -180,6 +199,34 @@ export function serviceSchema(args: {
     areaServed: 'United Kingdom',
   };
 }
+
+// The free domain scanner on /security-check. WebApplication is the precise
+// type for a browser-based interactive tool; it feeds AI/LLM tool discovery
+// rather than a Google rich result panel.
+export const securityCheckSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  '@id': `${SITE_URL}/security-check#tool`,
+  name: 'Free Domain Security Check',
+  description:
+    'A free external domain security scanner that checks SPF, DKIM, DMARC, TLS certificates, HTTP security headers, and attacker-visible subdomains. No installation required. Results in around 15 seconds.',
+  url: `${SITE_URL}/security-check`,
+  applicationCategory: 'SecurityApplication',
+  operatingSystem: 'Any',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'GBP' },
+  featureList: [
+    'SPF record validation',
+    'DKIM configuration check',
+    'DMARC policy analysis',
+    'TLS certificate inspection',
+    'HTTP security header review',
+    'Subdomain exposure check',
+  ],
+  provider: { '@id': `${SITE_URL}/#organization` },
+  inLanguage: 'en-GB',
+  isAccessibleForFree: true,
+  browserRequirements: 'Requires JavaScript',
+} as const;
 
 // FAQ schema. Pass into <SEO schema={[...]}> on any page with visible FAQ copy -
 // Google only shows rich results when on-page Q&A text matches. Answers may

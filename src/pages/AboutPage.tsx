@@ -90,7 +90,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({ className = '' }) => {
     '@type': 'Person',
     name: m.name,
     jobTitle: m.role,
-    image: m.photo,
+    // Schema.org requires absolute image URLs; m.photo is site-relative.
+    image: `${SITE_URL}${m.photo}`,
     worksFor: { '@id': `${SITE_URL}/#organization` },
     sameAs: [m.linkedin],
     description: m.bio,

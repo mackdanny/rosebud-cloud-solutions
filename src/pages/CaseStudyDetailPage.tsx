@@ -68,6 +68,10 @@ export const CaseStudyDetailPage: React.FC = () => {
     about: study.industry,
     articleSection: 'Case Studies',
     keywords: keywords.join(', '),
+    // Page publication dates (not engagement dates). Google requires
+    // datePublished for Article rich-result eligibility.
+    datePublished: '2026-04-22',
+    dateModified: '2026-06-12',
     inLanguage: 'en-GB',
     author: { '@id': `${SITE_URL}/#organization` },
     publisher: { '@id': `${SITE_URL}/#organization` },
@@ -78,7 +82,6 @@ export const CaseStudyDetailPage: React.FC = () => {
     <main key={study.slug} className="bg-background min-h-screen">
       <SEO
         title={study.title}
-        titleSuffix="RCS"
         description={study.description}
         path={studyPath}
         image={`/${study.image}`}
