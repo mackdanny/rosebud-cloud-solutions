@@ -6,6 +6,7 @@ import { SEO } from '../components/SEO';
 import { Faq } from '../components/Faq';
 import { CostEstimator } from '../components/CostEstimator';
 import { PricingPlans } from '../components/PricingPlans';
+import { PostureScan } from '../components/PostureScan';
 import { pageMeta, organisationSchema, websiteSchema, faqSchema } from '../data/seoMeta';
 import { faqs } from '../data/faqs';
 const ParticleBackground = lazy(() => import('../components/ParticleBackground'));
@@ -352,13 +353,9 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
                 <p className="max-w-2xl mx-auto text-on-surface-variant text-lg leading-relaxed mb-10">
                   Run a free external security scan in seconds. See your email, web and exposure risks from an attacker's point of view. No install, no access to your systems.
                 </p>
-                <a href="https://posture.rosebudcloudsolutions.co.uk/posture-check" target="_blank" rel="noopener noreferrer" className="no-underline inline-block">
-                  <button className="btn-animated text-white font-headline font-bold px-12 py-5 rounded-lg text-lg tracking-tight inline-flex items-center gap-2">
-                    Run my free check
-                    <span aria-hidden="true" className="material-symbols-outlined text-[20px]">arrow_forward</span>
-                  </button>
-                </a>
-                <p className="mt-6 text-sm text-on-surface-variant/70 font-label tracking-wide">~15 seconds · nothing to install</p>
+                <div className="mt-2">
+                  <PostureScan variant="section" />
+                </div>
               </div>
             </div>
           </ScrollReveal>

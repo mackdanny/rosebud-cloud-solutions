@@ -14,6 +14,12 @@ export const pageMeta = {
       'Enterprise Azure architecture, cloud security, DevSecOps, and managed cloud services. Microsoft-certified UK consultancy for regulated industries.',
     path: '/',
   },
+  securityCheck: {
+    title: 'Free Security Check | Scan Your Domain',
+    description:
+      'Run a free external security scan of your domain in seconds. See your email, web and exposure risks from an attacker point of view. No install, no access to your systems.',
+    path: '/security-check',
+  },
   azureLandingZones: {
     title: 'Azure Landing Zones & Foundation Architecture',
     description:

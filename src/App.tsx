@@ -11,6 +11,9 @@ import { STRATEGIC_TRIAGE_ENABLED } from './config/features';
 
 // Lazy-loaded routes - each emits its own chunk. Hydration uses Suspense fallback.
 const HomePage = lazy(() => import('./pages/HomePage').then((m) => ({ default: m.HomePage })));
+const SecurityCheckPage = lazy(() =>
+  import('./pages/SecurityCheckPage').then((m) => ({ default: m.SecurityCheckPage })),
+);
 const AzureLandingZonesPage = lazy(() =>
   import('./pages/AzureLandingZonesPage').then((m) => ({ default: m.AzureLandingZonesPage })),
 );
@@ -90,6 +93,7 @@ export function AppRoutes() {
         <Suspense fallback={null}>
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/security-check" element={<SecurityCheckPage />} />
             <Route path="/services/azure-landing-zones" element={<AzureLandingZonesPage />} />
             <Route path="/services/cloud-security" element={<CloudSecurityPage />} />
             <Route path="/services/devsecops" element={<DevSecOpsPage />} />
