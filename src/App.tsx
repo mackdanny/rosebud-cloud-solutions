@@ -7,7 +7,7 @@ import { Preloader } from './components/Preloader';
 import { ChatBubble } from './components/ChatBubble';
 import { ChatPanel } from './components/ChatPanel';
 import { useChatbot } from './hooks/useChatbot';
-import { STRATEGIC_TRIAGE_ENABLED, INSIGHTS_ENABLED } from './config/features';
+import { STRATEGIC_TRIAGE_ENABLED, INSIGHTS_ENABLED, REPORTS_ENABLED } from './config/features';
 
 // Lazy-loaded routes - each emits its own chunk. Hydration uses Suspense fallback.
 const HomePage = lazy(() => import('./pages/HomePage').then((m) => ({ default: m.HomePage })));
@@ -60,6 +60,9 @@ const InsightsPage = lazy(() =>
 );
 const ArticlePage = lazy(() =>
   import('./pages/ArticlePage').then((m) => ({ default: m.ArticlePage })),
+);
+const ReportDetailPage = lazy(() =>
+  import('./pages/ReportDetailPage').then((m) => ({ default: m.ReportDetailPage })),
 );
 
 function ScrollToTop() {
@@ -120,6 +123,9 @@ export function AppRoutes() {
                 <Route path="/insights" element={<InsightsPage />} />
                 <Route path="/insights/:slug" element={<ArticlePage />} />
               </>
+            )}
+            {REPORTS_ENABLED && (
+              <Route path="/reports/:slug" element={<ReportDetailPage />} />
             )}
             <Route path="/privacy" element={<PrivacyPolicyPage />} />
             <Route path="*" element={<NotFoundPage />} />

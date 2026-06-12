@@ -88,6 +88,12 @@ export const pageMeta = {
       'Real-world Azure platform, security, and governance engagements across financial services, public sector, legal, and retail - with measurable outcomes.',
     path: '/case-studies',
   },
+  housingReport2026: {
+    title: 'UK Housing Email Security Report 2026',
+    description:
+      'Original research: how exposed the largest UK housing associations are to email spoofing. SPF, DKIM and DMARC adoption across the sector, scanned and scored.',
+    path: '/reports/uk-housing-email-security-2026',
+  },
   insights: {
     title: 'Insights | Azure & Email Security Guides',
     description:
@@ -203,6 +209,25 @@ export function serviceSchema(args: {
     serviceType: args.serviceType,
     provider: { '@id': `${SITE_URL}/#organization` },
     areaServed: 'United Kingdom',
+  };
+}
+
+// Report schema for /reports sector research. Grounds the page as a dataset-
+// backed report so AI assistants attribute the statistics to RCS.
+export function reportSchema(args: { title: string; description: string; path: string; datePublished: string }) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Report',
+    headline: args.title,
+    description: args.description,
+    url: `${SITE_URL}${args.path}`,
+    datePublished: args.datePublished,
+    dateModified: args.datePublished,
+    inLanguage: 'en-GB',
+    author: { '@id': `${SITE_URL}/#organization` },
+    publisher: { '@id': `${SITE_URL}/#organization` },
+    isAccessibleForFree: true,
+    about: 'Email security posture of UK housing associations',
   };
 }
 

@@ -1,6 +1,7 @@
 import { caseStudies } from '../src/data/caseStudies';
 import { articles } from '../src/data/articles';
-import { INSIGHTS_ENABLED } from '../src/config/features';
+import { housing2026 } from '../src/data/reports/housing-2026';
+import { INSIGHTS_ENABLED, REPORTS_ENABLED } from '../src/config/features';
 
 export function onBeforePrerenderStart() {
   const staticUrls = [
@@ -31,5 +32,6 @@ export function onBeforePrerenderStart() {
   const insightUrls = INSIGHTS_ENABLED
     ? ['/insights', ...articles.map((a) => `/insights/${a.slug}`)]
     : [];
-  return [...staticUrls, ...caseStudyUrls, ...insightUrls];
+  const reportUrls = REPORTS_ENABLED ? [`/reports/${housing2026.slug}`] : [];
+  return [...staticUrls, ...caseStudyUrls, ...insightUrls, ...reportUrls];
 }
