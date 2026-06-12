@@ -1,12 +1,8 @@
 {
-  "navigationFallback": {
-    "rewrite": "/index.html",
-    "exclude": ["/assets/*", "/*.{png,jpg,jpeg,webp,svg,ico,gif,woff,woff2,ttf,js,css,json,xml,txt}"]
-  },
+  "trailingSlash": "never",
   "responseOverrides": {
     "404": {
-      "rewrite": "/index.html",
-      "statusCode": 200
+      "rewrite": "/404/index.html"
     }
   },
   "globalHeaders": {

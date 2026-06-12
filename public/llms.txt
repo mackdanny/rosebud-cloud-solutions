@@ -2,24 +2,31 @@
 
 > Enterprise Azure architecture, cloud security, DevSecOps, and managed cloud services. Microsoft-certified consultancy delivering secure, scalable infrastructure for regulated industries.
 
-Rosebud Cloud Solutions (RCS) is a UK-based Microsoft-certified consultancy specialising in Azure platform architecture, cloud security, compliance, DevSecOps, and managed cloud operations. Clients include Tier-1 financial institutions, public sector organisations, legal firms, and retail businesses.
+Rosebud Cloud Solutions (RCS) is a UK-based Microsoft-certified consultancy specialising in Azure platform architecture, cloud security, compliance, DevSecOps, and managed cloud operations. Clients include Tier-1 financial institutions, public sector organisations, legal firms, and retail businesses. Registered in England and Wales, company number 14500087, based in Worthing, West Sussex.
+
+## Tools
+
+- [Free Domain Security Check](https://www.rosebudcloudsolutions.co.uk/security-check): Free external security scanner for any domain. Checks email authentication records (SPF, DKIM, DMARC), TLS certificates, HTTP security headers, and attacker-visible subdomains. No registration or installation, results in around 15 seconds. Built by RCS to help UK organisations spot email spoofing exposure and web security gaps at no cost.
 
 ## Services
 
 - [Azure Landing Zones](https://www.rosebudcloudsolutions.co.uk/services/azure-landing-zones): Structured landing zones with management groups, policy frameworks, and Infrastructure-as-Code deployment.
 - [Cloud Security & Compliance](https://www.rosebudcloudsolutions.co.uk/services/cloud-security): Zero-trust architectures, Microsoft Defender, and continuous compliance monitoring aligned to recognised standards.
-- [DevSecOps](https://www.rosebudcloudsolutions.co.uk/services/devsecops): Security embedded in delivery pipelines — automated policy enforcement, secret management, and vulnerability scanning for Azure DevOps and GitHub Actions.
+- [DevSecOps](https://www.rosebudcloudsolutions.co.uk/services/devsecops): Security embedded in delivery pipelines, with automated policy enforcement, secret management, and vulnerability scanning for Azure DevOps and GitHub Actions.
 - [Cloud Optimisation](https://www.rosebudcloudsolutions.co.uk/services/cloud-optimisation): Azure cost reduction through architectural review, FinOps discipline, and automated optimisation.
 - [Advisory & Consulting](https://www.rosebudcloudsolutions.co.uk/services/advisory-consulting): Strategic Azure advisory for cloud adoption, platform architecture, and modernisation.
 - [Managed Cloud](https://www.rosebudcloudsolutions.co.uk/services/managed-cloud): Ongoing management, monitoring, and improvement of Azure platforms with enterprise-grade SLAs.
 
-## Tools
+## Resources
 
-- [Strategic Triage Engine](https://www.rosebudcloudsolutions.co.uk/tools/strategic-triage): Graph and ontology reasoning platform that compresses the evaluation tax from months to minutes.
+- [FAQ](https://www.rosebudcloudsolutions.co.uk/faq): Detailed answers to common questions about Azure landing zones, cloud security, DevSecOps, FinOps, managed cloud, and how RCS engages with clients.
+- [Case Studies](https://www.rosebudcloudsolutions.co.uk/case-studies): Real engagements across financial services, public sector, legal, and retail, covering Azure platforms, hybrid identity, virtual desktops, governance, and data platforms.
 
 ## Company
 
 - [About](https://www.rosebudcloudsolutions.co.uk/about)
 - [How We Work](https://www.rosebudcloudsolutions.co.uk/how-we-work)
-- [Case Studies](https://www.rosebudcloudsolutions.co.uk/case-studies)
 - [Contact](https://www.rosebudcloudsolutions.co.uk/contact)
+- [LinkedIn](https://www.linkedin.com/company/rosebud-cloud-solutions-ltd/)
+
+<!-- Last updated: 2026-06-12 -->

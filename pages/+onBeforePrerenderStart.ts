@@ -10,12 +10,15 @@ export function onBeforePrerenderStart() {
     '/services/cloud-optimisation',
     '/services/advisory-consulting',
     '/services/managed-cloud',
-    '/tools/strategic-triage',
+    // '/tools/strategic-triage' intentionally NOT prerendered while the feature
+    // flag is off — with the route disabled it would prerender the 404 page.
+    // Re-add when STRATEGIC_TRIAGE_ENABLED flips back on.
     '/about',
     '/how-we-work',
     '/contact',
     '/case-studies',
     '/faq',
+    '/privacy',
     // Designed 404 page — hosting platform should serve this file for unknown paths.
     // E.g. Netlify: `/* /404.html 404`; Vercel: `rewrites: [{ source: '/(.*)', destination: '/404.html', statusCode: 404 }]`
     '/404',
