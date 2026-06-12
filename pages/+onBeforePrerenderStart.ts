@@ -3,6 +3,7 @@ import { caseStudies } from '../src/data/caseStudies';
 export function onBeforePrerenderStart() {
   const staticUrls = [
     '/',
+    '/security-check',
     '/services/azure-landing-zones',
     '/services/cloud-security',
     '/services/devsecops',
