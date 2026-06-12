@@ -274,4 +274,31 @@ export const faqs = {
         'A dedicated on-call rota covers 24/7, with tiered escalation so the right engineer is paged for the right issue. Incidents are logged, investigated, and remediated with a written post-incident review for anything above routine severity. We do not use a generic service desk as the frontline; incidents go to engineers who know your environment from the start.',
     },
   ],
+  securityCheck: [
+    {
+      question: 'What is DMARC and why does my business need it?',
+      answer:
+        'DMARC (Domain-based Message Authentication, Reporting and Conformance) tells receiving mail servers what to do when an email claims to come from your domain but fails authentication. Without an enforced DMARC policy, criminals can send convincing phishing emails to your customers, suppliers, and staff that appear to come from you. The NCSC recommends DMARC as a baseline control for UK organisations.',
+    },
+    {
+      question: 'What is the difference between SPF, DKIM and DMARC?',
+      answer:
+        'SPF lists which mail servers are allowed to send email for your domain. DKIM adds a cryptographic signature to outgoing messages so recipients can verify they have not been tampered with. DMARC ties the two together and sets a policy telling receiving servers to quarantine or reject messages that fail. All three working together is the standard the NCSC recommends.',
+    },
+    {
+      question: 'Will running this scan affect my website or email?',
+      answer:
+        'No. The scan is passive and external. It reads publicly available DNS records and checks your public-facing web services, the same information anyone on the internet can already see. It does not send test emails, log in to anything, or touch your internal systems.',
+    },
+    {
+      question: 'What happens to the information I enter?',
+      answer:
+        'The scan uses only publicly available DNS and web data. We keep the scan results so we can generate your report, and if you request the full report by email we store your address to send it and to follow up once. We never sell or share your details with third parties. See our [privacy policy](/privacy) for full detail.',
+    },
+    {
+      question: 'What do I get in the full report?',
+      answer:
+        'The instant result shows your overall score, rating, and how many issues were found. The full report, sent to your email as a private link, breaks down every finding with a severity rating, explains what each one means in plain English, and covers your email authentication, web and TLS configuration, and externally visible footprint.',
+    },
+  ],
 } as const;
