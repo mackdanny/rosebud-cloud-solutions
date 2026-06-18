@@ -6,6 +6,33 @@ export interface FaqItem {
 // Each entry should stay 40-90 words, self-contained (no "see above"), UK English.
 // Pairs with faqSchema() in seoMeta.ts to emit FAQPage JSON-LD for AI citation.
 export const faqs = {
+  emailSecurity: [
+    {
+      question: 'What is DMARC, and why does it matter now?',
+      answer:
+        'DMARC is the standard that stops criminals sending email that looks like it comes from your domain, and tells inbox providers what to do with mail that fails. Since 2024, Google and Yahoo (and Microsoft from 2025) require it for bulk senders, so without it your legitimate mail increasingly lands in spam and your domain can be impersonated in phishing and invoice fraud.',
+    },
+    {
+      question: 'Will tightening DMARC break our legitimate email?',
+      answer:
+        "That is the main risk if it is done carelessly, and it is exactly what we prevent. We identify every system that sends as you first, make sure each is authenticated, and only move your policy toward enforcement once it is safe, with you approving each step. Done properly, no legitimate email is ever interrupted.",
+    },
+    {
+      question: 'How is this different from a cheap tool or a free DMARC report?',
+      answer:
+        'Tools give you a dashboard of reports and leave the work to you: reading them, identifying senders, fixing SPF and DKIM, and deciding when to tighten. We do all of that for you and take your domain all the way to full protection. You are paying for the outcome and the expertise, not a report.',
+    },
+    {
+      question: 'How long does it take to get fully protected?',
+      answer:
+        'Most domains reach full enforcement within a few weeks, depending on how many systems send email as you. Our Hardening package is guaranteed to reach enforcement within 90 days, and Managed DMARC then keeps you there with ongoing monitoring.',
+    },
+    {
+      question: 'Do we need any technical knowledge?',
+      answer:
+        'No. The point of the managed service is that you do not have to learn DMARC. You publish a couple of records we give you (we guide you, or work with your IT provider), and we handle the rest, with a simple portal showing your live status.',
+    },
+  ],
   azureLandingZones: [
     {
       question: 'What is an Azure Landing Zone and do we actually need one?',

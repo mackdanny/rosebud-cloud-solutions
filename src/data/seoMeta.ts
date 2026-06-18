@@ -20,6 +20,12 @@ export const pageMeta = {
       "Check your domain's SPF, DKIM, DMARC, TLS and exposed services in seconds. A free external security scan from a UK Microsoft-certified consultancy.",
     path: '/security-check',
   },
+  emailSecurity: {
+    title: 'Managed Email Security & DMARC | Stop Domain Impersonation',
+    description:
+      'Done-for-you DMARC, SPF, DKIM and BIMI. We get your domain to full enforcement (now required by Google, Yahoo & Microsoft) without breaking your mail, then keep it protected.',
+    path: '/services/email-security',
+  },
   azureLandingZones: {
     title: 'Azure Landing Zone Consultancy UK',
     description:
