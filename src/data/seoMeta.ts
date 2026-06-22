@@ -255,7 +255,12 @@ export function techArticleSchema(args: {
     headline: args.title,
     description: args.description,
     url: `${SITE_URL}${args.path}`,
-    image: `${SITE_URL}/rcs-og-card.png`,
+    image: {
+      '@type': 'ImageObject',
+      url: `${SITE_URL}/rcs-og-card.png`,
+      width: 1200,
+      height: 630,
+    },
     datePublished: args.datePublished,
     dateModified: args.dateModified,
     inLanguage: 'en-GB',

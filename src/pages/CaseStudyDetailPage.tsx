@@ -63,7 +63,12 @@ export const CaseStudyDetailPage: React.FC = () => {
     '@type': 'Article',
     headline: study.title,
     description: study.description,
-    image: `${SITE_URL}/${study.image}`,
+    image: {
+      '@type': 'ImageObject',
+      url: `${SITE_URL}/${study.image}`,
+      width: 1024,
+      height: 1024,
+    },
     url: `${SITE_URL}${studyPath}`,
     about: study.industry,
     articleSection: 'Case Studies',
@@ -75,7 +80,7 @@ export const CaseStudyDetailPage: React.FC = () => {
     inLanguage: 'en-GB',
     author: { '@id': `${SITE_URL}/#organization` },
     publisher: { '@id': `${SITE_URL}/#organization` },
-    mainEntityOfPage: `${SITE_URL}${studyPath}`,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': `${SITE_URL}${studyPath}` },
   };
 
   return (
