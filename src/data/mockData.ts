@@ -9,9 +9,9 @@ export const heroContent = {
 };
 
 export const solutionsPartner = [
-  { src: '/partner-data-ai.png', alt: 'Microsoft Solutions Partner: Data & AI (Azure)' },
-  { src: '/partner-digital-app-innovation.png', alt: 'Microsoft Solutions Partner: Digital & App Innovation (Azure)' },
-  { src: '/partner-infrastructure.png', alt: 'Microsoft Solutions Partner: Infrastructure (Azure)' },
+  { src: '/partner-data-ai.webp', alt: 'Microsoft Solutions Partner: Data & AI (Azure)' },
+  { src: '/partner-digital-app-innovation.webp', alt: 'Microsoft Solutions Partner: Digital & App Innovation (Azure)' },
+  { src: '/partner-infrastructure.webp', alt: 'Microsoft Solutions Partner: Infrastructure (Azure)' },
 ];
 
 export const certifications = [
