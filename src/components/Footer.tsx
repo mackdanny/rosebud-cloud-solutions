@@ -58,7 +58,7 @@ export const Footer: React.FC<FooterProps> = ({ className = '' }) => {
 
           {/* Solutions */}
           <div className="md:col-span-2">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-primary mb-8 font-bold font-label">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-primary-fixed mb-8 font-bold font-label">
               Solutions
             </p>
             <ul className="space-y-4 text-xs uppercase tracking-widest text-on-surface-variant">
@@ -72,7 +72,7 @@ export const Footer: React.FC<FooterProps> = ({ className = '' }) => {
 
           {/* Company */}
           <div className="md:col-span-2">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-primary mb-8 font-bold font-label">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-primary-fixed mb-8 font-bold font-label">
               Company
             </p>
             <ul className="space-y-4 text-xs uppercase tracking-widest text-on-surface-variant">
@@ -86,7 +86,7 @@ export const Footer: React.FC<FooterProps> = ({ className = '' }) => {
 
           {/* Connect */}
           <div className="md:col-span-2">
-            <p className="text-[10px] uppercase tracking-[0.2em] text-primary mb-8 font-bold font-label">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-primary-fixed mb-8 font-bold font-label">
               Connect
             </p>
             <ul className="space-y-4 text-xs uppercase tracking-widest text-on-surface-variant">
@@ -110,12 +110,12 @@ export const Footer: React.FC<FooterProps> = ({ className = '' }) => {
           <p className="text-[10px] uppercase tracking-widest text-on-surface-variant/80">
             © 2024–{new Date().getFullYear()} Rosebud Cloud Solutions Ltd
           </p>
-          <p className="text-[10px] uppercase tracking-widest text-on-surface-variant/50">
+          <p className="text-[10px] uppercase tracking-widest text-on-surface-variant/80">
             Company No. 14500087 &nbsp;·&nbsp; VAT No. 439 921 563 &nbsp;·&nbsp; Registered in England & Wales
           </p>
           <Link
             to="/privacy"
-            className="text-[10px] uppercase tracking-widest text-on-surface-variant/50 hover:text-white transition-colors mt-1"
+            className="text-[10px] uppercase tracking-widest text-on-surface-variant/80 hover:text-white transition-colors mt-1"
           >
             Privacy Policy
           </Link>

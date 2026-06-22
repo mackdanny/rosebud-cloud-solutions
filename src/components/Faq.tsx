@@ -100,7 +100,7 @@ export const Faq: React.FC<FaqProps> = ({
         transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] }}
         className={compact ? 'mb-10 max-w-2xl' : 'mb-16 max-w-3xl'}
       >
-        <span className="text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label block mb-4">
+        <span className="text-[10px] uppercase tracking-[0.3em] text-primary-fixed font-bold font-label block mb-4">
           {eyebrow}
         </span>
         <h2

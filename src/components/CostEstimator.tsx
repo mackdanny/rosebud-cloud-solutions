@@ -223,7 +223,7 @@ export const CostEstimator: React.FC = () => {
           {/* ─── Tier card / output ──────────────────────────── */}
           <div className="bg-surface-container border border-outline/60 rounded-xl p-6 lg:p-8 flex flex-col">
             <div className="flex items-center justify-between mb-6">
-              <span className="text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label">
+              <span className="text-[10px] uppercase tracking-[0.3em] text-primary-fixed font-bold font-label">
                 Recommended Tier
               </span>
               <span className="px-3 py-1 bg-primary/15 border border-primary/30 rounded-full text-xs font-bold text-primary">
@@ -281,7 +281,7 @@ export const CostEstimator: React.FC = () => {
                   className="overflow-hidden"
                 >
                   <div className="border-t border-outline/40 pt-4 mb-6">
-                    <p className="text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label mb-3">
+                    <p className="text-[10px] uppercase tracking-[0.3em] text-primary-fixed font-bold font-label mb-3">
                       With Add-ons
                     </p>
                     <ul className="space-y-2">

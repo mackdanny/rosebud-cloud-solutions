@@ -24,7 +24,7 @@ export const InsightsPage: React.FC = () => (
       <div className="text-center mb-16">
         <motion.span
           initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
-          className="inline-block text-[10px] uppercase tracking-[0.4em] text-primary font-bold font-label mb-6"
+          className="inline-block text-[10px] uppercase tracking-[0.4em] text-primary-fixed font-bold font-label mb-6"
         >
           Insights
         </motion.span>
