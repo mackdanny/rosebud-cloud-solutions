@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, MotionConfig } from 'framer-motion';
 import { Nav } from './components/Nav';
 import { Footer } from './components/Footer';
-import { Preloader } from './components/Preloader';
 import { ChatBubble } from './components/ChatBubble';
 import { ChatPanel } from './components/ChatPanel';
 import { useChatbot } from './hooks/useChatbot';
@@ -98,63 +97,61 @@ export function AppRoutes() {
   const chatbot = useChatbot();
 
   return (
-    <Preloader>
-      <div className="min-h-screen bg-background text-on-background">
-        <ScrollToTop />
-        <Nav />
-        <Suspense fallback={null}>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/security-check" element={<SecurityCheckPage />} />
-            <Route path="/services/azure-landing-zones" element={<AzureLandingZonesPage />} />
-            <Route path="/services/cloud-security" element={<CloudSecurityPage />} />
-            <Route path="/services/devsecops" element={<DevSecOpsPage />} />
-            <Route path="/services/cloud-optimisation" element={<CloudOptimisationPage />} />
-            <Route path="/services/advisory-consulting" element={<AdvisoryConsultingPage />} />
-            <Route path="/services/managed-cloud" element={<ManagedCloudPage />} />
-            <Route path="/services/email-security" element={<EmailSecurityPage />} />
-            {STRATEGIC_TRIAGE_ENABLED && (
-              <Route path="/tools/strategic-triage" element={<StrategicTriagePage />} />
-            )}
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/how-we-work" element={<HowWeWorkPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/case-studies" element={<CaseStudiesPage />} />
-            <Route path="/case-studies/:slug" element={<CaseStudyDetailPage />} />
-            <Route path="/faq" element={<FaqPage />} />
-            {INSIGHTS_ENABLED && (
-              <>
-                <Route path="/insights" element={<InsightsPage />} />
-                <Route path="/insights/:slug" element={<ArticlePage />} />
-              </>
-            )}
-            {REPORTS_ENABLED && (
-              <Route path="/reports/:slug" element={<ReportDetailPage />} />
-            )}
-            <Route path="/privacy" element={<PrivacyPolicyPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </Suspense>
-        <Footer />
-        <AnimatePresence>
-          {!chatbot.isOpen && (
-            <ChatBubble onClick={() => chatbot.setIsOpen(true)} isOpen={chatbot.isOpen} />
+    <div className="min-h-screen bg-background text-on-background">
+      <ScrollToTop />
+      <Nav />
+      <Suspense fallback={null}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/security-check" element={<SecurityCheckPage />} />
+          <Route path="/services/azure-landing-zones" element={<AzureLandingZonesPage />} />
+          <Route path="/services/cloud-security" element={<CloudSecurityPage />} />
+          <Route path="/services/devsecops" element={<DevSecOpsPage />} />
+          <Route path="/services/cloud-optimisation" element={<CloudOptimisationPage />} />
+          <Route path="/services/advisory-consulting" element={<AdvisoryConsultingPage />} />
+          <Route path="/services/managed-cloud" element={<ManagedCloudPage />} />
+          <Route path="/services/email-security" element={<EmailSecurityPage />} />
+          {STRATEGIC_TRIAGE_ENABLED && (
+            <Route path="/tools/strategic-triage" element={<StrategicTriagePage />} />
           )}
-        </AnimatePresence>
-        <AnimatePresence>
-          {chatbot.isOpen && (
-            <ChatPanel
-              messages={chatbot.messages}
-              onSend={chatbot.sendMessage}
-              onClose={() => chatbot.setIsOpen(false)}
-              isStreaming={chatbot.isStreaming}
-              error={chatbot.error}
-              hasInteracted={chatbot.hasInteracted}
-            />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/how-we-work" element={<HowWeWorkPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/case-studies" element={<CaseStudiesPage />} />
+          <Route path="/case-studies/:slug" element={<CaseStudyDetailPage />} />
+          <Route path="/faq" element={<FaqPage />} />
+          {INSIGHTS_ENABLED && (
+            <>
+              <Route path="/insights" element={<InsightsPage />} />
+              <Route path="/insights/:slug" element={<ArticlePage />} />
+            </>
           )}
-        </AnimatePresence>
-      </div>
-    </Preloader>
+          {REPORTS_ENABLED && (
+            <Route path="/reports/:slug" element={<ReportDetailPage />} />
+          )}
+          <Route path="/privacy" element={<PrivacyPolicyPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </Suspense>
+      <Footer />
+      <AnimatePresence>
+        {!chatbot.isOpen && (
+          <ChatBubble onClick={() => chatbot.setIsOpen(true)} isOpen={chatbot.isOpen} />
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {chatbot.isOpen && (
+          <ChatPanel
+            messages={chatbot.messages}
+            onSend={chatbot.sendMessage}
+            onClose={() => chatbot.setIsOpen(false)}
+            isStreaming={chatbot.isStreaming}
+            error={chatbot.error}
+            hasInteracted={chatbot.hasInteracted}
+          />
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
 

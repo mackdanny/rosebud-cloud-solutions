@@ -36,6 +36,14 @@ All verified in `dist/client/**` prerendered output after `npm run build` (exit 
 
 - **Service-page breadcrumbs** (`Home → Service`): an agent flagged the missing `/services` crumb, but there is **no `/services` index route** (services exist only at `/services/{slug}`). Adding the crumb would link to a 404. Leave as-is unless a hub page is built.
 
+## Performance — root cause found + fixed (preloader removed)
+
+PageSpeed Insights returned **44% performance**. Root cause was the homepage **brand-intro preloader** (`src/components/Preloader.tsx`), a full-screen opaque overlay (`fixed inset-0 z-[9999]`, solid `#0B0F2A`) that gated the page for **~5.7s** (3 × 1.75s rotation phases + settle + fade). It also shipped with `REVIEW_MODE = true`, so the 24h cooldown was disabled and it played on every visit — and Lighthouse/PSI runs cold (no localStorage) so it always saw the full intro. Net effect: LCP resolved against the overlay (~5.7s, "Poor") and framer-motion's dense keyframe work inflated TBT.
+
+A shortened (~1s) version was considered and rejected: it would still delay LCP by ~1s on every cold load and keep framer-motion in the critical path, and a 1s 3D rotation reads as rushed. Decision (Danny): **remove it entirely** — traffic over intro.
+
+**Implemented:** removed the `<Preloader>` wrapper from `src/App.tsx` and deleted `src/components/Preloader.tsx`. Children already rendered underneath, so layout is unchanged; the hero now paints immediately as the LCP element. Verified in-browser (dev server): hero renders on first paint, no overlay, no console errors. `ClientOnly` retained (used by several service pages). Re-run PSI after deploy to confirm the new score.
+
 ## Remaining — infra (needs Azure/Cloudflare dashboard, can't be done in repo)
 
 | Priority | Item | Notes |
