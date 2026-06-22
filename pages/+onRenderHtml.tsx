@@ -59,7 +59,7 @@ export const onRenderHtml: OnRenderHtmlAsync = async (pageContext): ReturnType<O
     helmetTags = extracted.join('\n    ');
   }
 
-  const htmlAttrs = helmet?.htmlAttributes.toString() ?? 'lang="en"';
+  const htmlAttrs = helmet?.htmlAttributes.toString() ?? 'lang="en-GB"';
   const bodyAttrs = helmet?.bodyAttributes.toString() ?? '';
 
   return escapeInject`<!doctype html>
