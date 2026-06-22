@@ -81,18 +81,14 @@ export const onRenderHtml: OnRenderHtmlAsync = async (pageContext): ReturnType<O
 
   return {
     documentHtml,
-    // Trim Vike's auto-injected <link rel="preload"> tags that hurt LCP/CLS on
-    // slow connections: the 1.1MB Material Symbols icon font (not needed for
-    // first paint — still loads on demand via @font-face) and auto image
-    // preloads (the SEO component already preloads the true LCP image with
-    // fetchpriority). The Manrope/Inter text-font preloads are kept, which is
-    // what prevents the late font swap that was shifting the page (CLS).
+    // Drop Vike's auto image preloads (the SEO component already preloads the
+    // true LCP image with fetchpriority). Font preloads — including the now
+    // 30KB subset Material Symbols icon font — are KEPT: getting the icon font
+    // in before first paint is what stops the late font swap that reserved the
+    // wide fallback ligature-word width and then collapsed it (the footer CLS).
     injectFilter(assets) {
       for (const asset of assets) {
         if (asset.assetType === 'image') asset.inject = false;
-        if (asset.assetType === 'font' && asset.src.includes('material-symbols')) {
-          asset.inject = false;
-        }
       }
     },
   };
