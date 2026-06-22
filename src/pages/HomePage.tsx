@@ -202,7 +202,7 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
 
             {/* Eyebrow */}
             <motion.span
-              className="inline-block text-[10px] uppercase tracking-[0.4em] text-primary font-bold font-label mb-8"
+              className="inline-block text-[10px] uppercase tracking-[0.4em] text-primary-fixed font-bold font-label mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
@@ -265,7 +265,7 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
       <section className="py-24 border-y border-outline bg-surface">
         <div className="max-w-[1440px] mx-auto px-8">
           <ScrollReveal className="text-center">
-            <p className="text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label mb-3">
+            <p className="text-[10px] uppercase tracking-[0.3em] text-primary-fixed font-bold font-label mb-3">
               Microsoft Solutions Partner
             </p>
             <p className="text-on-surface-variant text-sm max-w-md mx-auto mb-12">
@@ -349,7 +349,7 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
             <div className="relative overflow-hidden rounded-3xl border border-outline/60 bg-surface px-8 py-16 md:px-16 md:py-20 text-center">
               <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-[0.18]" style={{ background: 'radial-gradient(60% 80% at 50% 0%, rgba(160,0,181,0.55), transparent 70%)' }} />
               <div className="relative">
-                <span className="inline-block text-[10px] uppercase tracking-[0.4em] text-primary font-bold font-label mb-6">Free tool</span>
+                <span className="inline-block text-[10px] uppercase tracking-[0.4em] text-primary-fixed font-bold font-label mb-6">Free tool</span>
                 <h2 className="font-headline text-4xl md:text-6xl font-bold tracking-tight mb-6">How exposed is your domain?</h2>
                 <p className="max-w-2xl mx-auto text-on-surface-variant text-lg leading-relaxed mb-10">
                   Run a free external security scan in seconds. See your email, web and exposure risks from an attacker's point of view. No install, no access to your systems.
@@ -533,7 +533,7 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
                   <div className="w-10 h-10 rounded-lg bg-primary/15 border border-primary/25 flex items-center justify-center">
                     <span aria-hidden="true" className="material-symbols-outlined text-primary" style={{ fontSize: '1.2rem' }}>hub</span>
                   </div>
-                  <span className="text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label">
+                  <span className="text-[10px] uppercase tracking-[0.3em] text-primary-fixed font-bold font-label">
                     Strategic Triage Engine
                   </span>
                 </div>
@@ -604,7 +604,7 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
         <div className="max-w-[1440px] mx-auto px-8">
           <ScrollReveal>
             <div className="text-center mb-6">
-              <span className="text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label mb-4 block">
+              <span className="text-[10px] uppercase tracking-[0.3em] text-primary-fixed font-bold font-label mb-4 block">
                 Service Plans
               </span>
               <h2 className="font-headline text-4xl md:text-5xl font-extrabold tracking-tighter mb-4">

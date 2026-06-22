@@ -43,7 +43,7 @@ export const ReportDetailPage: React.FC = () => {
 
       <div className="max-w-[820px] mx-auto px-6 relative">
         {/* Hero */}
-        <p className="text-[10px] uppercase tracking-[0.4em] text-primary font-bold font-label mb-6">Original research</p>
+        <p className="text-[10px] uppercase tracking-[0.4em] text-primary-fixed font-bold font-label mb-6">Original research</p>
         <h1 className="font-headline text-3xl md:text-5xl font-extrabold tracking-tighter mb-8 leading-[1.1]">{report.title}</h1>
 
         <div className="rounded-3xl border border-outline/60 bg-surface px-8 py-12 text-center mb-12 relative overflow-hidden">
