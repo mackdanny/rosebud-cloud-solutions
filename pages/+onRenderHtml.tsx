@@ -62,7 +62,7 @@ export const onRenderHtml: OnRenderHtmlAsync = async (pageContext): ReturnType<O
   const htmlAttrs = helmet?.htmlAttributes.toString() ?? 'lang="en-GB"';
   const bodyAttrs = helmet?.bodyAttributes.toString() ?? '';
 
-  return escapeInject`<!doctype html>
+  const documentHtml = escapeInject`<!doctype html>
 <html ${dangerouslySkipEscape(htmlAttrs)}>
   <head>
     <meta charset="UTF-8" />
@@ -78,4 +78,22 @@ export const onRenderHtml: OnRenderHtmlAsync = async (pageContext): ReturnType<O
     <div id="root">${dangerouslySkipEscape(cleanedAppHtml)}</div>
   </body>
 </html>`;
+
+  return {
+    documentHtml,
+    // Trim Vike's auto-injected <link rel="preload"> tags that hurt LCP/CLS on
+    // slow connections: the 1.1MB Material Symbols icon font (not needed for
+    // first paint — still loads on demand via @font-face) and auto image
+    // preloads (the SEO component already preloads the true LCP image with
+    // fetchpriority). The Manrope/Inter text-font preloads are kept, which is
+    // what prevents the late font swap that was shifting the page (CLS).
+    injectFilter(assets) {
+      for (const asset of assets) {
+        if (asset.assetType === 'image') asset.inject = false;
+        if (asset.assetType === 'font' && asset.src.includes('material-symbols')) {
+          asset.inject = false;
+        }
+      }
+    },
+  };
 };

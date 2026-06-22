@@ -77,7 +77,7 @@ export function SEO({
           as="image"
           href={img.href}
           {...(img.type ? { type: img.type } : {})}
-          {...(img.fetchPriority ? { fetchPriority: img.fetchPriority } : {})}
+          {...(img.fetchPriority ? { fetchpriority: img.fetchPriority } : {})}
           {...(img.imagesrcset ? { imageSrcSet: img.imagesrcset } : {})}
           {...(img.imagesizes ? { imageSizes: img.imagesizes } : {})}
         />
