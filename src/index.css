@@ -59,6 +59,13 @@
     direction: ltr;
     -webkit-font-smoothing: antialiased;
     font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    /* Pin the layout box to 1em (Material Symbols glyphs have a 1em advance, so
+       loaded icons are unaffected). This stops the fallback ligature text (e.g.
+       the word "chat_bubble") shown before the icon font loads from reserving
+       extra width and then collapsing on swap — the page-wide reflow that was
+       causing the footer CLS. No overflow:hidden, so glyphs are never clipped;
+       font-display:block keeps the pre-load text invisible anyway. */
+    width: 1em;
   }
 
   .glass-header {
