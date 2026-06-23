@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
@@ -7,6 +7,7 @@ import { Faq } from '../components/Faq';
 import { pageMeta, serviceSchema, breadcrumbSchema, faqSchema } from '../data/seoMeta';
 import { faqs } from '../data/faqs';
 import { TiltCard } from '../components/TiltCard';
+import { trialUrl, type ManagedPlan } from '../config/portal';
 
 // ─── Animation ────────────────────────────────────────────────────────────────
 
@@ -34,54 +35,51 @@ const ScrollReveal: React.FC<{ children: React.ReactNode; className?: string; de
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
-interface Pkg {
+interface PricedPkg {
+  id: ManagedPlan;
   name: string;
   who: string;
+  priceMonthly: number;
   cap: string;
   features: string[];
-  cta: { label: string; href: string };
   featured?: boolean;
   badge?: string;
 }
 
-const packages: Pkg[] = [
+const packages: PricedPkg[] = [
   {
-    name: 'Free Scan',
-    who: 'See exactly how exposed your domain is, in seconds.',
-    cap: 'No cost',
-    features: ['Instant security score', '30+ email & DNS checks', 'Spoofability check'],
-    cta: { label: 'Run free scan', href: '/security-check' },
+    id: 'monitor',
+    name: 'Monitor',
+    who: 'See your exposure and act on it yourself.',
+    priceMonthly: 39,
+    cap: '1 domain · 2 users',
+    features: ['DMARC report ingestion & analysis', 'Sender identification & classification', 'Live status portal', 'Monthly PDF reports'],
   },
   {
-    name: 'Assessment',
-    who: 'A specialist reads your results and tells you what matters.',
-    cap: 'One-off',
-    features: ['Everything in the scan', 'Expert-reviewed report', 'Prioritised fix list', 'Readout call'],
-    cta: { label: 'Get a quote', href: '/contact' },
-  },
-  {
-    name: 'Hardening',
-    who: 'We fix it for you, to full enforcement, without breaking your mail.',
-    cap: 'One-off project',
-    features: ['Hands-on SPF/DKIM/DMARC fixes', 'MTA-STS & TLS reporting', 'Before/after proof', 'Enforced in 90 days, guaranteed'],
-    cta: { label: 'Get a quote', href: '/contact' },
-  },
-  {
-    name: 'Managed DMARC',
-    who: 'Done-for-you protection, monitored and maintained for you.',
-    cap: 'Monthly',
-    features: ['We identify & classify every sender', 'We walk you to full enforcement', 'Live portal & monthly reports', 'Ongoing monitoring'],
-    cta: { label: 'Get a quote', href: '/contact' },
+    id: 'managed',
+    name: 'Managed',
+    who: 'Done-for-you protection: we walk you safely to full enforcement.',
+    priceMonthly: 99,
+    cap: '1 domain · 5 users',
+    features: ['Everything in Monitor', 'We walk you to enforcement (no broken mail)', 'Hosted DMARC, so you never edit DNS again', 'SPF, DKIM, MTA-STS & TLS-RPT', '90-day enforcement guarantee', 'Priority support'],
     featured: true,
     badge: 'Most popular',
   },
+  {
+    id: 'scale',
+    name: 'Scale',
+    who: 'Multi-domain estates, with a dedicated specialist.',
+    priceMonthly: 149,
+    cap: 'Up to 5 domains · unlimited users',
+    features: ['Everything in Managed', 'Up to 5 domains', 'BIMI (your verified logo in inboxes)', 'Dedicated specialist + SLA'],
+  },
 ];
 
-const tiers = ['Free Scan', 'Assessment', 'Hardening', 'Managed DMARC'];
+const tiers = ['Monitor', 'Managed', 'Scale'];
 
 interface FeatureGroup {
   group: string;
-  rows: { label: string; marks: [boolean, boolean, boolean, boolean] }[];
+  rows: { label: string; marks: [boolean, boolean, boolean] }[];
 }
 
 const T = true;
@@ -91,58 +89,48 @@ const featureGroups: FeatureGroup[] = [
   {
     group: 'Visibility & analysis',
     rows: [
-      { label: 'Security score (A–F) with grade breakdown', marks: [T, T, T, T] },
-      { label: '30+ email, DNS, web & TLS security checks', marks: [T, T, T, T] },
-      { label: 'Spoofability check (can someone send as you?)', marks: [T, T, T, T] },
-      { label: "Attacker's-eye impersonation view", marks: [T, T, T, T] },
-      { label: 'Lookalike / typo-squat domain detection', marks: [T, T, T, T] },
-      { label: 'External exposure (subdomain takeover, zone transfer, wildcard)', marks: [T, T, T, T] },
-      { label: 'Domain expiry & registrar-lock check', marks: [T, T, T, T] },
-      { label: 'Credential / breach exposure review', marks: [F, T, T, T] },
+      { label: 'Security score (A–F) with grade breakdown', marks: [T, T, T] },
+      { label: 'Spoofability check (can someone send as you?)', marks: [T, T, T] },
+      { label: 'DMARC aggregate report ingestion & analysis', marks: [T, T, T] },
+      { label: 'Sender identification & classification', marks: [T, T, T] },
+      { label: 'Lookalike / typo-squat domain detection', marks: [T, T, T] },
     ],
   },
   {
     group: 'Reporting & monitoring',
     rows: [
-      { label: 'Expert-reviewed report (PDF)', marks: [F, T, T, T] },
-      { label: 'DMARC aggregate report ingestion & analysis', marks: [F, F, T, T] },
-      { label: 'Sender identification & classification', marks: [F, F, T, T] },
-      { label: 'Full audit trail of every change to your domain', marks: [F, F, T, T] },
-      { label: 'Continuous monitoring & drift alerts', marks: [F, F, F, T] },
-      { label: 'Live status portal', marks: [F, F, F, T] },
-      { label: 'Monthly reports', marks: [F, F, F, T] },
+      { label: 'Live status portal', marks: [T, T, T] },
+      { label: 'Monthly PDF reports', marks: [T, T, T] },
+      { label: 'Continuous monitoring & drift detection', marks: [T, T, T] },
+      { label: 'Full audit trail of every change to your domain', marks: [T, T, T] },
     ],
   },
   {
     group: 'Getting protected (done-for-you)',
     rows: [
-      { label: 'Prioritised, plain-English fix list', marks: [F, T, T, T] },
-      { label: 'Done-for-you SPF, DKIM & DMARC setup', marks: [F, F, T, T] },
-      { label: 'Safe step-up to full enforcement (p=reject)', marks: [F, F, T, T] },
-      { label: 'Enforcement safety gates (no broken mail)', marks: [F, F, T, T] },
-      { label: 'MTA-STS (forces inbound encryption)', marks: [F, F, T, T] },
-      { label: 'TLS reporting (TLS-RPT)', marks: [F, F, T, T] },
-      { label: 'BIMI (your verified logo in inboxes)', marks: [F, F, T, T] },
-      { label: 'Exposed / dangling record cleanup', marks: [F, F, T, T] },
-      { label: 'Enforcement guarantee (90 days)', marks: [F, F, T, T] },
+      { label: 'We walk you to full enforcement (p=reject)', marks: [F, T, T] },
+      { label: 'Enforcement safety gates (no broken mail)', marks: [F, T, T] },
+      { label: 'Hosted DMARC, so you never edit DNS again', marks: [F, T, T] },
+      { label: 'Done-for-you SPF & DKIM guidance', marks: [F, T, T] },
+      { label: 'MTA-STS & TLS reporting (TLS-RPT)', marks: [F, T, T] },
+      { label: 'Enforcement guarantee (90 days)', marks: [F, T, T] },
+      { label: 'BIMI (your verified logo in inboxes)', marks: [F, F, T] },
     ],
   },
   {
     group: 'Management & access',
     rows: [
-      { label: 'Unlimited domains', marks: [F, F, F, T] },
-      { label: 'Unlimited portal users', marks: [F, F, F, T] },
-      { label: 'Passwordless, phishing-resistant login', marks: [F, F, F, T] },
-      { label: 'Complete report history retained', marks: [F, F, F, T] },
+      { label: 'Multiple domains (up to 5)', marks: [F, F, T] },
+      { label: 'Unlimited portal users', marks: [F, F, T] },
+      { label: 'Passwordless, phishing-resistant login', marks: [T, T, T] },
     ],
   },
   {
     group: 'Service & support',
     rows: [
-      { label: 'Expert human review & readout call', marks: [F, T, T, T] },
-      { label: 'Fully done-for-you implementation', marks: [F, F, T, T] },
-      { label: 'Ongoing managed service & guidance', marks: [F, F, F, T] },
-      { label: 'Priority human support', marks: [F, T, T, T] },
+      { label: 'Priority human support', marks: [F, T, T] },
+      { label: 'Ongoing managed service & guidance', marks: [F, T, T] },
+      { label: 'Dedicated specialist + SLA', marks: [F, F, T] },
     ],
   },
 ];
@@ -154,6 +142,8 @@ interface EmailSecurityPageProps {
 }
 
 export const EmailSecurityPage: React.FC<EmailSecurityPageProps> = ({ className = '' }) => {
+  const [annual, setAnnual] = useState(false);
+  const interval = annual ? 'year' : 'month';
   return (
     <main className={`pt-24 ${className}`}>
       <SEO
@@ -263,70 +253,130 @@ export const EmailSecurityPage: React.FC<EmailSecurityPageProps> = ({ className 
         </ScrollReveal>
       </section>
 
-      {/* ── Packages ─────────────────────────────────────────────────── */}
-      <section className="py-32 px-8 md:px-24 bg-background">
-        <div className="max-w-[1440px] mx-auto">
-          <ScrollReveal className="mb-16">
+      {/* ── Pricing ──────────────────────────────────────────────────── */}
+      <section id="pricing" className="py-32 px-8 md:px-24 bg-background scroll-mt-24">
+        <div className="max-w-[1280px] mx-auto">
+          <ScrollReveal className="mb-10">
             <span className="text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label block mb-4">
-              Packages
+              Managed DMARC pricing
             </span>
             <h2 className="font-headline text-4xl md:text-5xl font-bold tracking-tight max-w-2xl">
-              Choose the level of help you want
+              Start a 7-day free trial, on any plan
             </h2>
+            <p className="text-on-surface-variant max-w-xl mt-4">
+              Per account, not per seat. Cancel any time during your trial and you won't be charged. Public-sector buyer?{' '}
+              <Link to="/contact" className="text-primary underline-offset-2 hover:underline">Pay by invoice instead</Link>.
+            </p>
             <div className="h-px w-24 bg-gradient-to-r from-primary to-transparent mt-6" />
           </ScrollReveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {packages.map((pkg, i) => (
-              <motion.div
-                key={pkg.name}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: '-60px' }}
-                variants={fadeUp}
-                transition={{ duration: 0.6, delay: i * 0.1, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] }}
+          {/* Billing toggle */}
+          <ScrollReveal className="mb-12">
+            <div className="inline-flex items-center gap-1 p-1 rounded-full border border-outline/60 bg-surface" role="group" aria-label="Billing period">
+              <button
+                type="button"
+                onClick={() => setAnnual(false)}
+                aria-pressed={!annual}
+                className={`px-5 py-2 rounded-full text-sm font-bold transition-colors ${!annual ? 'bg-primary text-white' : 'text-on-surface-variant hover:text-on-surface'}`}
               >
-                <TiltCard
-                  className={`group h-full rounded-2xl p-7 flex flex-col relative overflow-hidden transition-all ${
-                    pkg.featured ? 'bg-surface border-2 border-primary/40' : 'bg-surface border border-outline/60 hover:border-primary/30'
-                  }`}
+                Monthly
+              </button>
+              <button
+                type="button"
+                onClick={() => setAnnual(true)}
+                aria-pressed={annual}
+                className={`px-5 py-2 rounded-full text-sm font-bold transition-colors ${annual ? 'bg-primary text-white' : 'text-on-surface-variant hover:text-on-surface'}`}
+              >
+                Annual <span className="text-xs font-normal opacity-80">· 2 months free</span>
+              </button>
+            </div>
+          </ScrollReveal>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch max-w-[1100px] mx-auto">
+            {packages.map((pkg, i) => {
+              const price = annual ? pkg.priceMonthly * 10 : pkg.priceMonthly;
+              const unit = annual ? '/yr' : '/mo';
+              return (
+                <motion.div
+                  key={pkg.name}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: '-60px' }}
+                  variants={fadeUp}
+                  transition={{ duration: 0.6, delay: i * 0.1, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] }}
                 >
-                  <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
-                  {pkg.badge && (
-                    <span className="self-start mb-3 text-[10px] uppercase tracking-[0.15em] font-bold text-white bg-gradient-to-r from-primary to-fuchsia-500 px-2.5 py-1 rounded-full">
-                      {pkg.badge}
+                  <TiltCard
+                    className={`group h-full rounded-2xl p-7 flex flex-col relative overflow-hidden transition-all ${
+                      pkg.featured ? 'bg-surface border-2 border-primary/40' : 'bg-surface border border-outline/60 hover:border-primary/30'
+                    }`}
+                  >
+                    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
+                    {pkg.badge && (
+                      <span className="self-start mb-3 text-[10px] uppercase tracking-[0.15em] font-bold text-white bg-gradient-to-r from-primary to-fuchsia-500 px-2.5 py-1 rounded-full">
+                        {pkg.badge}
+                      </span>
+                    )}
+                    <h3 className="font-headline text-xl font-bold mb-1">{pkg.name}</h3>
+                    <p className="text-on-surface-variant text-sm min-h-[3.5rem] mb-3">{pkg.who}</p>
+                    <div className="mb-1 flex items-end gap-1">
+                      <span className="font-headline text-4xl font-extrabold tracking-tight">£{price}</span>
+                      <span className="text-on-surface-variant text-sm mb-1.5">{unit}</span>
+                    </div>
+                    <span className="text-[11px] uppercase tracking-[0.15em] text-on-surface-variant/70 font-bold font-label mb-4 block">
+                      {pkg.cap}
                     </span>
-                  )}
-                  <h3 className="font-headline text-xl font-bold mb-1">{pkg.name}</h3>
-                  <p className="text-on-surface-variant text-sm min-h-[3.5rem] mb-3">{pkg.who}</p>
-                  <span className="text-[11px] uppercase tracking-[0.15em] text-on-surface-variant/70 font-bold font-label mb-4">
-                    {pkg.cap}
-                  </span>
-                  <ul className="space-y-2.5 flex-1 mb-6">
-                    {pkg.features.map((f) => (
-                      <li key={f} className="flex items-start gap-2 text-sm text-on-surface">
-                        <span aria-hidden="true" className="material-symbols-outlined text-primary shrink-0" style={{ fontSize: '1.05rem' }}>
-                          check
-                        </span>
-                        <span>{f}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Link to={pkg.cta.href} className="no-underline mt-auto">
-                    <button
-                      className={`w-full font-headline font-bold px-5 py-3 rounded-lg text-sm transition-all ${
-                        pkg.featured
-                          ? 'btn-animated text-white'
-                          : 'border border-outline/60 text-on-surface hover:border-primary/40'
-                      }`}
+                    <ul className="space-y-2.5 flex-1 mb-6">
+                      {pkg.features.map((f) => (
+                        <li key={f} className="flex items-start gap-2 text-sm text-on-surface">
+                          <span aria-hidden="true" className="material-symbols-outlined text-primary shrink-0" style={{ fontSize: '1.05rem' }}>
+                            check
+                          </span>
+                          <span>{f}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <a
+                      href={trialUrl(pkg.id, undefined, interval)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="no-underline mt-auto"
                     >
-                      {pkg.cta.label}
-                    </button>
-                  </Link>
-                </TiltCard>
-              </motion.div>
-            ))}
+                      <button
+                        className={`w-full font-headline font-bold px-5 py-3 rounded-lg text-sm transition-all ${
+                          pkg.featured ? 'btn-animated text-white' : 'border border-outline/60 text-on-surface hover:border-primary/40'
+                        }`}
+                      >
+                        Start 7-day free trial
+                      </button>
+                    </a>
+                  </TiltCard>
+                </motion.div>
+              );
+            })}
           </div>
+
+          {/* One-off / consulting band */}
+          <ScrollReveal className="mt-14">
+            <div className="rounded-2xl border border-outline/60 bg-surface p-7 md:p-9 flex flex-col md:flex-row md:items-center gap-6 justify-between">
+              <div>
+                <h3 className="font-headline text-xl font-bold mb-1">Need a one-off expert fix instead?</h3>
+                <p className="text-on-surface-variant text-sm max-w-2xl">
+                  Prefer us to assess your domain or harden it to full enforcement as a fixed-price project, rather than a subscription? We also run those as concierge engagements.
+                </p>
+              </div>
+              <Link to="/contact" className="no-underline shrink-0">
+                <button className="border border-outline/60 text-on-surface hover:border-primary/40 font-headline font-bold px-7 py-3 rounded-lg text-sm transition-colors whitespace-nowrap">
+                  Talk to us about a quote
+                </button>
+              </Link>
+            </div>
+          </ScrollReveal>
+
+          <ScrollReveal className="mt-6 text-center">
+            <p className="text-on-surface-variant text-sm">
+              Not sure yet? <Link to="/security-check" className="text-primary underline-offset-2 hover:underline">Run the free scan first</Link> — no signup needed.
+            </p>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -360,7 +410,7 @@ export const EmailSecurityPage: React.FC<EmailSecurityPageProps> = ({ className 
                   {featureGroups.map((grp) => (
                     <Fragment key={grp.group}>
                       <tr className="bg-surface-container">
-                        <td colSpan={5} className="px-4 py-2.5 text-[11px] uppercase tracking-[0.12em] font-bold text-primary font-label">
+                        <td colSpan={4} className="px-4 py-2.5 text-[11px] uppercase tracking-[0.12em] font-bold text-primary font-label">
                           {grp.group}
                         </td>
                       </tr>

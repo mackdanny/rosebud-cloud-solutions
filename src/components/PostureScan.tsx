@@ -2,6 +2,12 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePostureScan } from '../hooks/usePostureScan';
 import { POSTURE_API_BASE } from '../config/posture';
+import { trialUrl } from '../config/portal';
+
+/** Engine 1.7.0 only awards grade A at p=reject, so anything below A is not fully enforced. */
+function notEnforced(grade: string): boolean {
+  return (grade ?? '').trim().toUpperCase().charAt(0) !== 'A';
+}
 
 interface PostureScanProps {
   readonly variant?: 'section' | 'page';
@@ -102,6 +108,21 @@ export const PostureScan: React.FC<PostureScanProps> = ({ variant = 'section' })
                 ? 'No material issues found. Unlock the full breakdown to confirm.'
                 : `${result.issueCount} ${result.issueCount === 1 ? 'opportunity' : 'opportunities'} to improve across your email, web and external surface.`}
             </p>
+
+            {/* Intent-aware trial CTA: lead with the product for unenforced domains. */}
+            <a
+              href={trialUrl('managed', domain.trim() || undefined)}
+              target="_blank" rel="noopener noreferrer"
+              className="w-full no-underline mt-1"
+            >
+              <button className="btn-animated text-white font-headline font-bold w-full px-7 py-3.5 rounded-lg text-sm">
+                {notEnforced(result.grade)
+                  ? 'Your domain can be spoofed today — start a free 7-day Managed DMARC trial'
+                  : 'Keep your domain protected — start a Managed DMARC trial'}
+              </button>
+            </a>
+            <p className="text-xs text-on-surface-variant/60 font-label">7-day free trial, card required, cancel any time. Or get the full report by email below.</p>
+
             <form
               onSubmit={(e) => { e.preventDefault(); submitEmail(email); }}
               className="w-full flex flex-col gap-3 mt-2"
@@ -144,6 +165,15 @@ export const PostureScan: React.FC<PostureScanProps> = ({ variant = 'section' })
             >
               View report now
               <span aria-hidden="true" className="material-symbols-outlined text-[16px]">open_in_new</span>
+            </a>
+            <a
+              href={trialUrl('managed', domain.trim() || undefined)}
+              target="_blank" rel="noopener noreferrer"
+              className="w-full no-underline mt-1"
+            >
+              <button className="btn-animated text-white font-headline font-bold w-full px-7 py-3.5 rounded-lg text-sm">
+                Start your free 7-day Managed DMARC trial
+              </button>
             </a>
             <button onClick={reset} className="text-xs text-on-surface-variant/60 font-label hover:text-white transition-colors mt-1">Scan another domain</button>
           </motion.div>

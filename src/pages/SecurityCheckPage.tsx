@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { SEO } from '../components/SEO';
 import { PostureScan } from '../components/PostureScan';
+import { trialUrl } from '../config/portal';
 import { Faq } from '../components/Faq';
 import { pageMeta, securityCheckSchema, breadcrumbSchema, faqSchema } from '../data/seoMeta';
 import { faqs } from '../data/faqs';
@@ -208,17 +209,28 @@ export const SecurityCheckPage: React.FC = () => (
           <div className="text-center rounded-2xl border border-outline/50 bg-surface/60 px-8 py-12">
             <h2 className="font-headline text-2xl md:text-3xl font-bold tracking-tight mb-4">Found something you want fixed?</h2>
             <p className="text-on-surface-variant leading-relaxed max-w-2xl mx-auto mb-8">
-              If your scan shows gaps in email authentication or exposed services, our <Link to="/services/cloud-security" className="text-primary underline-offset-4 hover:underline">cloud security team</Link> can walk you through remediation, or harden the pipeline that caused it with <Link to="/services/devsecops" className="text-primary underline-offset-4 hover:underline">DevSecOps</Link>. Want to understand what fixing it involves before we talk? Our <Link to="/insights/set-up-dmarc-microsoft-365" className="text-primary underline-offset-4 hover:underline">DMARC guide for Microsoft 365</Link> explains the process. A free scan commits you to nothing.
+              The fastest fix for email impersonation is our <Link to="/services/email-security" className="text-primary underline-offset-4 hover:underline">Managed DMARC</Link> service: we walk your domain safely to full enforcement, done for you. Start a free 7-day trial, or talk to us about a one-off hardening project or your wider <Link to="/services/cloud-security" className="text-primary underline-offset-4 hover:underline">cloud security</Link>. A free scan commits you to nothing.
             </p>
-            <Link to="/contact" className="no-underline inline-block">
-              <motion.button
-                className="btn-animated text-white font-headline font-bold px-10 py-4 rounded-lg text-base tracking-tight"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                Talk to us about your results
-              </motion.button>
-            </Link>
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+              <a href={trialUrl('managed')} target="_blank" rel="noopener noreferrer" className="no-underline inline-block">
+                <motion.button
+                  className="btn-animated text-white font-headline font-bold px-10 py-4 rounded-lg text-base tracking-tight"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.97 }}
+                >
+                  Start a free 7-day trial
+                </motion.button>
+              </a>
+              <Link to="/contact" className="no-underline inline-block">
+                <motion.button
+                  className="border border-outline/50 hover:border-primary/40 text-on-surface font-headline font-bold px-10 py-4 rounded-lg text-base tracking-tight transition-colors"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.97 }}
+                >
+                  Talk to us about your results
+                </motion.button>
+              </Link>
+            </div>
           </div>
         </Reveal>
       </section>

@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { STRATEGIC_TRIAGE_ENABLED } from '../config/features';
+import { SIGNIN_URL } from '../config/portal';
 
 interface NavProps {
   readonly className?: string;
@@ -208,6 +209,12 @@ export const Nav: React.FC<NavProps> = ({ className = '' }) => {
 
         {/* Desktop CTAs */}
         <div className="ml-auto hidden md:flex items-center gap-3">
+          <a
+            href={SIGNIN_URL}
+            className="text-white/80 hover:text-white text-sm font-semibold font-headline px-3 py-2 transition-colors no-underline"
+          >
+            Sign in
+          </a>
           <Link to="/security-check" className="no-underline">
             <motion.button
               className="btn-animated text-white text-sm font-semibold font-headline px-6 py-2.5 rounded-lg"
@@ -353,6 +360,9 @@ export const Nav: React.FC<NavProps> = ({ className = '' }) => {
                 Contact Us
               </button>
             </Link>
+            <a href={SIGNIN_URL} className="mt-3 no-underline text-center text-white/80 font-headline font-semibold py-2">
+              Sign in to your portal
+            </a>
           </nav>
         </motion.div>
       )}
