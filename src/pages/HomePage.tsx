@@ -147,12 +147,19 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
         {/* Particle network */}
         <Suspense fallback={null}><ParticleBackground /></Suspense>
 
-        {/* Ambient glow */}
+        {/* Atmosphere: ambient glow + faint engineering grid */}
         <div className="absolute inset-0 rose-diffused-highlight pointer-events-none" />
+        <div className="absolute inset-0 hero-grid pointer-events-none" />
 
-        {/* RCS watermark - above text on mobile, right-side background on desktop */}
-        <div className="relative md:absolute mt-24 mb-8 md:mt-0 md:mb-0 md:inset-auto md:right-0 md:top-1/2 md:-translate-y-1/2 pointer-events-none flex items-center justify-center md:pr-4">
-          <div className="relative w-[280px] h-[280px] md:w-[580px] md:h-[580px] flex items-center justify-center">
+        {/* RCS rose - above text on mobile, right-side focal element on desktop */}
+        <div className="relative md:absolute mt-24 mb-8 md:mt-0 md:mb-0 md:inset-auto md:right-[2vw] md:top-1/2 md:-translate-y-1/2 pointer-events-none flex items-center justify-center">
+          <div className="relative w-[300px] h-[300px] md:w-[620px] md:h-[620px] flex items-center justify-center">
+
+            {/* Magenta bloom anchoring the rose */}
+            <div className="absolute inset-[8%] hero-bloom pointer-events-none" />
+
+            {/* Slowly rotating conic halo */}
+            <div className="absolute inset-0 hero-halo spin-slow pointer-events-none" />
 
             {/* Ambient sparkles - lazy-loaded after hero text paints.
                 Radial mask feathers density at the edges so the container
@@ -183,12 +190,12 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
               alt=""
               aria-hidden="true"
               fetchPriority="high"
-              className="relative z-20 w-full h-full object-contain opacity-40 mix-blend-lighten select-none"
+              className="relative z-20 w-[86%] h-[86%] object-contain opacity-55 mix-blend-lighten select-none"
               animate={{
                 filter: [
-                  'drop-shadow(0 0 6px rgba(217,70,239,0.55)) drop-shadow(0 0 18px rgba(160,0,181,0.40)) drop-shadow(0 0 50px rgba(160,0,181,0.18))',
-                  'drop-shadow(0 0 12px rgba(217,70,239,0.90)) drop-shadow(0 0 35px rgba(160,0,181,0.65)) drop-shadow(0 0 80px rgba(160,0,181,0.30))',
-                  'drop-shadow(0 0 6px rgba(217,70,239,0.55)) drop-shadow(0 0 18px rgba(160,0,181,0.40)) drop-shadow(0 0 50px rgba(160,0,181,0.18))',
+                  'drop-shadow(0 0 8px rgba(217,70,239,0.60)) drop-shadow(0 0 26px rgba(160,0,181,0.45)) drop-shadow(0 0 70px rgba(160,0,181,0.22))',
+                  'drop-shadow(0 0 16px rgba(217,70,239,0.95)) drop-shadow(0 0 45px rgba(160,0,181,0.70)) drop-shadow(0 0 100px rgba(160,0,181,0.35))',
+                  'drop-shadow(0 0 8px rgba(217,70,239,0.60)) drop-shadow(0 0 26px rgba(160,0,181,0.45)) drop-shadow(0 0 70px rgba(160,0,181,0.22))',
                 ],
               }}
               transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
@@ -198,66 +205,123 @@ export const HomePage: React.FC<HomePageProps> = ({ className = '' }) => {
 
         {/* Hero content */}
         <div className="max-w-[1440px] mx-auto px-8 w-full relative z-10">
-          <div className="max-w-5xl text-center md:text-left mx-auto md:mx-0">
+          <div className="max-w-3xl text-center md:text-left mx-auto md:mx-0">
 
-            {/* Eyebrow */}
-            <motion.span
-              className="inline-block text-[10px] uppercase tracking-[0.4em] text-primary-fixed font-bold font-label mb-8"
+            {/* Eyebrow chip */}
+            <motion.div
+              className="inline-flex items-center gap-2 hero-chip mb-8 mx-auto md:mx-0"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: 0.6, delay: 0.15 }}
             >
-              {heroContent.eyebrow}
-            </motion.span>
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full rounded-full bg-primary-fixed opacity-60 animate-ping" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-primary-fixed" />
+              </span>
+              <span className="text-[8.5px] sm:text-[11px] uppercase tracking-[0.14em] sm:tracking-[0.28em] text-on-surface-variant font-label">
+                {heroContent.eyebrow}
+              </span>
+            </motion.div>
 
-            {/* Headline - staggered lines */}
-            <h1 className="font-headline text-[2.5rem] md:text-[5.25rem] leading-[1.05] font-extrabold tracking-tighter mb-12">
-              {heroContent.headline.map((line, i) => (
-                <motion.span
-                  key={i}
-                  className="block"
-                  initial={{ opacity: 0, y: 60 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    duration: 0.7,
-                    delay: 0.3 + i * 0.1,
-                    ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
-                  }}
-                >
-                  {line === heroContent.gradientWord ? (
-                    <span className="text-gradient-primary">{line}</span>
-                  ) : (
-                    <span>{line}</span>
-                  )}
-                </motion.span>
-              ))}
+            {/* Headline - bold promise + lighter supporting line */}
+            <h1 className="font-display leading-[0.95] tracking-[-0.02em] mb-6">
+              <motion.span
+                className="block text-[2.75rem] md:text-[5.75rem] font-bold text-white"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
+              >
+                Cloud, AI &amp;
+              </motion.span>
+              <motion.span
+                className="block text-[2.75rem] md:text-[5.75rem] font-bold text-sheen"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.42, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
+              >
+                automation.
+              </motion.span>
             </h1>
+
+            {/* Supporting line */}
+            <motion.p
+              className="font-display text-[1.4rem] md:text-[2rem] leading-[1.15] font-medium text-on-surface-variant/90 max-w-2xl mx-auto md:mx-0 mb-8"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.56 }}
+            >
+              Designed to make your business run better.
+            </motion.p>
+
+            {/* Body */}
+            <motion.p
+              className="text-on-surface-variant text-base md:text-lg leading-relaxed max-w-xl mx-auto md:mx-0 mb-10"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.7 }}
+            >
+              {heroContent.body}
+            </motion.p>
 
             {/* CTA row */}
             <motion.div
-              className="flex flex-col md:flex-row items-center gap-10"
+              className="flex flex-col sm:flex-row items-center gap-4 justify-center md:justify-start mb-12"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.9 }}
+              transition={{ duration: 0.7, delay: 0.82 }}
             >
-              <Link to="/contact" className="no-underline">
+              <Link to="/contact" className="no-underline w-full sm:w-auto">
                 <motion.button
-                  className="btn-animated text-white font-headline font-bold px-12 py-5 rounded-lg text-lg tracking-tight"
+                  className="btn-animated text-white font-headline font-bold px-10 py-4 rounded-lg text-base tracking-tight w-full sm:w-auto"
                   whileHover={{ scale: 1.04 }}
                   whileTap={{ scale: 0.97 }}
                 >
                   {heroContent.cta}
                 </motion.button>
               </Link>
-              <div className="max-w-xl">
-                <p className="text-on-surface-variant text-base leading-relaxed border-l-2 border-primary/20 pl-6">
-                  {heroContent.body}
-                </p>
-              </div>
+              <Link to="/security-check" className="no-underline w-full sm:w-auto">
+                <motion.button
+                  className="btn-ghost text-white font-headline font-semibold px-8 py-4 rounded-lg text-base tracking-tight w-full sm:w-auto inline-flex items-center justify-center gap-2"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                >
+                  Free security check
+                  <span aria-hidden="true" className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                </motion.button>
+              </Link>
+            </motion.div>
+
+            {/* Trust strip */}
+            <motion.div
+              className="flex flex-wrap items-center gap-3 justify-center md:justify-start"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.96 }}
+            >
+              <span className="hero-chip whitespace-nowrap">Microsoft Solutions Partner</span>
+              <span className="hero-chip whitespace-nowrap">6&times; Azure certifications</span>
+              <span className="hero-chip whitespace-nowrap">UK-based</span>
             </motion.div>
 
           </div>
         </div>
+
+        {/* Scroll cue */}
+        <motion.div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2 text-on-surface-variant/50 pointer-events-none"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 1.3 }}
+        >
+          <span className="text-[10px] uppercase tracking-[0.3em] font-label">Scroll</span>
+          <motion.svg
+            width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"
+            animate={{ y: [0, 5, 0] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </motion.svg>
+        </motion.div>
 
       </section>
 

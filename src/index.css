@@ -32,6 +32,7 @@
   --color-tertiary:                  #818cf8;
 
   /* Typography */
+  --font-display:  'Schibsted Grotesk', 'Manrope Variable', sans-serif;
   --font-headline: 'Manrope Variable', sans-serif;
   --font-body:     'Inter Variable', sans-serif;
   --font-label:    'Inter Variable', sans-serif;
@@ -156,6 +157,89 @@
     50% {
       transform: translateY(-10px);
     }
+  }
+
+  /* ─── Hero (redesign) ─────────────────────────────────────────────────── */
+
+  /* Faint engineering grid, feathered toward the edges for depth. */
+  .hero-grid {
+    background-image:
+      linear-gradient(rgba(129, 140, 248, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(129, 140, 248, 0.06) 1px, transparent 1px);
+    background-size: 60px 60px;
+    -webkit-mask-image: radial-gradient(ellipse 80% 70% at 60% 35%, #000 0%, transparent 78%);
+    mask-image: radial-gradient(ellipse 80% 70% at 60% 35%, #000 0%, transparent 78%);
+  }
+
+  /* Magenta bloom that anchors the rose on the right. */
+  .hero-bloom {
+    background: radial-gradient(
+      closest-side,
+      rgba(160, 0, 181, 0.28) 0%,
+      rgba(217, 70, 239, 0.12) 38%,
+      transparent 72%
+    );
+    filter: blur(8px);
+  }
+
+  /* Slowly drifting conic halo behind the rose. */
+  .hero-halo {
+    background: conic-gradient(
+      from 0deg,
+      rgba(217, 70, 239, 0) 0deg,
+      rgba(217, 70, 239, 0.35) 90deg,
+      rgba(129, 140, 248, 0.25) 200deg,
+      rgba(160, 0, 181, 0) 360deg
+    );
+    -webkit-mask-image: radial-gradient(closest-side, transparent 58%, #000 60%, #000 70%, transparent 78%);
+    mask-image: radial-gradient(closest-side, transparent 58%, #000 60%, #000 70%, transparent 78%);
+  }
+
+  /* Animated sheen sweeping across the gradient headline word. */
+  .text-sheen {
+    background: linear-gradient(
+      100deg,
+      #d946ef 0%,
+      #f0abfc 28%,
+      #ffffff 46%,
+      #f0abfc 64%,
+      #A000B5 100%
+    );
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: sheen 6s ease-in-out infinite;
+  }
+  @keyframes sheen {
+    0%, 100% { background-position: 0% 50%; }
+    50%      { background-position: 100% 50%; }
+  }
+
+  /* Trust chip in the hero. */
+  .hero-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5ch;
+    padding: 0.45rem 0.85rem;
+    border-radius: 9999px;
+    border: 1px solid var(--color-outline);
+    background: rgba(22, 27, 61, 0.6);
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
+    color: var(--color-on-surface-variant);
+    max-width: 100%;
+  }
+
+  /* Ghost / secondary CTA. */
+  .btn-ghost {
+    border: 1px solid var(--color-outline-variant);
+    background: rgba(22, 27, 61, 0.35);
+    transition: border-color 0.3s, background 0.3s, transform 0.3s;
+  }
+  .btn-ghost:hover {
+    border-color: var(--color-primary-fixed);
+    background: rgba(160, 0, 181, 0.12);
   }
 }
 
