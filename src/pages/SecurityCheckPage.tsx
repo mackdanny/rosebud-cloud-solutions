@@ -135,7 +135,7 @@ export const SecurityCheckPage: React.FC = () => (
           initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}
           className="max-w-2xl mx-auto text-on-surface-variant text-lg leading-relaxed"
         >
-          How exposed is your domain? Run a free external scan that checks over 40 points across your email authentication, mail encryption, website and TLS, DNS, attack surface, and brand exposure. No install, no sign-up, no access to your systems.
+          How exposed is your domain? Run a free external scan that checks over 40 points across your email security, web and TLS, external exposure, attack surface, and brand. No install, no sign-up, no access to your systems.
         </motion.p>
       </div>
 
