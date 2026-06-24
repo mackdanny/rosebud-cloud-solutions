@@ -37,10 +37,10 @@ const CHECK_GROUPS = [
     items: ['Subdomain discovery', 'Subdomain-takeover exposure', 'Certificate Transparency exposure', 'DNS zone-transfer (AXFR)', 'Wildcard DNS', 'Nameserver diversity', 'Domain expiry', 'Registrar transfer lock', 'security.txt disclosure policy'],
   },
   {
-    icon: 'shield',
-    title: 'Attack Surface',
-    blurb: 'Can your infrastructure absorb an attack?',
-    items: ['DDoS scrubbing coverage'],
+    icon: 'badge',
+    title: 'Additional context',
+    blurb: 'Extra intelligence we surface, for context.',
+    items: ['Microsoft 365 footprint', 'Staff email-address pattern', 'Hostname naming exposure', 'Compliance framework alignment'],
   },
   {
     icon: 'fingerprint',
@@ -49,10 +49,10 @@ const CHECK_GROUPS = [
     items: ['Look-alike domains', 'Mail-enabled lookalike abuse'],
   },
   {
-    icon: 'badge',
-    title: 'Additional context',
-    blurb: 'Extra intelligence we surface, for context.',
-    items: ['Microsoft 365 footprint', 'Staff email-address pattern', 'Hostname naming exposure', 'Compliance framework alignment'],
+    icon: 'shield',
+    title: 'Attack Surface',
+    blurb: 'Can your infrastructure absorb an attack?',
+    items: ['DDoS scrubbing coverage'],
   },
 ];
 
@@ -161,9 +161,9 @@ export const SecurityCheckPage: React.FC = () => (
             Most free scanners look at SPF and a TLS certificate and call it a day. This one runs the same comprehensive passive assessment we use in our paid audits, on every scan, entirely from the outside. Here is exactly what it looks at.
           </p>
         </Reveal>
-        <div className="columns-1 md:columns-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
           {CHECK_GROUPS.map(({ icon, title, blurb, items }, i) => (
-            <Reveal key={title} className="mb-6 break-inside-avoid" delay={i % 2}>
+            <Reveal key={title} delay={i % 2}>
               <div className="rounded-2xl border border-outline/50 bg-surface/60 p-6 md:p-7">
                 <div className="flex items-start gap-4">
                   <div className="w-11 h-11 rounded-xl bg-primary/10 border border-primary/25 flex items-center justify-center shrink-0">
