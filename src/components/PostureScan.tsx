@@ -87,10 +87,10 @@ export const PostureScan: React.FC<PostureScanProps> = ({ variant = 'section' })
               </button>
             </div>
             {phase === 'scanning' && (
-              <p className="text-sm text-on-surface-variant/80 font-label">Checking your email, web and exposure surface...</p>
+              <p className="text-sm text-on-surface-variant/80 font-label">Running 40+ checks across your email, web, DNS and exposure surface...</p>
             )}
             {error && phase === 'idle' && <p className="text-sm text-secondary">{error}</p>}
-            <p className="text-xs text-on-surface-variant/60 font-label tracking-wide">~15 seconds. Nothing to install, no access to your systems.</p>
+            <p className="text-xs text-on-surface-variant/60 font-label tracking-wide">In seconds. Nothing to install, no access to your systems.</p>
           </motion.form>
         )}
 
@@ -106,7 +106,7 @@ export const PostureScan: React.FC<PostureScanProps> = ({ variant = 'section' })
             <p className="text-on-surface-variant text-sm max-w-sm">
               {result.issueCount === 0
                 ? 'No material issues found. Unlock the full breakdown to confirm.'
-                : `${result.issueCount} ${result.issueCount === 1 ? 'opportunity' : 'opportunities'} to improve across your email, web and external surface.`}
+                : `${result.issueCount} ${result.issueCount === 1 ? 'opportunity' : 'opportunities'} to improve across your email, web, DNS and exposure surface.`}
             </p>
 
             {/* Intent-aware trial CTA: lead with the product for unenforced domains. */}
@@ -121,7 +121,7 @@ export const PostureScan: React.FC<PostureScanProps> = ({ variant = 'section' })
                   : 'Keep your domain protected — start a Managed DMARC trial'}
               </button>
             </a>
-            <p className="text-xs text-on-surface-variant/60 font-label">7-day free trial, card required, cancel any time. Or get the full report by email below.</p>
+            <p className="text-xs text-on-surface-variant/60 font-label">7-day free trial, card required, cancel any time. Or get your free report by email below.</p>
 
             <form
               onSubmit={(e) => { e.preventDefault(); submitEmail(email); }}
@@ -142,7 +142,7 @@ export const PostureScan: React.FC<PostureScanProps> = ({ variant = 'section' })
                 </button>
               </div>
               {error && <p className="text-sm text-secondary">{error}</p>}
-              <p className="text-xs text-on-surface-variant/60 font-label">We email a private link to your full graded report. No spam.</p>
+              <p className="text-xs text-on-surface-variant/60 font-label">We email a private link to your graded report. No spam.</p>
             </form>
           </motion.div>
         )}

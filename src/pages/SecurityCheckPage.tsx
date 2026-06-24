@@ -80,8 +80,8 @@ const REPORT_ROWS = [
   { label: 'Every finding flagged with a severity rating', free: true, full: true },
   { label: 'Plain-English risk: what each finding means for you', free: true, full: true },
   { label: 'Step-by-step fix for every issue', free: false, full: true },
-  { label: 'Private report link to share with your team', free: false, full: true },
-  { label: 'Walkthrough with a security engineer', free: false, full: true },
+  { label: 'Prioritised fix plan, in order of what matters most', free: false, full: true },
+  { label: 'Readout call with a security engineer', free: false, full: true },
 ];
 
 const Reveal: React.FC<{ children: React.ReactNode; className?: string; delay?: number }> = ({
@@ -235,13 +235,13 @@ export const SecurityCheckPage: React.FC = () => (
         </Reveal>
       </section>
 
-      {/* ── Free scan vs full report ──────────────────────────────────── */}
+      {/* ── Free scan vs Assessment ───────────────────────────────────── */}
       <section className="mt-28">
         <Reveal className="text-center mb-10">
           <span className="inline-block text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label mb-4">What you get</span>
-          <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight">Free scan vs full report</h2>
+          <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight">Free scan vs Assessment</h2>
           <p className="max-w-2xl mx-auto text-on-surface-variant leading-relaxed mt-5">
-            The free scan shows you everything that is wrong, every finding, ranked, in plain English. The full report adds the fix for each one, ready to hand to your team or to us.
+            The free scan shows you everything that is wrong, every finding, ranked, in plain English, for free. An Assessment is where a specialist works through the fixes with you: a prioritised plan and a readout call. Talk to us to arrange one.
           </p>
         </Reveal>
         <Reveal>
@@ -251,7 +251,7 @@ export const SecurityCheckPage: React.FC = () => (
                 <tr className="border-b border-outline/60">
                   <th className="px-6 py-4 text-sm font-label uppercase tracking-wider text-on-surface-variant">Included</th>
                   <th className="px-4 py-4 text-sm font-label uppercase tracking-wider text-on-surface-variant text-center">Free scan</th>
-                  <th className="px-4 py-4 text-sm font-label uppercase tracking-wider text-primary text-center">Full report</th>
+                  <th className="px-4 py-4 text-sm font-label uppercase tracking-wider text-primary text-center">Assessment</th>
                 </tr>
               </thead>
               <tbody>
@@ -293,7 +293,7 @@ export const SecurityCheckPage: React.FC = () => (
           <div className="text-center rounded-2xl border border-outline/50 bg-surface/60 px-8 py-12">
             <h2 className="font-headline text-2xl md:text-3xl font-bold tracking-tight mb-4">Found something you want fixed?</h2>
             <p className="text-on-surface-variant leading-relaxed max-w-2xl mx-auto mb-8">
-              The fastest fix for email impersonation is our <Link to="/services/email-security" className="text-primary underline-offset-4 hover:underline">Managed DMARC</Link> service: we walk your domain safely to full enforcement, done for you. Start a free 7-day trial, or talk to us about a one-off hardening project or your wider <Link to="/services/cloud-security" className="text-primary underline-offset-4 hover:underline">cloud security</Link>. A free scan commits you to nothing.
+              For email impersonation, our <Link to="/services/email-security" className="text-primary underline-offset-4 hover:underline">Managed DMARC</Link> service walks your domain safely to full enforcement, done for you. Start a free 7-day trial. For a full walkthrough of everything the scan found, with a prioritised fix plan and an engineer readout, talk to us about an Assessment. A free scan commits you to nothing.
             </p>
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
               <a href={trialUrl('managed')} target="_blank" rel="noopener noreferrer" className="no-underline inline-block">
