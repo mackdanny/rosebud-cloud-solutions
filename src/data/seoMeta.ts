@@ -284,7 +284,7 @@ export const securityCheckSchema = {
   '@id': `${SITE_URL}/security-check#tool`,
   name: 'Free Domain Security Check',
   description:
-    'A free external domain security scanner that runs over 40 passive checks across email authentication (SPF, DKIM, DMARC), mail transport security, TLS and web hardening, DNS and domain integrity, external attack surface, and brand exposure. No installation or sign-up required.',
+    'A free external domain security scanner that runs over 40 passive checks across email security (SPF, DKIM, DMARC, DNSSEC), web and TLS hardening, external exposure, attack surface, and brand identity. No installation or sign-up required.',
   url: `${SITE_URL}/security-check`,
   applicationCategory: 'SecurityApplication',
   operatingSystem: 'Any',
