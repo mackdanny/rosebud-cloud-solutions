@@ -7,7 +7,7 @@ import { Faq } from '../components/Faq';
 import { pageMeta, serviceSchema, breadcrumbSchema, faqSchema } from '../data/seoMeta';
 import { faqs } from '../data/faqs';
 import { TiltCard } from '../components/TiltCard';
-import { trialUrl, type ManagedPlan } from '../config/portal';
+import { type ManagedPlan } from '../config/portal';
 
 // ─── Animation ────────────────────────────────────────────────────────────────
 
@@ -72,6 +72,29 @@ const packages: PricedPkg[] = [
     priceMonthly: 149,
     cap: 'Up to 5 domains · unlimited users',
     features: ['Everything in Managed', 'Up to 5 domains', 'BIMI (your verified logo in inboxes)', 'Dedicated specialist + SLA'],
+  },
+];
+
+// One-off, quote-based engagements (NOT bought online — concierge motion).
+interface OneOffPkg {
+  name: string;
+  who: string;
+  cap: string;
+  features: string[];
+}
+
+const oneOffPackages: OneOffPkg[] = [
+  {
+    name: 'Assessment',
+    who: 'A specialist reads your results and tells you exactly what matters, and in what order.',
+    cap: 'One-off, fixed price',
+    features: ['Expert-reviewed report', 'Prioritised, plain-English fix list', 'Readout call with an engineer'],
+  },
+  {
+    name: 'Hardening',
+    who: 'We fix it for you, all the way to full enforcement, without breaking your mail.',
+    cap: 'One-off project',
+    features: ['Hands-on SPF, DKIM & DMARC setup', 'MTA-STS & TLS reporting', 'Enforced in 90 days, guaranteed'],
   },
 ];
 
@@ -143,7 +166,6 @@ interface EmailSecurityPageProps {
 
 export const EmailSecurityPage: React.FC<EmailSecurityPageProps> = ({ className = '' }) => {
   const [annual, setAnnual] = useState(false);
-  const interval = annual ? 'year' : 'month';
   return (
     <main className={`pt-24 ${className}`}>
       <SEO
@@ -261,11 +283,11 @@ export const EmailSecurityPage: React.FC<EmailSecurityPageProps> = ({ className 
               Managed DMARC pricing
             </span>
             <h2 className="font-headline text-4xl md:text-5xl font-bold tracking-tight max-w-2xl">
-              Start a 7-day free trial, on any plan
+              Simple, per-account pricing
             </h2>
             <p className="text-on-surface-variant max-w-xl mt-4">
-              Per account, not per seat. Cancel any time during your trial and you won't be charged. Public-sector buyer?{' '}
-              <Link to="/contact" className="text-primary underline-offset-2 hover:underline">Pay by invoice instead</Link>.
+              Per account, not per seat. Talk to us and we'll get you onto the right plan. Public-sector buyer?{' '}
+              <Link to="/contact" className="text-primary underline-offset-2 hover:underline">pay by invoice</Link>.
             </p>
             <div className="h-px w-24 bg-gradient-to-r from-primary to-transparent mt-6" />
           </ScrollReveal>
@@ -335,40 +357,62 @@ export const EmailSecurityPage: React.FC<EmailSecurityPageProps> = ({ className 
                         </li>
                       ))}
                     </ul>
-                    <a
-                      href={trialUrl(pkg.id, undefined, interval)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="no-underline mt-auto"
-                    >
+                    <Link to="/contact" className="no-underline mt-auto">
                       <button
                         className={`w-full font-headline font-bold px-5 py-3 rounded-lg text-sm transition-all ${
                           pkg.featured ? 'btn-animated text-white' : 'border border-outline/60 text-on-surface hover:border-primary/40'
                         }`}
                       >
-                        Start 7-day free trial
+                        Talk to us to get started
                       </button>
-                    </a>
+                    </Link>
                   </TiltCard>
                 </motion.div>
               );
             })}
           </div>
 
-          {/* One-off / consulting band */}
-          <ScrollReveal className="mt-14">
-            <div className="rounded-2xl border border-outline/60 bg-surface p-7 md:p-9 flex flex-col md:flex-row md:items-center gap-6 justify-between">
-              <div>
-                <h3 className="font-headline text-xl font-bold mb-1">Need a one-off expert fix instead?</h3>
-                <p className="text-on-surface-variant text-sm max-w-2xl">
-                  Prefer us to assess your domain or harden it to full enforcement as a fixed-price project, rather than a subscription? We also run those as concierge engagements.
-                </p>
-              </div>
-              <Link to="/contact" className="no-underline shrink-0">
-                <button className="border border-outline/60 text-on-surface hover:border-primary/40 font-headline font-bold px-7 py-3 rounded-lg text-sm transition-colors whitespace-nowrap">
-                  Talk to us about a quote
-                </button>
-              </Link>
+          {/* One-off / concierge engagements (quote-based, not bought online) */}
+          <ScrollReveal className="mt-20">
+            <div className="text-center mb-8">
+              <span className="text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label block mb-3">
+                Prefer a one-off project?
+              </span>
+              <h3 className="font-headline text-2xl md:text-3xl font-bold tracking-tight">
+                Not ready for a subscription? We can fix it for you, once.
+              </h3>
+              <p className="text-on-surface-variant max-w-xl mx-auto mt-3">
+                Bespoke, expert-led engagements. Quoted per domain, no ongoing commitment.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-[820px] mx-auto">
+              {oneOffPackages.map((pkg) => (
+                <div
+                  key={pkg.name}
+                  className="rounded-2xl border border-outline/60 bg-surface p-7 flex flex-col hover:border-primary/30 transition-all"
+                >
+                  <h4 className="font-headline text-xl font-bold mb-1">{pkg.name}</h4>
+                  <p className="text-on-surface-variant text-sm min-h-[3rem] mb-3">{pkg.who}</p>
+                  <span className="text-[11px] uppercase tracking-[0.15em] text-on-surface-variant/70 font-bold font-label mb-4 block">
+                    {pkg.cap}
+                  </span>
+                  <ul className="space-y-2.5 flex-1 mb-6">
+                    {pkg.features.map((f) => (
+                      <li key={f} className="flex items-start gap-2 text-sm text-on-surface">
+                        <span aria-hidden="true" className="material-symbols-outlined text-primary shrink-0" style={{ fontSize: '1.05rem' }}>
+                          check
+                        </span>
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <Link to="/contact" className="no-underline mt-auto">
+                    <button className="w-full border border-outline/60 text-on-surface hover:border-primary/40 font-headline font-bold px-5 py-3 rounded-lg text-sm transition-all">
+                      Get a quote
+                    </button>
+                  </Link>
+                </div>
+              ))}
             </div>
           </ScrollReveal>
 

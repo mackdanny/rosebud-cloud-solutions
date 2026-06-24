@@ -2,7 +2,6 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { SEO } from '../components/SEO';
 import { PostureScan } from '../components/PostureScan';
-import { trialUrl } from '../config/portal';
 import { Faq } from '../components/Faq';
 import { pageMeta, securityCheckSchema, breadcrumbSchema, faqSchema } from '../data/seoMeta';
 import { faqs } from '../data/faqs';
@@ -294,18 +293,18 @@ export const SecurityCheckPage: React.FC = () => (
           <div className="text-center rounded-2xl border border-outline/50 bg-surface/60 px-8 py-12">
             <h2 className="font-headline text-2xl md:text-3xl font-bold tracking-tight mb-4">Found something you want fixed?</h2>
             <p className="text-on-surface-variant leading-relaxed max-w-2xl mx-auto mb-8">
-              For email impersonation, our <Link to="/services/email-security" className="text-primary underline-offset-4 hover:underline">Managed DMARC</Link> service walks your domain safely to full enforcement, done for you. Start a free 7-day trial. For a full walkthrough of everything the scan found, with a prioritised fix plan and an engineer readout, talk to us about an Assessment. A free scan commits you to nothing.
+              For email impersonation, our <Link to="/services/email-security" className="text-primary underline-offset-4 hover:underline">Managed DMARC</Link> service walks your domain safely to full enforcement, done for you. For a full walkthrough of everything the scan found, with a prioritised fix plan and an engineer readout, talk to us about an Assessment. A free scan commits you to nothing.
             </p>
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-              <a href={trialUrl('managed')} target="_blank" rel="noopener noreferrer" className="no-underline inline-block">
+              <Link to="/services/email-security" className="no-underline inline-block">
                 <motion.button
                   className="btn-animated text-white font-headline font-bold px-10 py-4 rounded-lg text-base tracking-tight"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.97 }}
                 >
-                  Start a free 7-day trial
+                  Explore Managed DMARC
                 </motion.button>
-              </a>
+              </Link>
               <Link to="/contact" className="no-underline inline-block">
                 <motion.button
                   className="border border-outline/50 hover:border-primary/40 text-on-surface font-headline font-bold px-10 py-4 rounded-lg text-base tracking-tight transition-colors"

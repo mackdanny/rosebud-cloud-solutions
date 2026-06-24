@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePostureScan } from '../hooks/usePostureScan';
 import { POSTURE_API_BASE } from '../config/posture';
-import { trialUrl } from '../config/portal';
 
 /** Engine 1.7.0 only awards grade A at p=reject, so anything below A is not fully enforced. */
 function notEnforced(grade: string): boolean {
@@ -109,19 +108,18 @@ export const PostureScan: React.FC<PostureScanProps> = ({ variant = 'section' })
                 : `${result.issueCount} ${result.issueCount === 1 ? 'opportunity' : 'opportunities'} to improve across your email, web, DNS and exposure surface.`}
             </p>
 
-            {/* Intent-aware trial CTA: lead with the product for unenforced domains. */}
+            {/* Intent-aware CTA: lead with the product for unenforced domains. */}
             <a
-              href={trialUrl('managed', domain.trim() || undefined)}
-              target="_blank" rel="noopener noreferrer"
+              href="/services/email-security"
               className="w-full no-underline mt-1"
             >
               <button className="btn-animated text-white font-headline font-bold w-full px-7 py-3.5 rounded-lg text-sm">
                 {notEnforced(result.grade)
-                  ? 'Your domain can be spoofed today — start a free 7-day Managed DMARC trial'
-                  : 'Keep your domain protected — start a Managed DMARC trial'}
+                  ? 'Your domain can be spoofed today. See how Managed DMARC fixes it'
+                  : 'Keep your domain protected with Managed DMARC'}
               </button>
             </a>
-            <p className="text-xs text-on-surface-variant/60 font-label">7-day free trial, card required, cancel any time. Or get your free report by email below.</p>
+            <p className="text-xs text-on-surface-variant/60 font-label">Done-for-you protection with Managed DMARC. Or get your free report by email below.</p>
 
             <form
               onSubmit={(e) => { e.preventDefault(); submitEmail(email); }}
@@ -158,7 +156,7 @@ export const PostureScan: React.FC<PostureScanProps> = ({ variant = 'section' })
               <span aria-hidden="true" className="material-symbols-outlined text-primary text-[28px]">mark_email_read</span>
             </div>
             <h3 className="font-headline text-2xl font-bold">Check your inbox</h3>
-            <p className="text-on-surface-variant text-sm max-w-sm">We have emailed a private link to your full security report. It may take a minute to arrive.</p>
+            <p className="text-on-surface-variant text-sm max-w-sm">We have emailed a private link to your security report. It may take a minute to arrive.</p>
             <a
               href={`${POSTURE_API_BASE}/r/${result.token}`} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-primary font-label text-sm uppercase tracking-[0.18em] no-underline hover:gap-3 transition-all"
@@ -167,12 +165,11 @@ export const PostureScan: React.FC<PostureScanProps> = ({ variant = 'section' })
               <span aria-hidden="true" className="material-symbols-outlined text-[16px]">open_in_new</span>
             </a>
             <a
-              href={trialUrl('managed', domain.trim() || undefined)}
-              target="_blank" rel="noopener noreferrer"
+              href="/services/email-security"
               className="w-full no-underline mt-1"
             >
               <button className="btn-animated text-white font-headline font-bold w-full px-7 py-3.5 rounded-lg text-sm">
-                Start your free 7-day Managed DMARC trial
+                Protect your domain with Managed DMARC
               </button>
             </a>
             <button onClick={reset} className="text-xs text-on-surface-variant/60 font-label hover:text-white transition-colors mt-1">Scan another domain</button>
