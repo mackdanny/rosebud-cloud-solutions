@@ -7,10 +7,53 @@ import { Faq } from '../components/Faq';
 import { pageMeta, securityCheckSchema, breadcrumbSchema, faqSchema } from '../data/seoMeta';
 import { faqs } from '../data/faqs';
 
-const CHECKS = [
-  { icon: 'mail', title: 'Email security', body: 'SPF, DKIM, DMARC and spoofing exposure.' },
-  { icon: 'public', title: 'Web and TLS', body: 'Certificates, headers and exposed services.' },
-  { icon: 'travel_explore', title: 'External surface', body: 'Subdomains and attacker-visible footprint.' },
+const STATS = [
+  { value: '40+', label: 'Individual checks' },
+  { value: '6', label: 'Coverage areas' },
+  { value: '100%', label: 'External & passive' },
+  { value: 'None', label: 'Sign-up to scan' },
+];
+
+// The full passive assessment, grouped the way the report presents it. Every
+// check below runs on every free scan - mirrors the engine's `comprehensive`
+// profile (see Posture STATUS.md). Keep in sync if the profile changes.
+const CHECK_GROUPS = [
+  {
+    icon: 'mark_email_read',
+    title: 'Email authentication & anti-spoofing',
+    blurb: 'Can anyone send email as you?',
+    items: ['SPF record & policy', 'SPF lookup budget', 'SPF hygiene', 'DKIM signatures & selectors', 'DKIM key strength', 'DMARC policy & enforcement', 'DMARC reporting', 'BIMI verified logo', 'ARC forwarding integrity'],
+  },
+  {
+    icon: 'lock',
+    title: 'Mail transport security',
+    blurb: 'Is your mail encrypted in transit?',
+    items: ['MTA-STS policy', 'MTA-STS enforcement mode', 'TLS-RPT reporting', 'Mail-server TLS', 'Reverse DNS (FCrDNS)', 'Mail-server IP reputation', 'Mail delivery resilience'],
+  },
+  {
+    icon: 'public',
+    title: 'Website & TLS hardening',
+    blurb: 'Is your site configured safely?',
+    items: ['TLS version & ciphers', 'Certificate health & expiry', 'HSTS', 'Content-Security-Policy', 'Clickjacking protection', 'MIME-sniffing protection', 'Referrer-Policy', 'Permissions-Policy', 'Cookie security flags', 'Mixed content', 'Server version disclosure', 'Security-header depth'],
+  },
+  {
+    icon: 'dns',
+    title: 'DNS & domain integrity',
+    blurb: 'Is your domain locked down?',
+    items: ['DNSSEC', 'CAA records', 'Nameserver diversity', 'Wildcard DNS', 'Zone-transfer (AXFR) exposure', 'Domain expiry', 'Registrar transfer lock'],
+  },
+  {
+    icon: 'travel_explore',
+    title: 'External attack surface',
+    blurb: 'What can an attacker see?',
+    items: ['Subdomain discovery', 'Subdomain-takeover exposure', 'Certificate Transparency exposure', 'security.txt disclosure policy', 'DDoS scrubbing coverage'],
+  },
+  {
+    icon: 'fingerprint',
+    title: 'Brand & identity intelligence',
+    blurb: 'Who could impersonate you?',
+    items: ['Microsoft 365 footprint', 'Look-alike domains', 'Mail-enabled lookalike abuse', 'Staff email-address pattern', 'Hostname naming exposure', 'Compliance framework alignment'],
+  },
 ];
 
 const WHAT_WE_CHECK = [
@@ -33,10 +76,12 @@ const WHAT_WE_CHECK = [
 
 const REPORT_ROWS = [
   { label: 'Overall security score and rating', free: true, full: true },
-  { label: 'Issue count across email, web and exposure', free: true, full: true },
-  { label: 'Every finding with a severity rating', free: false, full: true },
-  { label: 'Plain-English explanation of why each finding matters', free: false, full: true },
-  { label: 'Private link you can share with your IT team', free: false, full: true },
+  { label: 'All 40+ checks, run on every scan', free: true, full: true },
+  { label: 'Every finding flagged with a severity rating', free: true, full: true },
+  { label: 'Plain-English risk: what each finding means for you', free: true, full: true },
+  { label: 'Step-by-step fix for every issue', free: false, full: true },
+  { label: 'Private report link to share with your team', free: false, full: true },
+  { label: 'Walkthrough with a security engineer', free: false, full: true },
 ];
 
 const Reveal: React.FC<{ children: React.ReactNode; className?: string; delay?: number }> = ({
@@ -89,7 +134,7 @@ export const SecurityCheckPage: React.FC = () => (
           initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}
           className="max-w-2xl mx-auto text-on-surface-variant text-lg leading-relaxed"
         >
-          How exposed is your domain? Run a free external scan of your SPF, DKIM and DMARC records, TLS configuration, and attacker-visible services in around 15 seconds. No install, no sign-up, no access to your systems.
+          How exposed is your domain? Run a free external scan that checks over 40 points across your email authentication, mail encryption, website and TLS, DNS, attack surface, and brand exposure. No install, no sign-up, no access to your systems.
         </motion.p>
       </div>
 
@@ -97,26 +142,62 @@ export const SecurityCheckPage: React.FC = () => (
         <PostureScan variant="page" />
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
-        {CHECKS.map(({ icon, title, body }) => (
-          <div key={title} className="rounded-2xl border border-outline/50 bg-surface/60 p-6 text-center">
-            <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/25 flex items-center justify-center mx-auto mb-4">
-              <span aria-hidden="true" className="material-symbols-outlined text-primary text-[22px]">{icon}</span>
-            </div>
-            <h2 className="font-headline text-lg font-bold mb-2">{title}</h2>
-            <p className="text-on-surface-variant text-sm leading-relaxed">{body}</p>
+      {/* ── Stat band ─────────────────────────────────────────────────── */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16">
+        {STATS.map(({ value, label }) => (
+          <div key={label} className="rounded-2xl border border-outline/50 bg-surface/60 px-4 py-6 text-center">
+            <div className="font-headline text-3xl md:text-4xl font-extrabold text-gradient-primary tracking-tight">{value}</div>
+            <div className="text-on-surface-variant text-xs md:text-sm mt-1.5 leading-snug">{label}</div>
           </div>
         ))}
       </div>
 
-      {/* ── What we check and why it matters ─────────────────────────── */}
+      {/* ── Everything we check ───────────────────────────────────────── */}
       <section className="mt-28">
         <Reveal className="text-center mb-12">
-          <span className="inline-block text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label mb-4">Under the hood</span>
-          <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight mb-5">What the scan checks and why it matters</h2>
+          <span className="inline-block text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label mb-4">The full picture</span>
+          <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight mb-5">Over 40 checks, across six fronts</h2>
           <p className="max-w-3xl mx-auto text-on-surface-variant leading-relaxed">
+            Most free scanners look at SPF and a TLS certificate and call it a day. This one runs the same comprehensive passive assessment we use in our paid audits, on every scan, entirely from the outside. Here is exactly what it looks at.
+          </p>
+        </Reveal>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {CHECK_GROUPS.map(({ icon, title, blurb, items }, i) => (
+            <Reveal key={title} delay={i % 2}>
+              <div className="rounded-2xl border border-outline/50 bg-surface/60 p-6 md:p-7 h-full">
+                <div className="flex items-start gap-4">
+                  <div className="w-11 h-11 rounded-xl bg-primary/10 border border-primary/25 flex items-center justify-center shrink-0">
+                    <span aria-hidden="true" className="material-symbols-outlined text-primary text-[20px]">{icon}</span>
+                  </div>
+                  <div>
+                    <h3 className="font-headline text-lg font-bold leading-tight">{title}</h3>
+                    <p className="text-on-surface-variant/80 text-sm mt-1">{blurb}</p>
+                  </div>
+                </div>
+                <ul className="flex flex-wrap gap-2 mt-5 pt-5 border-t border-outline/30">
+                  {items.map((item) => (
+                    <li key={item} className="inline-flex items-center gap-1.5 text-xs text-on-surface-variant bg-surface border border-outline/40 rounded-full pl-2 pr-3 py-1">
+                      <span aria-hidden="true" className="material-symbols-outlined text-primary text-[14px]">check</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+        <Reveal className="text-center mt-8">
+          <p className="text-sm text-on-surface-variant/70 max-w-2xl mx-auto">
             The scanner runs entirely from outside your network, the same view an attacker has. It reads publicly available DNS records and public-facing services only. It never sends test emails, never logs in to anything, and never touches your internal systems.
           </p>
+        </Reveal>
+      </section>
+
+      {/* ── Why it matters (plain English) ───────────────────────────── */}
+      <section className="mt-28">
+        <Reveal className="text-center mb-12">
+          <span className="inline-block text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label mb-4">Why it matters</span>
+          <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight mb-5">What the big findings mean for you</h2>
         </Reveal>
         <div className="flex flex-col gap-6">
           {WHAT_WE_CHECK.map(({ icon, title, body }, i) => (
@@ -158,7 +239,10 @@ export const SecurityCheckPage: React.FC = () => (
       <section className="mt-28">
         <Reveal className="text-center mb-10">
           <span className="inline-block text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label mb-4">What you get</span>
-          <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight">Instant result vs full report</h2>
+          <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight">Free scan vs full report</h2>
+          <p className="max-w-2xl mx-auto text-on-surface-variant leading-relaxed mt-5">
+            The free scan shows you everything that is wrong, every finding, ranked, in plain English. The full report adds the fix for each one, ready to hand to your team or to us.
+          </p>
         </Reveal>
         <Reveal>
           <div className="rounded-2xl border border-outline/50 bg-surface/60 overflow-hidden max-w-3xl mx-auto">
@@ -166,7 +250,7 @@ export const SecurityCheckPage: React.FC = () => (
               <thead>
                 <tr className="border-b border-outline/60">
                   <th className="px-6 py-4 text-sm font-label uppercase tracking-wider text-on-surface-variant">Included</th>
-                  <th className="px-4 py-4 text-sm font-label uppercase tracking-wider text-on-surface-variant text-center">Instant</th>
+                  <th className="px-4 py-4 text-sm font-label uppercase tracking-wider text-on-surface-variant text-center">Free scan</th>
                   <th className="px-4 py-4 text-sm font-label uppercase tracking-wider text-primary text-center">Full report</th>
                 </tr>
               </thead>

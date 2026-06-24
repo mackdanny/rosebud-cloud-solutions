@@ -17,7 +17,7 @@ export const pageMeta = {
   securityCheck: {
     title: 'Free Domain Security Check | SPF, DKIM & DMARC Scanner',
     description:
-      "Check your domain's SPF, DKIM, DMARC, TLS and exposed services in seconds. A free external security scan from a UK Microsoft-certified consultancy.",
+      "40+ external security checks on your SPF, DKIM, DMARC, TLS, DNS and exposed services. A free passive scan from a UK Microsoft-certified consultancy, no sign-up.",
     path: '/security-check',
   },
   emailSecurity: {
@@ -284,18 +284,18 @@ export const securityCheckSchema = {
   '@id': `${SITE_URL}/security-check#tool`,
   name: 'Free Domain Security Check',
   description:
-    'A free external domain security scanner that checks SPF, DKIM, DMARC, TLS certificates, HTTP security headers, and attacker-visible subdomains. No installation required. Results in around 15 seconds.',
+    'A free external domain security scanner that runs over 40 passive checks across email authentication (SPF, DKIM, DMARC), mail transport security, TLS and web hardening, DNS and domain integrity, external attack surface, and brand exposure. No installation or sign-up required.',
   url: `${SITE_URL}/security-check`,
   applicationCategory: 'SecurityApplication',
   operatingSystem: 'Any',
   offers: { '@type': 'Offer', price: '0', priceCurrency: 'GBP' },
   featureList: [
-    'SPF record validation',
-    'DKIM configuration check',
-    'DMARC policy analysis',
-    'TLS certificate inspection',
-    'HTTP security header review',
-    'Subdomain exposure check',
+    'Email authentication and anti-spoofing (SPF, DKIM, DMARC, BIMI, ARC)',
+    'Mail transport security (MTA-STS, TLS-RPT, reverse DNS)',
+    'Website and TLS hardening (certificates, HSTS, CSP, security headers)',
+    'DNS and domain integrity (DNSSEC, CAA, registrar lock)',
+    'External attack surface (subdomain discovery and takeover exposure)',
+    'Brand and identity intelligence (look-alike domains, M365 footprint)',
   ],
   provider: { '@id': `${SITE_URL}/#organization` },
   inLanguage: 'en-GB',
