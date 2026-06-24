@@ -14,45 +14,46 @@ const STATS = [
   { value: 'None', label: 'Sign-up to scan' },
 ];
 
-// The full passive assessment, grouped the way the report presents it. Every
-// check below runs on every free scan - mirrors the engine's `comprehensive`
-// profile (see Posture STATUS.md). Keep in sync if the profile changes.
+// Mirrors the report's section structure 1:1 (same titles, same checks per
+// section) so the page and the delivered report reconcile exactly. Sourced from
+// the engine's `comprehensive` profile + section assignments in scan-core
+// score.ts (see Posture STATUS.md). Keep in sync if the profile/sections change.
 const CHECK_GROUPS = [
   {
     icon: 'mark_email_read',
-    title: 'Email authentication & anti-spoofing',
-    blurb: 'Can anyone send email as you?',
-    items: ['SPF record & policy', 'SPF lookup budget', 'SPF hygiene', 'DKIM signatures & selectors', 'DKIM key strength', 'DMARC policy & enforcement', 'DMARC reporting', 'BIMI verified logo', 'ARC forwarding integrity'],
-  },
-  {
-    icon: 'lock',
-    title: 'Mail transport security',
-    blurb: 'Is your mail encrypted in transit?',
-    items: ['MTA-STS policy', 'MTA-STS enforcement mode', 'TLS-RPT reporting', 'Mail-server TLS', 'Reverse DNS (FCrDNS)', 'Mail-server IP reputation', 'Mail delivery resilience'],
+    title: 'Email Security',
+    blurb: 'Can anyone send mail as you, and does yours get delivered?',
+    items: ['SPF record & policy', 'SPF lookup budget', 'SPF hygiene', 'DKIM signatures & selectors', 'DKIM key strength', 'DMARC policy & enforcement', 'DMARC reporting', 'MTA-STS policy', 'MTA-STS enforcement mode', 'TLS-RPT reporting', 'BIMI verified logo', 'ARC forwarding integrity', 'Reverse DNS (FCrDNS)', 'Mail-server IP reputation', 'Mail delivery resilience', 'DNSSEC'],
   },
   {
     icon: 'public',
-    title: 'Website & TLS hardening',
-    blurb: 'Is your site configured safely?',
-    items: ['TLS version & ciphers', 'Certificate health & expiry', 'HSTS', 'Content-Security-Policy', 'Clickjacking protection', 'MIME-sniffing protection', 'Referrer-Policy', 'Permissions-Policy', 'Cookie security flags', 'Mixed content', 'Server version disclosure', 'Security-header depth'],
-  },
-  {
-    icon: 'dns',
-    title: 'DNS & domain integrity',
-    blurb: 'Is your domain locked down?',
-    items: ['DNSSEC', 'CAA records', 'Nameserver diversity', 'Wildcard DNS', 'Zone-transfer (AXFR) exposure', 'Domain expiry', 'Registrar transfer lock'],
+    title: 'Web & TLS',
+    blurb: 'Is your website configured safely?',
+    items: ['TLS version & ciphers', 'Certificate health & expiry', 'TLS hardening grade', 'HSTS', 'Content-Security-Policy', 'Clickjacking protection', 'MIME-sniffing protection', 'Referrer-Policy', 'Permissions-Policy', 'Cookie security flags', 'Mixed content', 'Server version disclosure', 'Security-header depth', 'CAA records'],
   },
   {
     icon: 'travel_explore',
-    title: 'External attack surface',
-    blurb: 'What can an attacker see?',
-    items: ['Subdomain discovery', 'Subdomain-takeover exposure', 'Certificate Transparency exposure', 'security.txt disclosure policy', 'DDoS scrubbing coverage'],
+    title: 'External Exposure',
+    blurb: 'What can an attacker discover about you?',
+    items: ['Subdomain discovery', 'Subdomain-takeover exposure', 'Certificate Transparency exposure', 'DNS zone-transfer (AXFR)', 'Wildcard DNS', 'Nameserver diversity', 'Domain expiry', 'Registrar transfer lock', 'security.txt disclosure policy'],
+  },
+  {
+    icon: 'shield',
+    title: 'Attack Surface',
+    blurb: 'Can your infrastructure absorb an attack?',
+    items: ['DDoS scrubbing coverage'],
   },
   {
     icon: 'fingerprint',
-    title: 'Brand & identity intelligence',
+    title: 'Identity & Brand',
     blurb: 'Who could impersonate you?',
-    items: ['Microsoft 365 footprint', 'Look-alike domains', 'Mail-enabled lookalike abuse', 'Staff email-address pattern', 'Hostname naming exposure', 'Compliance framework alignment'],
+    items: ['Look-alike domains', 'Mail-enabled lookalike abuse'],
+  },
+  {
+    icon: 'badge',
+    title: 'Additional context',
+    blurb: 'Extra intelligence we surface, for context.',
+    items: ['Microsoft 365 footprint', 'Staff email-address pattern', 'Hostname naming exposure', 'Compliance framework alignment'],
   },
 ];
 
@@ -161,10 +162,10 @@ export const SecurityCheckPage: React.FC = () => (
             Most free scanners look at SPF and a TLS certificate and call it a day. This one runs the same comprehensive passive assessment we use in our paid audits, on every scan, entirely from the outside. Here is exactly what it looks at.
           </p>
         </Reveal>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="columns-1 md:columns-2 gap-6">
           {CHECK_GROUPS.map(({ icon, title, blurb, items }, i) => (
-            <Reveal key={title} delay={i % 2}>
-              <div className="rounded-2xl border border-outline/50 bg-surface/60 p-6 md:p-7 h-full">
+            <Reveal key={title} className="mb-6 break-inside-avoid" delay={i % 2}>
+              <div className="rounded-2xl border border-outline/50 bg-surface/60 p-6 md:p-7">
                 <div className="flex items-start gap-4">
                   <div className="w-11 h-11 rounded-xl bg-primary/10 border border-primary/25 flex items-center justify-center shrink-0">
                     <span aria-hidden="true" className="material-symbols-outlined text-primary text-[20px]">{icon}</span>
