@@ -70,7 +70,7 @@ const WHAT_WE_CHECK = [
   },
   {
     icon: 'travel_explore',
-    title: 'External attack surface',
+    title: 'External exposure',
     body: 'Subdomains created for old projects and never decommissioned stay visible to attackers. The scan maps the subdomains and services associated with your domain to show what is publicly facing. Forgotten DNS records pointing at decommissioned infrastructure are a well-documented source of subdomain takeover vulnerabilities.',
   },
 ];
