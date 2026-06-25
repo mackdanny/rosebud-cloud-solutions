@@ -75,29 +75,6 @@ const packages: PricedPkg[] = [
   },
 ];
 
-// One-off, quote-based engagements (NOT bought online — concierge motion).
-interface OneOffPkg {
-  name: string;
-  who: string;
-  cap: string;
-  features: string[];
-}
-
-const oneOffPackages: OneOffPkg[] = [
-  {
-    name: 'Assessment',
-    who: 'A specialist reads your results and tells you exactly what matters, and in what order.',
-    cap: 'One-off, fixed price',
-    features: ['Expert-reviewed report', 'Prioritised, plain-English fix list', 'Readout call with an engineer'],
-  },
-  {
-    name: 'Hardening',
-    who: 'We fix it for you, all the way to full enforcement, without breaking your mail.',
-    cap: 'One-off project',
-    features: ['Hands-on SPF, DKIM & DMARC setup', 'MTA-STS & TLS reporting', 'Enforced in 90 days, guaranteed'],
-  },
-];
-
 const tiers = ['Monitor', 'Managed', 'Scale'];
 
 interface FeatureGroup {
@@ -158,6 +135,24 @@ const featureGroups: FeatureGroup[] = [
   },
 ];
 
+// How the managed service actually works — the journey to enforcement.
+const howSteps: { n: string; title: string; body: string }[] = [
+  { n: '01', title: 'Point your reports at us', body: 'One small DNS change and your DMARC reports start flowing to us. Nothing to install, no access to your systems.' },
+  { n: '02', title: 'We find every sender', body: 'We ingest the reports and identify every system legitimately sending email as you — and every impostor — and classify them for you.' },
+  { n: '03', title: 'We get you to enforcement', body: 'We fix SPF, DKIM, MTA-STS and TLS-RPT, then step your policy from none → quarantine → reject, with safety gates so legitimate mail never breaks.' },
+  { n: '04', title: 'We keep it healthy', body: 'Ongoing monitoring, a live status portal, monthly reports and a full audit trail. You stay protected without lifting a finger.' },
+];
+
+// The concrete capabilities behind the subscription — the "what you're paying for".
+const whatYouGet: { icon: string; title: string; body: string }[] = [
+  { icon: 'verified_user', title: 'Done-for-you enforcement', body: 'We walk your domain safely to p=reject — the only setting that actually stops spoofing — with a 90-day guarantee.' },
+  { icon: 'dns', title: 'Hosted DMARC', body: 'We host and manage your DMARC record, so you never have to edit DNS or interpret a report again.' },
+  { icon: 'fact_check', title: 'Sender identification', body: 'Every sender found, named and classified — so nothing legitimate gets blocked when you tighten policy.' },
+  { icon: 'monitoring', title: 'Live portal & reports', body: 'A clear status portal, monthly PDF reports and continuous drift detection — proof you stay protected.' },
+  { icon: 'lock', title: 'MTA-STS, TLS-RPT & BIMI', body: 'We set up encrypted-transport enforcement and your verified logo in inboxes, not just the DMARC basics.' },
+  { icon: 'support_agent', title: 'A team, not a dashboard', body: 'Priority human support and ongoing guidance. We do the work — you get the outcome.' },
+];
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 interface EmailSecurityPageProps {
@@ -186,7 +181,7 @@ export const EmailSecurityPage: React.FC<EmailSecurityPageProps> = ({ className 
       />
 
       {/* ── Hero ─────────────────────────────────────────────────────── */}
-      <section className="relative pt-28 pb-36 px-8 md:px-24 overflow-hidden bg-background">
+      <section className="relative pt-28 pb-20 px-8 md:px-24 overflow-hidden bg-background">
         <motion.div
           className="absolute top-[-10%] right-[-5%] w-[700px] h-[700px] rounded-full pointer-events-none"
           style={{ background: 'radial-gradient(circle, rgba(160,0,181,0.18) 0%, transparent 70%)' }}
@@ -211,7 +206,7 @@ export const EmailSecurityPage: React.FC<EmailSecurityPageProps> = ({ className 
             >
               <div className="w-8 h-px bg-primary" />
               <span className="text-[10px] uppercase tracking-[0.4em] text-primary font-bold font-label">
-                Email Security
+                Managed DMARC
               </span>
             </motion.div>
 
@@ -240,43 +235,35 @@ export const EmailSecurityPage: React.FC<EmailSecurityPageProps> = ({ className 
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.62 }}
             >
-              Done-for-you email security that gets you protected and compliant, without you having to
-              learn DMARC. Start with a free scan, then choose the level of help you want.
+              We take your domain all the way to enforced DMARC and keep it there — done for you,
+              without you having to learn DMARC or risk breaking a single legitimate email.
             </motion.p>
 
             <motion.div
+              className="flex flex-col sm:flex-row items-start sm:items-center gap-5"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.8 }}
             >
-              <Link to="/security-check" className="no-underline">
+              <a href="#pricing" className="no-underline">
                 <motion.button
                   className="btn-animated text-white font-headline font-bold px-12 py-5 rounded-lg text-lg tracking-tight"
                   whileHover={{ scale: 1.04 }}
                   whileTap={{ scale: 0.97 }}
                 >
-                  Run a free scan
+                  See plans &amp; pricing
                 </motion.button>
+              </a>
+              <Link to="/security-check" className="text-sm text-on-surface-variant hover:text-primary underline-offset-4 hover:underline transition-colors">
+                Or run a free security check first →
               </Link>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* ── Mandate hook ─────────────────────────────────────────────── */}
-      <section className="py-16 px-8 md:px-24 bg-surface border-y border-outline">
-        <ScrollReveal className="max-w-[1100px] mx-auto text-center">
-          <p className="text-lg md:text-2xl text-on-surface leading-relaxed font-light">
-            Since 2024, <span className="text-gradient-primary font-semibold">Google, Yahoo and Microsoft</span> reject
-            or junk mail from senders who fail email authentication. Yet only about <span className="text-gradient-primary font-semibold">1 in 11 domains</span> is
-            properly protected. If yours isn't, criminals can send email as you, and your own mail
-            increasingly lands in spam. We fix both, without breaking a single legitimate email.
-          </p>
-        </ScrollReveal>
-      </section>
-
-      {/* ── Pricing ──────────────────────────────────────────────────── */}
-      <section id="pricing" className="py-32 px-8 md:px-24 bg-background scroll-mt-24">
+      {/* ── Pricing (lead with the product — visitors arrive from Services → DMARC) ── */}
+      <section id="pricing" className="py-28 px-8 md:px-24 bg-surface border-t border-outline scroll-mt-24">
         <div className="max-w-[1280px] mx-auto">
           <ScrollReveal className="mb-10">
             <span className="text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label block mb-4">
@@ -372,60 +359,93 @@ export const EmailSecurityPage: React.FC<EmailSecurityPageProps> = ({ className 
             })}
           </div>
 
-          {/* One-off / concierge engagements (quote-based, not bought online) */}
-          <ScrollReveal className="mt-20">
-            <div className="text-center mb-8">
-              <span className="text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label block mb-3">
-                Prefer a one-off project?
-              </span>
-              <h3 className="font-headline text-2xl md:text-3xl font-bold tracking-tight">
-                Not ready for a subscription? We can fix it for you, once.
-              </h3>
-              <p className="text-on-surface-variant max-w-xl mx-auto mt-3">
-                Bespoke, expert-led engagements. Quoted per domain, no ongoing commitment.
-              </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-[820px] mx-auto">
-              {oneOffPackages.map((pkg) => (
-                <div
-                  key={pkg.name}
-                  className="rounded-2xl border border-outline/60 bg-surface p-7 flex flex-col hover:border-primary/30 transition-all"
-                >
-                  <h4 className="font-headline text-xl font-bold mb-1">{pkg.name}</h4>
-                  <p className="text-on-surface-variant text-sm min-h-[3rem] mb-3">{pkg.who}</p>
-                  <span className="text-[11px] uppercase tracking-[0.15em] text-on-surface-variant/70 font-bold font-label mb-4 block">
-                    {pkg.cap}
-                  </span>
-                  <ul className="space-y-2.5 flex-1 mb-6">
-                    {pkg.features.map((f) => (
-                      <li key={f} className="flex items-start gap-2 text-sm text-on-surface">
-                        <span aria-hidden="true" className="material-symbols-outlined text-primary shrink-0" style={{ fontSize: '1.05rem' }}>
-                          check
-                        </span>
-                        <span>{f}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Link to="/contact" className="no-underline mt-auto">
-                    <button className="w-full border border-outline/60 text-on-surface hover:border-primary/40 font-headline font-bold px-5 py-3 rounded-lg text-sm transition-all">
-                      Get a quote
-                    </button>
-                  </Link>
-                </div>
-              ))}
-            </div>
-          </ScrollReveal>
-
-          <ScrollReveal className="mt-6 text-center">
+          <ScrollReveal className="mt-12 text-center">
             <p className="text-on-surface-variant text-sm">
-              Not sure yet? <Link to="/security-check" className="text-primary underline-offset-2 hover:underline">Run the free scan first</Link> — no signup needed.
+              Not sure yet? <Link to="/security-check" className="text-primary underline-offset-2 hover:underline">Run the free security check first</Link> — no signup needed.
+              {' '}Want a one-off fix instead of a subscription? <Link to="/security-check#fix" className="text-primary underline-offset-2 hover:underline">See the posture report &amp; hardening options</Link>.
             </p>
           </ScrollReveal>
         </div>
       </section>
 
+      {/* ── Mandate hook ─────────────────────────────────────────────── */}
+      <section className="py-16 px-8 md:px-24 bg-background border-y border-outline">
+        <ScrollReveal className="max-w-[1100px] mx-auto text-center">
+          <p className="text-lg md:text-2xl text-on-surface leading-relaxed font-light">
+            Since 2024, <span className="text-gradient-primary font-semibold">Google, Yahoo and Microsoft</span> reject
+            or junk mail from senders who fail email authentication. Yet only about <span className="text-gradient-primary font-semibold">1 in 11 domains</span> is
+            properly protected. If yours isn't, criminals can send email as you, and your own mail
+            increasingly lands in spam. We fix both, without breaking a single legitimate email.
+          </p>
+        </ScrollReveal>
+      </section>
+
+      {/* ── How it works ─────────────────────────────────────────────── */}
+      <section className="py-32 px-8 md:px-24 bg-surface">
+        <div className="max-w-[1280px] mx-auto">
+          <ScrollReveal className="mb-14">
+            <span className="text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label block mb-4">
+              How Managed DMARC works
+            </span>
+            <h2 className="font-headline text-4xl md:text-5xl font-bold tracking-tight max-w-2xl">
+              We do the work. You get to enforcement.
+            </h2>
+            <p className="text-on-surface-variant max-w-xl mt-4">
+              DMARC done properly is a project, not a checkbox. We run the whole journey for you and keep it healthy afterwards.
+            </p>
+            <div className="h-px w-24 bg-gradient-to-r from-primary to-transparent mt-6" />
+          </ScrollReveal>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-24">
+            {howSteps.map((s, i) => (
+              <motion.div
+                key={s.n}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: '-60px' }}
+                variants={fadeUp}
+                transition={{ duration: 0.6, delay: i * 0.1, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] }}
+                className="rounded-2xl border border-outline/60 bg-background p-7 flex flex-col"
+              >
+                <span className="font-headline text-3xl font-extrabold text-primary/40 mb-4">{s.n}</span>
+                <h3 className="font-headline text-lg font-bold mb-2 leading-tight">{s.title}</h3>
+                <p className="text-on-surface-variant text-sm leading-relaxed">{s.body}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          <ScrollReveal className="mb-12">
+            <h3 className="font-headline text-2xl md:text-3xl font-bold tracking-tight">
+              What you're actually paying for
+            </h3>
+            <p className="text-on-surface-variant max-w-xl mt-3">
+              Not a report you read yourself — a managed outcome, delivered by us.
+            </p>
+          </ScrollReveal>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {whatYouGet.map((f, i) => (
+              <motion.div
+                key={f.title}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: '-60px' }}
+                variants={fadeUp}
+                transition={{ duration: 0.6, delay: (i % 3) * 0.1, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] }}
+                className="rounded-2xl border border-outline/50 bg-background/60 p-7"
+              >
+                <div className="w-11 h-11 rounded-xl bg-primary/10 border border-primary/25 flex items-center justify-center mb-4">
+                  <span aria-hidden="true" className="material-symbols-outlined text-primary text-[20px]">{f.icon}</span>
+                </div>
+                <h4 className="font-headline text-lg font-bold mb-2 leading-tight">{f.title}</h4>
+                <p className="text-on-surface-variant text-sm leading-relaxed">{f.body}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── Comparison table ─────────────────────────────────────────── */}
-      <section className="py-32 px-8 md:px-24 bg-surface border-t border-outline">
+      <section className="py-32 px-8 md:px-24 bg-background border-t border-outline">
         <div className="max-w-[1200px] mx-auto">
           <ScrollReveal className="text-center mb-12">
             <span className="text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label block mb-4">
@@ -501,37 +521,40 @@ export const EmailSecurityPage: React.FC<EmailSecurityPageProps> = ({ className 
         <div className="max-w-[1440px] mx-auto px-8 relative z-10 text-center">
           <ScrollReveal>
             <h2 className="font-headline text-5xl md:text-7xl font-extrabold tracking-tighter mb-12">
-              SEE WHERE YOU
+              GET TO
               <br />
-              <span className="text-gradient-primary">STAND, FREE</span>
+              <span className="text-gradient-primary">ENFORCEMENT</span>
             </h2>
           </ScrollReveal>
           <ScrollReveal delay={1}>
             <p className="text-on-surface-variant text-lg max-w-xl mx-auto mb-16 leading-relaxed">
-              Run the scan, then talk to us about the level of help that fits your organisation.
+              Talk to us and we'll get your domain protected and on its way to full enforcement — without breaking a single legitimate email.
             </p>
           </ScrollReveal>
           <ScrollReveal delay={2}>
             <div className="flex flex-col md:flex-row justify-center items-center gap-6">
-              <Link to="/security-check" className="no-underline">
+              <Link to="/contact" className="no-underline">
                 <motion.button
                   className="btn-animated text-white font-headline font-bold px-14 py-6 rounded-lg text-xl tracking-tight"
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
                 >
-                  Test your domain
+                  Talk to us to get started
                 </motion.button>
               </Link>
-              <Link to="/contact" className="no-underline">
+              <a href="#pricing" className="no-underline">
                 <motion.button
                   className="border border-outline/50 hover:border-primary/40 text-on-surface font-headline font-bold px-14 py-6 rounded-lg text-xl tracking-tight transition-colors"
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
                 >
-                  Get a quote
+                  See plans
                 </motion.button>
-              </Link>
+              </a>
             </div>
+            <p className="text-sm text-on-surface-variant/70 mt-8">
+              Not ready? <Link to="/security-check" className="text-primary underline-offset-4 hover:underline">Run a free security check first</Link> — no signup needed.
+            </p>
           </ScrollReveal>
         </div>
       </section>

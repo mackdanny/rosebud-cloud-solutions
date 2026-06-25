@@ -9,7 +9,8 @@ interface NavProps {
 }
 
 const serviceLinks = [
-  { label: 'Email Security & DMARC',             href: '/services/email-security',         icon: 'mark_email_read' },
+  { label: 'Managed DMARC',                      href: '/services/email-security',         icon: 'mark_email_read' },
+  { label: 'Free Security Check',                href: '/security-check',                  icon: 'radar' },
   { label: 'Azure Foundation & Landing Zones', href: '/services/azure-landing-zones', icon: 'cloud_done' },
   { label: 'Cloud Security & Compliance',       href: '/services/cloud-security',        icon: 'security' },
   { label: 'Secure DevOps & Automation',         href: '/services/devsecops',             icon: 'terminal' },

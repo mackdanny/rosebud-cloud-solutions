@@ -5,6 +5,7 @@ import { PostureScan } from '../components/PostureScan';
 import { Faq } from '../components/Faq';
 import { pageMeta, securityCheckSchema, breadcrumbSchema, faqSchema } from '../data/seoMeta';
 import { faqs } from '../data/faqs';
+import { REPORT_PRICE_GBP, MONITORING_PRICE_GBP, REPORT_CHECKOUT_URL, MONITORING_CHECKOUT_URL } from '../config/posture';
 
 const STATS = [
   { value: '40+', label: 'Individual checks' },
@@ -81,7 +82,44 @@ const REPORT_ROWS = [
   { label: 'Plain-English risk: what each finding means for you', free: true, full: true },
   { label: 'Step-by-step fix for every issue', free: false, full: true },
   { label: 'Prioritised fix plan, in order of what matters most', free: false, full: true },
-  { label: 'Readout call with a security engineer', free: false, full: true },
+  { label: 'Downloadable PDF you can hand to IT or a supplier', free: false, full: true },
+];
+
+// The Posture line's paid products. The £50 report is self-serve (the door-opener);
+// monitoring is the recurring posture product; hardening is done-for-you / quote-only.
+const POSTURE_PRODUCTS = [
+  {
+    name: 'Full report',
+    price: `£${REPORT_PRICE_GBP}`,
+    unit: 'one-off',
+    who: 'The complete breakdown with a step-by-step fix for every issue, prioritised in the order that matters.',
+    features: ['Every finding, with the exact fix', 'Prioritised plan: what to do first', 'Downloadable PDF for IT or suppliers', 'Yours to keep — no subscription'],
+    cta: 'Get the full report',
+    href: REPORT_CHECKOUT_URL,
+    featured: true,
+    badge: 'Most popular',
+    note: 'Credited back if you go on to a hardening project.',
+  },
+  {
+    name: 'Monitoring',
+    price: `£${MONITORING_PRICE_GBP}`,
+    unit: '/mo',
+    who: 'We re-scan your domain every month and alert you the moment your security slips.',
+    features: ['Monthly automatic re-scan', 'Alerts when something changes', 'Track your score over time', 'Cancel anytime'],
+    cta: 'Start monitoring',
+    href: MONITORING_CHECKOUT_URL,
+    note: 'Threats and misconfigurations creep in over time. This catches them.',
+  },
+  {
+    name: 'Hardening',
+    price: 'Quote',
+    unit: 'done-for-you',
+    who: "Don't want to touch it yourself? We fix everything for you, all the way to a clean bill of health.",
+    features: ['Hands-on remediation by us', 'Email, web, DNS & exposure fixes', 'Before/after proof scan', 'Enforced in 90 days, guaranteed'],
+    cta: 'Talk to us',
+    href: '/contact?intent=hardening',
+    note: 'Fixed price per domain, no ongoing commitment.',
+  },
 ];
 
 const Reveal: React.FC<{ children: React.ReactNode; className?: string; delay?: number }> = ({
@@ -235,13 +273,52 @@ export const SecurityCheckPage: React.FC = () => (
         </Reveal>
       </section>
 
-      {/* ── Free scan vs Assessment ───────────────────────────────────── */}
-      <section className="mt-28">
+      {/* ── What happens after the free scan (priced posture products) ──── */}
+      <section id="fix" className="mt-28 scroll-mt-28">
         <Reveal className="text-center mb-10">
-          <span className="inline-block text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label mb-4">What you get</span>
-          <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight">Free scan vs Assessment</h2>
+          <span className="inline-block text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label mb-4">After the free scan</span>
+          <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight">Know the fix, keep it fixed, or have us do it</h2>
           <p className="max-w-2xl mx-auto text-on-surface-variant leading-relaxed mt-5">
-            The free scan shows you everything that is wrong, every finding, ranked, in plain English, for free. An Assessment is where a specialist works through the fixes with you: a prioritised plan and a readout call. Talk to us to arrange one.
+            The free scan shows you what's wrong and why it matters. When you're ready to act, pick the level of help that suits you — from a one-off report you action yourself to a done-for-you fix.
+          </p>
+        </Reveal>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch max-w-[1000px] mx-auto">
+          {POSTURE_PRODUCTS.map((p, i) => (
+            <Reveal key={p.name} delay={i}>
+              <div className={`group h-full rounded-2xl p-7 flex flex-col relative overflow-hidden transition-all ${p.featured ? 'bg-surface border-2 border-primary/40' : 'bg-surface/60 border border-outline/60 hover:border-primary/30'}`}>
+                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
+                {p.badge && (
+                  <span className="self-start mb-3 text-[10px] uppercase tracking-[0.15em] font-bold text-white bg-gradient-to-r from-primary to-fuchsia-500 px-2.5 py-1 rounded-full">{p.badge}</span>
+                )}
+                <h3 className="font-headline text-xl font-bold mb-1">{p.name}</h3>
+                <p className="text-on-surface-variant text-sm min-h-[4rem] mb-3">{p.who}</p>
+                <div className="mb-4 flex items-end gap-1.5">
+                  <span className="font-headline text-4xl font-extrabold tracking-tight">{p.price}</span>
+                  <span className="text-on-surface-variant text-sm mb-1.5">{p.unit}</span>
+                </div>
+                <ul className="space-y-2.5 flex-1 mb-5">
+                  {p.features.map((f) => (
+                    <li key={f} className="flex items-start gap-2 text-sm text-on-surface">
+                      <span aria-hidden="true" className="material-symbols-outlined text-primary shrink-0" style={{ fontSize: '1.05rem' }}>check</span>
+                      <span>{f}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p className="text-xs text-on-surface-variant/70 mb-5 leading-relaxed">{p.note}</p>
+                <a href={p.href} className="no-underline mt-auto">
+                  <button className={`w-full font-headline font-bold px-5 py-3 rounded-lg text-sm transition-all ${p.featured ? 'btn-animated text-white' : 'border border-outline/60 text-on-surface hover:border-primary/40'}`}>
+                    {p.cta}
+                  </button>
+                </a>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+
+        <Reveal className="mt-16 mb-8 text-center">
+          <h3 className="font-headline text-2xl font-bold tracking-tight">Free scan vs full report</h3>
+          <p className="max-w-xl mx-auto text-on-surface-variant leading-relaxed mt-3 text-sm">
+            The free scan tells you <em>what</em> is wrong. The £{REPORT_PRICE_GBP} report tells you exactly <em>how</em> to fix it.
           </p>
         </Reveal>
         <Reveal>
@@ -251,7 +328,7 @@ export const SecurityCheckPage: React.FC = () => (
                 <tr className="border-b border-outline/60">
                   <th className="px-6 py-4 text-sm font-label uppercase tracking-wider text-on-surface-variant">Included</th>
                   <th className="px-4 py-4 text-sm font-label uppercase tracking-wider text-on-surface-variant text-center">Free scan</th>
-                  <th className="px-4 py-4 text-sm font-label uppercase tracking-wider text-primary text-center">Assessment</th>
+                  <th className="px-4 py-4 text-sm font-label uppercase tracking-wider text-primary text-center">Full report · £{REPORT_PRICE_GBP}</th>
                 </tr>
               </thead>
               <tbody>
@@ -293,28 +370,33 @@ export const SecurityCheckPage: React.FC = () => (
           <div className="text-center rounded-2xl border border-outline/50 bg-surface/60 px-8 py-12">
             <h2 className="font-headline text-2xl md:text-3xl font-bold tracking-tight mb-4">Found something you want fixed?</h2>
             <p className="text-on-surface-variant leading-relaxed max-w-2xl mx-auto mb-8">
-              For email impersonation, our <Link to="/services/email-security" className="text-primary underline-offset-4 hover:underline">Managed DMARC</Link> service walks your domain safely to full enforcement, done for you. For a full walkthrough of everything the scan found, with a prioritised fix plan and an engineer readout, talk to us about an Assessment. A free scan commits you to nothing.
+              Get the £{REPORT_PRICE_GBP} full report and you'll have the exact fix for every finding, prioritised and ready to action. A free scan commits you to nothing.
             </p>
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-              <Link to="/services/email-security" className="no-underline inline-block">
+              <a href={REPORT_CHECKOUT_URL} className="no-underline inline-block">
                 <motion.button
                   className="btn-animated text-white font-headline font-bold px-10 py-4 rounded-lg text-base tracking-tight"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.97 }}
                 >
-                  Explore Managed DMARC
+                  Get the full report · £{REPORT_PRICE_GBP}
                 </motion.button>
-              </Link>
-              <Link to="/contact" className="no-underline inline-block">
+              </a>
+              <Link to="/contact?intent=hardening" className="no-underline inline-block">
                 <motion.button
                   className="border border-outline/50 hover:border-primary/40 text-on-surface font-headline font-bold px-10 py-4 rounded-lg text-base tracking-tight transition-colors"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.97 }}
                 >
-                  Talk to us about your results
+                  Have us fix it for you
                 </motion.button>
               </Link>
             </div>
+            <p className="text-sm text-on-surface-variant/70 mt-8">
+              Specifically worried about email impersonation and DMARC? Our{' '}
+              <Link to="/services/email-security" className="text-primary underline-offset-4 hover:underline">Managed DMARC</Link>{' '}
+              service walks your domain safely to full enforcement, done for you.
+            </p>
           </div>
         </Reveal>
       </section>

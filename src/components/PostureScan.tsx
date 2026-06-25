@@ -1,12 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePostureScan } from '../hooks/usePostureScan';
-import { POSTURE_API_BASE } from '../config/posture';
-
-/** Engine 1.7.0 only awards grade A at p=reject, so anything below A is not fully enforced. */
-function notEnforced(grade: string): boolean {
-  return (grade ?? '').trim().toUpperCase().charAt(0) !== 'A';
-}
+import { POSTURE_API_BASE, REPORT_CHECKOUT_URL, REPORT_PRICE_GBP } from '../config/posture';
 
 interface PostureScanProps {
   readonly variant?: 'section' | 'page';
@@ -108,18 +103,7 @@ export const PostureScan: React.FC<PostureScanProps> = ({ variant = 'section' })
                 : `${result.issueCount} ${result.issueCount === 1 ? 'opportunity' : 'opportunities'} to improve across your email, web, DNS and exposure surface.`}
             </p>
 
-            {/* Intent-aware CTA: lead with the product for unenforced domains. */}
-            <a
-              href="/services/email-security"
-              className="w-full no-underline mt-1"
-            >
-              <button className="btn-animated text-white font-headline font-bold w-full px-7 py-3.5 rounded-lg text-sm">
-                {notEnforced(result.grade)
-                  ? 'Your domain can be spoofed today. See how Managed DMARC fixes it'
-                  : 'Keep your domain protected with Managed DMARC'}
-              </button>
-            </a>
-            <p className="text-xs text-on-surface-variant/60 font-label">Done-for-you protection with Managed DMARC. Or get your free report by email below.</p>
+            <p className="text-xs text-on-surface-variant/60 font-label">Get your free report by email — then unlock the full fix plan whenever you're ready.</p>
 
             <form
               onSubmit={(e) => { e.preventDefault(); submitEmail(email); }}
@@ -142,6 +126,10 @@ export const PostureScan: React.FC<PostureScanProps> = ({ variant = 'section' })
               {error && <p className="text-sm text-secondary">{error}</p>}
               <p className="text-xs text-on-surface-variant/60 font-label">We email a private link to your graded report. No spam.</p>
             </form>
+
+            <a href={REPORT_CHECKOUT_URL} className="text-xs text-on-surface-variant/70 font-label no-underline hover:text-primary transition-colors mt-1">
+              Skip ahead — get the full report &amp; fix plan for £{REPORT_PRICE_GBP} →
+            </a>
           </motion.div>
         )}
 
@@ -165,13 +153,14 @@ export const PostureScan: React.FC<PostureScanProps> = ({ variant = 'section' })
               <span aria-hidden="true" className="material-symbols-outlined text-[16px]">open_in_new</span>
             </a>
             <a
-              href="/services/email-security"
+              href={REPORT_CHECKOUT_URL}
               className="w-full no-underline mt-1"
             >
               <button className="btn-animated text-white font-headline font-bold w-full px-7 py-3.5 rounded-lg text-sm">
-                Protect your domain with Managed DMARC
+                Unlock the full report &amp; fix plan — £{REPORT_PRICE_GBP}
               </button>
             </a>
+            <p className="text-xs text-on-surface-variant/60 font-label">The free report shows what's wrong. The full report shows exactly how to fix it.</p>
             <button onClick={reset} className="text-xs text-on-surface-variant/60 font-label hover:text-white transition-colors mt-1">Scan another domain</button>
           </motion.div>
         )}
