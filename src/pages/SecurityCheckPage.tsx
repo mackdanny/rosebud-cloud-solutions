@@ -101,7 +101,7 @@ const POSTURE_PRODUCTS = [
     note: 'Credited back if you go on to a hardening project.',
   },
   {
-    name: 'Monitoring',
+    name: 'External Security Monitoring',
     price: `£${MONITORING_PRICE_GBP}`,
     unit: '/mo',
     who: 'We re-scan your domain every month and alert you the moment your security slips.',
@@ -160,7 +160,7 @@ export const SecurityCheckPage: React.FC = () => (
           initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
           className="inline-block text-[10px] uppercase tracking-[0.4em] text-primary font-bold font-label mb-6"
         >
-          Free tool
+          External Security
         </motion.span>
         <motion.h1
           initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.05 }}
@@ -172,7 +172,7 @@ export const SecurityCheckPage: React.FC = () => (
           initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}
           className="max-w-2xl mx-auto text-on-surface-variant text-lg leading-relaxed"
         >
-          How exposed is your domain? Run a free external scan that checks over 40 points across your email security, web and TLS, external exposure, attack surface, and brand. No install, no sign-up, no access to your systems.
+          The free front door to <span className="text-on-surface font-medium">External Security</span> — our outside-in protection for everything attackers can see. Run a free scan that checks over 40 points across your email security, web and TLS, external exposure, attack surface, and brand. No install, no sign-up, no access to your systems.
         </motion.p>
       </div>
 
