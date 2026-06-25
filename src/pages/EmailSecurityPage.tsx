@@ -362,7 +362,7 @@ export const EmailSecurityPage: React.FC<EmailSecurityPageProps> = ({ className 
           <ScrollReveal className="mt-12 text-center">
             <p className="text-on-surface-variant text-sm">
               Not sure yet? <Link to="/security-check" className="text-primary underline-offset-2 hover:underline">Run the free security check first</Link> — no signup needed.
-              {' '}Want a one-off fix instead of a subscription? <Link to="/security-check#fix" className="text-primary underline-offset-2 hover:underline">See the posture report &amp; hardening options</Link>.
+              {' '}Want a one-off fix instead of a subscription? <Link to="/security-check" className="text-primary underline-offset-2 hover:underline">See the External Security options</Link>.
             </p>
           </ScrollReveal>
         </div>

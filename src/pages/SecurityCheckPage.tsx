@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { SEO } from '../components/SEO';
 import { PostureScan } from '../components/PostureScan';
@@ -138,7 +139,31 @@ const Reveal: React.FC<{ children: React.ReactNode; className?: string; delay?: 
   </motion.div>
 );
 
-export const SecurityCheckPage: React.FC = () => (
+export const SecurityCheckPage: React.FC = () => {
+  // The product options stay hidden until the visitor submits their email for the
+  // free report — then they reveal and we scroll them into view.
+  const [showProducts, setShowProducts] = useState(false);
+  const [reportUrl, setReportUrl] = useState<string | null>(null);
+  const productsRef = useRef<HTMLDivElement>(null);
+  const revealProducts = useCallback((url: string) => {
+    setReportUrl(url);
+    setShowProducts(true);
+  }, []);
+
+  useEffect(() => {
+    if (!showProducts) return;
+    // Double rAF so the section is mounted + laid out before we scroll; the
+    // header offset is handled by `scroll-mt-32` on the section (scroll-margin).
+    let inner = 0;
+    const outer = requestAnimationFrame(() => {
+      inner = requestAnimationFrame(() => {
+        productsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+    return () => { cancelAnimationFrame(outer); cancelAnimationFrame(inner); };
+  }, [showProducts]);
+
+  return (
   <main className="pt-32 md:pt-40 pb-32 bg-background relative overflow-hidden">
     <SEO
       {...pageMeta.securityCheck}
@@ -177,7 +202,7 @@ export const SecurityCheckPage: React.FC = () => (
       </div>
 
       <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.15 }}>
-        <PostureScan variant="page" />
+        <PostureScan variant="page" onComplete={revealProducts} />
       </motion.div>
 
       {/* ── Stat band ─────────────────────────────────────────────────── */}
@@ -274,7 +299,27 @@ export const SecurityCheckPage: React.FC = () => (
       </section>
 
       {/* ── What happens after the free scan (priced posture products) ──── */}
-      <section id="fix" className="mt-28 scroll-mt-28">
+      <AnimatePresence>
+      {showProducts && (
+      <motion.section
+        id="fix"
+        ref={productsRef}
+        className="mt-28 scroll-mt-32"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
+      >
+        <Reveal className="mb-10">
+          <div className="flex flex-col sm:flex-row items-center gap-4 rounded-2xl border border-primary/30 bg-primary/10 px-6 py-5 max-w-2xl mx-auto text-center sm:text-left">
+            <span aria-hidden="true" className="material-symbols-outlined text-primary text-[30px] shrink-0">mark_email_read</span>
+            <div className="flex-1">
+              <p className="font-headline font-bold text-white">Your free report is on its way — check your inbox.</p>
+              <p className="text-on-surface-variant text-sm mt-0.5">
+                It can take a minute to arrive.{reportUrl && <> Or <a href={reportUrl} target="_blank" rel="noopener noreferrer" className="text-primary underline-offset-2 hover:underline">view it now</a>.</>}
+              </p>
+            </div>
+          </div>
+        </Reveal>
         <Reveal className="text-center mb-10">
           <span className="inline-block text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label mb-4">After the free scan</span>
           <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight">Know the fix, keep it fixed, or have us do it</h2>
@@ -352,7 +397,9 @@ export const SecurityCheckPage: React.FC = () => (
             The scan uses only publicly available DNS and web data. We keep scan results so we can generate your report, and we never sell or share your details with third parties. See our <Link to="/privacy" className="text-primary underline-offset-4 hover:underline">privacy policy</Link>.
           </p>
         </Reveal>
-      </section>
+      </motion.section>
+      )}
+      </AnimatePresence>
 
       {/* ── FAQ ───────────────────────────────────────────────────────── */}
       <Faq
@@ -403,6 +450,7 @@ export const SecurityCheckPage: React.FC = () => (
 
     </div>
   </main>
-);
+  );
+};
 
 export default SecurityCheckPage;

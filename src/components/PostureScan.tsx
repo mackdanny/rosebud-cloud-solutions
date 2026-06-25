@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePostureScan } from '../hooks/usePostureScan';
 import { POSTURE_API_BASE, REPORT_CHECKOUT_URL, REPORT_PRICE_GBP } from '../config/posture';
 
 interface PostureScanProps {
   readonly variant?: 'section' | 'page';
+  /** Fired once the visitor submits their email (scan reaches the 'done' phase),
+   *  with the private report URL so the caller can confirm + link to it. */
+  readonly onComplete?: (reportUrl: string) => void;
 }
 
 function bandColor(score: number): string {
@@ -38,8 +41,12 @@ const ScoreRing: React.FC<{ score: number }> = ({ score }) => {
   );
 };
 
-export const PostureScan: React.FC<PostureScanProps> = ({ variant = 'section' }) => {
+export const PostureScan: React.FC<PostureScanProps> = ({ variant = 'section', onComplete }) => {
   const { phase, result, error, scan, submitEmail, reset } = usePostureScan();
+
+  useEffect(() => {
+    if (phase === 'done' && result) onComplete?.(`${POSTURE_API_BASE}/r/${result.token}`);
+  }, [phase, result, onComplete]);
   const [domain, setDomain] = useState('');
   const [email, setEmail] = useState('');
   const pad = variant === 'page' ? 'px-6 py-10 md:px-12 md:py-14' : 'px-6 py-8 md:px-10 md:py-10';
