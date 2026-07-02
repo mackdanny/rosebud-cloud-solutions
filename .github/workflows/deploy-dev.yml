@@ -104,8 +104,10 @@ jobs:
           skip_api_build: true
 
       - name: Bind custom domains
+        # www lives on the prod app now (swa-uks-web-prod-001). Dev must only
+        # ever bind dev.* so a dev deploy can never reclaim the live domain.
         run: |
-          for domain in dev.rosebudcloudsolutions.co.uk www.rosebudcloudsolutions.co.uk; do
+          for domain in dev.rosebudcloudsolutions.co.uk; do
             existing=$(az staticwebapp hostname list \
               --name ${{ env.SWA_NAME }} \
               --resource-group ${{ env.RESOURCE_GROUP }} \
@@ -122,27 +124,9 @@ jobs:
             fi
           done
 
-      # Purge the Cloudflare edge cache so a new deploy is served immediately
-      # rather than waiting for the cached HTML to expire. Safe no-op until the
-      # CF_ZONE_ID / CF_API_TOKEN secrets are configured.
-      - name: Purge Cloudflare cache (production)
-        if: github.ref == 'refs/heads/main'
-        env:
-          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
-          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
-        run: |
-          if [ -z "$CF_ZONE_ID" ] || [ -z "$CF_API_TOKEN" ]; then
-            echo "CF_ZONE_ID / CF_API_TOKEN not set — skipping Cloudflare purge."
-            exit 0
-          fi
-          resp=$(curl -sS -X POST \
-            "https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/purge_cache" \
-            -H "Authorization: Bearer $CF_API_TOKEN" \
-            -H "Content-Type: application/json" \
-            --data '{"purge_everything":true}')
-          echo "$resp"
-          echo "$resp" | grep -q '"success":true' || { echo "Cloudflare purge failed"; exit 1; }
-          echo "Cloudflare cache purged."
+      # Cloudflare cache purge lives in the prod workflow now: dev.* is not
+      # proxied through Cloudflare, so a dev deploy must not purge the live
+      # (www) edge cache.
 
       - name: Azure logout
         if: always()

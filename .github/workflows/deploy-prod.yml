@@ -32,7 +32,6 @@ env:
   SWA_NAME: swa-uks-web-prod-001
   SWA_LOCATION: westeurope
   SWA_SKU: Free
-  PROD_TEST_DOMAIN: prod.rosebudcloudsolutions.co.uk
 
 jobs:
   # Approval gate. Does no work; its only job is to hold the run until an
@@ -122,32 +121,34 @@ jobs:
           skip_app_build: true
           skip_api_build: true
 
-      - name: Report prod hostname
+      - name: Report prod status
         run: |
           host=$(az staticwebapp show \
             --name ${{ env.SWA_NAME }} \
             --resource-group ${{ env.RESOURCE_GROUP }} \
             --query "defaultHostname" --output tsv)
-          echo "Prod app is live at: https://$host"
-          echo "To attach the test domain, add a Cloudflare CNAME: ${{ env.PROD_TEST_DOMAIN }} -> $host"
+          echo "Deployed to prod app: https://$host"
+          echo "Live at: https://www.rosebudcloudsolutions.co.uk (via Cloudflare)"
 
-      # Non-fatal: only succeeds once the CNAME above exists. www is NOT bound here.
-      - name: Bind test domain (optional, non-fatal)
-        continue-on-error: true
+      # Prod serves www through Cloudflare, so refresh the edge cache after a
+      # deploy. Safe no-op until the CF_ZONE_ID / CF_API_TOKEN secrets are set.
+      - name: Purge Cloudflare cache
+        env:
+          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
         run: |
-          existing=$(az staticwebapp hostname list \
-            --name ${{ env.SWA_NAME }} \
-            --resource-group ${{ env.RESOURCE_GROUP }} \
-            --query "[?name=='${{ env.PROD_TEST_DOMAIN }}'].name" --output tsv)
-          if [ -z "$existing" ]; then
-            az staticwebapp hostname set \
-              --name ${{ env.SWA_NAME }} \
-              --resource-group ${{ env.RESOURCE_GROUP }} \
-              --hostname "${{ env.PROD_TEST_DOMAIN }}" \
-            || echo "Test-domain bind skipped (add the Cloudflare CNAME, then re-run)."
-          else
-            echo "Test domain already bound."
+          if [ -z "$CF_ZONE_ID" ] || [ -z "$CF_API_TOKEN" ]; then
+            echo "CF_ZONE_ID / CF_API_TOKEN not set - skipping Cloudflare purge."
+            exit 0
           fi
+          resp=$(curl -sS -X POST \
+            "https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/purge_cache" \
+            -H "Authorization: Bearer $CF_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            --data '{"purge_everything":true}')
+          echo "$resp"
+          echo "$resp" | grep -q '"success":true' || { echo "Cloudflare purge failed"; exit 1; }
+          echo "Cloudflare cache purged."
 
       - name: Azure logout
         if: always()

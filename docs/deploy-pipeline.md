@@ -1,5 +1,9 @@
 # Website deploy pipeline: dev and production separation
 
+> **Status: LIVE as of 2026-07-02.** The split is complete. `www` is served by
+> `swa-uks-web-prod-001` and the dev/promote pipeline below is in effect. The
+> Phase 2 cutover described near the end has already been performed.
+
 ## Why this exists
 
 Until now `dev` and the live site were the **same Azure Static Web App**
