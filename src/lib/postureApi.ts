@@ -76,13 +76,13 @@ export async function runScan(domain: string): Promise<ScanResult> {
   };
 }
 
-export async function unlock(token: string, email: string): Promise<UnlockResult> {
+export async function unlock(token: string, email: string, consent = false): Promise<UnlockResult> {
   let res: Response;
   try {
     res = await fetch(`${POSTURE_API_BASE}/api/public/unlock`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ token, email }),
+      body: JSON.stringify({ token, email, consent }),
     });
   } catch {
     return { ok: false, kind: 'network', message: 'Something went wrong. Please try again.' };

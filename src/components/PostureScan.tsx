@@ -49,6 +49,7 @@ export const PostureScan: React.FC<PostureScanProps> = ({ variant = 'section', o
   }, [phase, result, onComplete]);
   const [domain, setDomain] = useState('');
   const [email, setEmail] = useState('');
+  const [consent, setConsent] = useState(false);
   const pad = variant === 'page' ? 'px-6 py-10 md:px-12 md:py-14' : 'px-6 py-8 md:px-10 md:py-10';
 
   return (
@@ -113,7 +114,7 @@ export const PostureScan: React.FC<PostureScanProps> = ({ variant = 'section', o
             <p className="text-xs text-on-surface-variant/60 font-label">Get your free report by email — then unlock the full fix plan whenever you're ready.</p>
 
             <form
-              onSubmit={(e) => { e.preventDefault(); submitEmail(email); }}
+              onSubmit={(e) => { e.preventDefault(); submitEmail(email, consent); }}
               className="w-full flex flex-col gap-3 mt-2"
             >
               <div className="flex flex-col sm:flex-row gap-3">
@@ -130,6 +131,17 @@ export const PostureScan: React.FC<PostureScanProps> = ({ variant = 'section', o
                   {phase === 'submitting' ? 'Sending' : 'Email me the report'}
                 </button>
               </div>
+              <label htmlFor="posture-scan-consent" className="flex items-start gap-2.5 text-left cursor-pointer">
+                <input
+                  id="posture-scan-consent" type="checkbox" checked={consent}
+                  onChange={(e) => setConsent(e.target.checked)}
+                  disabled={phase === 'submitting'}
+                  className="mt-0.5 h-4 w-4 flex-none accent-primary"
+                />
+                <span className="text-xs text-on-surface-variant/60 font-label">
+                  Create my free security dashboard so I can view the full findings (we&apos;ll email a sign-in link).
+                </span>
+              </label>
               {error && <p className="text-sm text-secondary">{error}</p>}
               <p className="text-xs text-on-surface-variant/60 font-label">We email a private link to your graded report. No spam.</p>
             </form>

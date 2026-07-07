@@ -8,7 +8,7 @@ export interface PostureScanState {
   result: ScanSuccess | null;
   error: string | null;
   scan: (rawDomain: string) => Promise<void>;
-  submitEmail: (email: string) => Promise<void>;
+  submitEmail: (email: string, consent?: boolean) => Promise<void>;
   reset: () => void;
 }
 
@@ -35,11 +35,11 @@ export function usePostureScan(): PostureScanState {
     }
   }, []);
 
-  const submitEmail = useCallback(async (email: string) => {
+  const submitEmail = useCallback(async (email: string, consent = false) => {
     if (!result) return;
     setError(null);
     setPhase('submitting');
-    const res = await unlock(result.token, email);
+    const res = await unlock(result.token, email, consent);
     if (res.ok) {
       setPhase('done');
     } else {
