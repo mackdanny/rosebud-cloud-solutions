@@ -49,7 +49,7 @@ export const PostureScan: React.FC<PostureScanProps> = ({ variant = 'section', o
   }, [phase, result, onComplete]);
   const [domain, setDomain] = useState('');
   const [email, setEmail] = useState('');
-  const [consent, setConsent] = useState(false);
+  const [reportOnly, setReportOnly] = useState(false);
   const pad = variant === 'page' ? 'px-6 py-10 md:px-12 md:py-14' : 'px-6 py-8 md:px-10 md:py-10';
 
   return (
@@ -111,10 +111,10 @@ export const PostureScan: React.FC<PostureScanProps> = ({ variant = 'section', o
                 : `${result.issueCount} ${result.issueCount === 1 ? 'opportunity' : 'opportunities'} to improve across your email, web, DNS and exposure surface.`}
             </p>
 
-            <p className="text-xs text-on-surface-variant/60 font-label">Get your free report by email — then unlock the full fix plan whenever you're ready.</p>
+            <p className="text-xs text-on-surface-variant/60 font-label">Enter your email and we&apos;ll take you straight to your free dashboard to view the full findings.</p>
 
             <form
-              onSubmit={(e) => { e.preventDefault(); submitEmail(email, consent); }}
+              onSubmit={(e) => { e.preventDefault(); submitEmail(email, !reportOnly); }}
               className="w-full flex flex-col gap-3 mt-2"
             >
               <div className="flex flex-col sm:flex-row gap-3">
@@ -128,22 +128,24 @@ export const PostureScan: React.FC<PostureScanProps> = ({ variant = 'section', o
                   type="submit" disabled={phase === 'submitting'}
                   className="btn-animated text-white font-headline font-bold px-7 py-3.5 rounded-lg whitespace-nowrap disabled:opacity-70"
                 >
-                  {phase === 'submitting' ? 'Sending' : 'Email me the report'}
+                  {phase === 'submitting' ? 'Sending' : 'See my results'}
                 </button>
               </div>
-              <label htmlFor="posture-scan-consent" className="flex items-start gap-2.5 text-left cursor-pointer">
+              <label htmlFor="posture-scan-report-only" className="flex items-start gap-2.5 text-left cursor-pointer">
                 <input
-                  id="posture-scan-consent" type="checkbox" checked={consent}
-                  onChange={(e) => setConsent(e.target.checked)}
+                  id="posture-scan-report-only" type="checkbox" checked={reportOnly}
+                  onChange={(e) => setReportOnly(e.target.checked)}
                   disabled={phase === 'submitting'}
                   className="mt-0.5 h-4 w-4 flex-none accent-primary"
                 />
                 <span className="text-xs text-on-surface-variant/60 font-label">
-                  Create my free security dashboard so I can view the full findings (we&apos;ll email a sign-in link).
+                  Just email me the report instead.
                 </span>
               </label>
               {error && <p className="text-sm text-secondary">{error}</p>}
-              <p className="text-xs text-on-surface-variant/60 font-label">We email a private link to your graded report. No spam.</p>
+              <p className="text-xs text-on-surface-variant/60 font-label">
+                We&apos;ll set up your free security dashboard so you can view your findings, no password needed. See our <a href="/privacy" className="underline hover:text-primary transition-colors">Privacy Policy</a>. No spam, and you can ask us to delete your data at any time.
+              </p>
             </form>
 
             <a href={REPORT_CHECKOUT_URL} className="text-xs text-on-surface-variant/70 font-label no-underline hover:text-primary transition-colors mt-1">
