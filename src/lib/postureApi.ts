@@ -18,12 +18,19 @@ export type ScanResult = ScanSuccess | ScanFailure;
 export interface UnlockSuccess { ok: true; loginUrl?: string }
 export interface UnlockFailure {
   ok: false;
-  kind: 'invalidEmail' | 'expired' | 'network';
+  kind: 'invalidEmail' | 'expired' | 'network' | 'rateLimited';
   message: string;
 }
 export type UnlockResult = UnlockSuccess | UnlockFailure;
 
 const NETWORK_MSG = 'Something went wrong running the scan. Please try again.';
+
+/** Friendly, specific message when the public rate limit (per IP) is hit. */
+function rateLimitMessage(retryAfterSec?: number): string {
+  const mins = retryAfterSec && retryAfterSec > 0 ? Math.max(1, Math.ceil(retryAfterSec / 60)) : undefined;
+  const when = mins ? `try again in about ${mins} minute${mins === 1 ? '' : 's'}` : 'try again shortly';
+  return `You've reached the free-check limit for now. Please ${when}, or contact us for a full assessment.`;
+}
 
 /** Normalise a user-typed domain: drop scheme, path, whitespace, leading www. */
 export function normaliseDomain(raw: string): string {
@@ -48,12 +55,8 @@ export async function runScan(domain: string): Promise<ScanResult> {
   }
   if (res.status === 429) {
     const body = await res.json().catch(() => ({}));
-    return {
-      ok: false,
-      kind: 'rateLimited',
-      message: 'You have run a few scans already. Please try again in a few minutes.',
-      retryAfterSec: typeof body.retryAfterSec === 'number' ? body.retryAfterSec : undefined,
-    };
+    const retryAfterSec = typeof body.retryAfterSec === 'number' ? body.retryAfterSec : undefined;
+    return { ok: false, kind: 'rateLimited', message: rateLimitMessage(retryAfterSec), retryAfterSec };
   }
   if (res.status === 400) {
     return {
@@ -92,6 +95,10 @@ export async function unlock(token: string, email: string, consent = false): Pro
   }
   if (res.status === 404) {
     return { ok: false, kind: 'expired', message: 'That scan has expired. Please run it again.' };
+  }
+  if (res.status === 429) {
+    const body = await res.json().catch(() => ({} as { retryAfterSec?: number }));
+    return { ok: false, kind: 'rateLimited', message: rateLimitMessage(body.retryAfterSec) };
   }
   if (!res.ok) {
     return { ok: false, kind: 'network', message: 'Something went wrong. Please try again.' };
