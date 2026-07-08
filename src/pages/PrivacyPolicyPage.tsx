@@ -39,7 +39,7 @@ const sections = [
   },
   {
     heading: 'How We Use Your Data',
-    body: `We use the data you provide for the following purposes:\n\n• To respond to your enquiry or request for consultation.\n• To understand the nature of your requirements so we can prepare for an initial conversation.\n• To operate the AI chatbot and provide helpful responses during your session.\n\nWe do not use your data for marketing, profiling, automated decision-making, or any purpose beyond responding to your enquiry unless you explicitly ask us to.`,
+    body: `We use the data you provide for the following purposes:\n\n• To respond to your enquiry or request for consultation.\n• To understand the nature of your requirements so we can prepare for an initial conversation.\n• To operate the AI chatbot and provide helpful responses during your session.\n\nIf you run a security scan or share your business email with us, we may contact you about security services relevant to your results. We rely on our legitimate interest in offering relevant services to organisations that have engaged with us, and you can opt out at any time using the unsubscribe link in any message, or by emailing us. Beyond that, we do not profile you, make automated decisions about you, or sell your personal data.`,
   },
   {
     heading: 'Security Scan and Dashboard',
@@ -59,7 +59,7 @@ const sections = [
   },
   {
     heading: 'Data Retention',
-    body: `Contact form submissions and chatbot transcripts are delivered to our email inbox and retained only as long as necessary to respond to your enquiry and for reasonable record-keeping. We do not maintain a separate database of enquiry data.\n\nChatbot conversations are not stored on our servers. They exist in your browser session only and are discarded when you close or navigate away from the page. A transcript may be sent to our inbox for follow-up purposes.`,
+    body: `Contact form submissions and chatbot transcripts are delivered to our email inbox and retained only as long as necessary to respond to your enquiry and for reasonable record-keeping.\n\nWhen you run a scan we store your results and, if created, your free dashboard account so you can return to them. If an account is inactive and has not become a customer, we delete it and its scan data after 24 months. If you become a customer, we keep your data for the duration of our relationship and the period our legal and accounting obligations require afterwards. You can ask us to delete your data at any time.\n\nChatbot conversations are not stored on our servers. They exist in your browser session only and are discarded when you close or navigate away from the page. A transcript may be sent to our inbox for follow-up purposes.`,
   },
   {
     heading: 'Your Rights',
