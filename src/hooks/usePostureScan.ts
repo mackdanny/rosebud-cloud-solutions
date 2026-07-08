@@ -8,7 +8,7 @@ export interface PostureScanState {
   result: ScanSuccess | null;
   error: string | null;
   scan: (rawDomain: string) => Promise<void>;
-  submitEmail: (email: string) => Promise<void>;
+  submitEmail: (email: string, consent?: boolean) => Promise<void>;
   reset: () => void;
 }
 
@@ -35,12 +35,19 @@ export function usePostureScan(): PostureScanState {
     }
   }, []);
 
-  const submitEmail = useCallback(async (email: string) => {
+  const submitEmail = useCallback(async (email: string, consent = false) => {
     if (!result) return;
     setError(null);
     setPhase('submitting');
-    const res = await unlock(result.token, email);
+    const res = await unlock(result.token, email, consent);
     if (res.ok) {
+      if (res.loginUrl) {
+        // Direct-to-platform on-ramp: the magic-link is single-use, so we
+        // redirect straight into it instead of showing "check your inbox".
+        // Don't set phase to 'done' here, we're navigating away.
+        window.location.href = res.loginUrl;
+        return;
+      }
       setPhase('done');
     } else {
       setError(res.message);
