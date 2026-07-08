@@ -41,6 +41,13 @@ export function usePostureScan(): PostureScanState {
     setPhase('submitting');
     const res = await unlock(result.token, email, consent);
     if (res.ok) {
+      if (res.loginUrl) {
+        // Direct-to-platform on-ramp: the magic-link is single-use, so we
+        // redirect straight into it instead of showing "check your inbox".
+        // Don't set phase to 'done' here, we're navigating away.
+        window.location.href = res.loginUrl;
+        return;
+      }
       setPhase('done');
     } else {
       setError(res.message);

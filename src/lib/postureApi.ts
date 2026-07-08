@@ -15,7 +15,7 @@ export interface ScanFailure {
 }
 export type ScanResult = ScanSuccess | ScanFailure;
 
-export interface UnlockSuccess { ok: true }
+export interface UnlockSuccess { ok: true; loginUrl?: string }
 export interface UnlockFailure {
   ok: false;
   kind: 'invalidEmail' | 'expired' | 'network';
@@ -96,5 +96,7 @@ export async function unlock(token: string, email: string, consent = false): Pro
   if (!res.ok) {
     return { ok: false, kind: 'network', message: 'Something went wrong. Please try again.' };
   }
-  return { ok: true };
+  const body = await res.json().catch(() => null);
+  const loginUrl = body && typeof body.loginUrl === 'string' ? body.loginUrl : undefined;
+  return { ok: true, loginUrl };
 }
