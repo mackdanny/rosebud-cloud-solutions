@@ -26,7 +26,7 @@ const ScrollReveal: React.FC<{
   </motion.div>
 );
 
-const LAST_UPDATED = '22 May 2025';
+const LAST_UPDATED = '8 July 2026';
 
 const sections = [
   {
@@ -35,11 +35,15 @@ const sections = [
   },
   {
     heading: 'What Data We Collect',
-    body: `We collect personal data only when you actively provide it through our website. This includes:\n\n• Contact form — your name, email address, company name (optional), the service you are enquiring about, and your message.\n• AI chatbot — the messages you send during a conversation. If you choose to share your name, email, or topic of interest with the chatbot, those details are also collected.\n\nWe do not collect data passively through tracking cookies, analytics scripts, or advertising pixels. Our website does not use Google Analytics, Facebook Pixel, or any similar third-party tracking technology.`,
+    body: `We collect personal data only when you actively provide it through our website. This includes:\n\n• Contact form — your name, email address, company name (optional), the service you are enquiring about, and your message.\n• AI chatbot — the messages you send during a conversation. If you choose to share your name, email, or topic of interest with the chatbot, those details are also collected.\n• Security scan — when you run a free security scan, the domain you ask us to scan and the email address you provide to receive your results.\n\nWe do not collect data passively through tracking cookies, analytics scripts, or advertising pixels. Our website does not use Google Analytics, Facebook Pixel, or any similar third-party tracking technology.`,
   },
   {
     heading: 'How We Use Your Data',
     body: `We use the data you provide for the following purposes:\n\n• To respond to your enquiry or request for consultation.\n• To understand the nature of your requirements so we can prepare for an initial conversation.\n• To operate the AI chatbot and provide helpful responses during your session.\n\nWe do not use your data for marketing, profiling, automated decision-making, or any purpose beyond responding to your enquiry unless you explicitly ask us to.`,
+  },
+  {
+    heading: 'Security Scan and Dashboard',
+    body: `When you run a free security scan on our website, we collect the domain you ask us to scan and the email address you provide. We use these to run the scan, generate your security findings, and set up a free security dashboard where you can view them. We email you a one-time link to sign in to that dashboard, no password needed.\n\nThe scan only inspects information that is already publicly visible about a domain, such as its public DNS records and its published email and web security settings. It does not access anything private, and it does not attempt to log in to any system.\n\nOur legal basis for this is legitimate interest: you have asked us to assess a domain and show you the results, and you provide your email so that we can deliver them. The dashboard is the default way we deliver your results; you can instead choose to have the report emailed to you, and you can ask us to delete your account and data at any time by emailing hello@rosebudcloudsolutions.co.uk.`,
   },
   {
     heading: 'Legal Basis for Processing',
