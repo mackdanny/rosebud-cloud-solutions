@@ -331,8 +331,12 @@ export const EmailSecurityPage: React.FC<EmailSecurityPageProps> = ({ className 
                       <span className="font-headline text-4xl font-extrabold tracking-tight">£{price}</span>
                       <span className="text-on-surface-variant text-sm mb-1.5">{unit}</span>
                     </div>
-                    <span className="text-[11px] uppercase tracking-[0.15em] text-on-surface-variant/70 font-bold font-label mb-4 block">
+                    <span className="text-[11px] uppercase tracking-[0.15em] text-on-surface-variant/70 font-bold font-label mb-2 block">
                       {pkg.cap}
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-primary mb-4">
+                      <span aria-hidden="true" className="material-symbols-outlined" style={{ fontSize: '1rem' }}>schedule</span>
+                      14-day free trial · cancel anytime
                     </span>
                     <ul className="space-y-2.5 flex-1 mb-6">
                       {pkg.features.map((f) => (
@@ -380,10 +384,11 @@ export const EmailSecurityPage: React.FC<EmailSecurityPageProps> = ({ className 
       <section className="py-16 px-8 md:px-24 bg-background border-y border-outline">
         <ScrollReveal className="max-w-[1100px] mx-auto text-center">
           <p className="text-lg md:text-2xl text-on-surface leading-relaxed font-light">
-            Since 2024, <span className="text-gradient-primary font-semibold">Google, Yahoo and Microsoft</span> reject
-            or junk mail from senders who fail email authentication. Yet only about <span className="text-gradient-primary font-semibold">1 in 11 domains</span> is
-            properly protected. If yours isn't, criminals can send email as you, and your own mail
-            increasingly lands in spam. We fix both, without breaking a single legitimate email.
+            Since 2024 <span className="text-gradient-primary font-semibold">Google and Yahoo</span>, joined by
+            <span className="text-gradient-primary font-semibold"> Microsoft in May 2025</span>, reject or junk mail from
+            bulk senders who fail email authentication. Yet even among the world's busiest domains only about
+            <span className="text-gradient-primary font-semibold"> 1 in 11</span> is properly protected. If yours isn't,
+            criminals can send email as you, and your own mail increasingly lands in spam. We fix both, without breaking a single legitimate email.
           </p>
         </ScrollReveal>
       </section>
