@@ -25,7 +25,7 @@ export const faqs = {
     {
       question: 'How long does it take to get fully protected?',
       answer:
-        'Most domains reach full enforcement within a few weeks, depending on how many systems send email as you. Our Hardening package is guaranteed to reach enforcement within 90 days, and Managed DMARC then keeps you there with ongoing monitoring.',
+        'Most domains reach full enforcement within a few weeks, depending on how many systems send email as you. On the Managed and Scale plans we guarantee enforcement within 90 days of onboarding: if we have not got you there, for reasons within our control, your subscription is free from day 91 until we have. Managed DMARC then keeps you at enforcement with ongoing monitoring.',
     },
     {
       question: 'Do we need any technical knowledge?',
@@ -325,7 +325,7 @@ export const faqs = {
     {
       question: 'What do I get in the emailed report?',
       answer:
-        'The instant result shows your overall score, rating, and how many issues were found. Your emailed report, sent as a private link, breaks down every finding with a severity rating and explains in plain English what each one means, across email security, web and TLS, external exposure, attack surface, and brand. The step-by-step fixes come with an Assessment.',
+        'The instant result shows your overall score, rating, and how many issues were found. Your emailed report, sent as a private link, breaks down every finding with a severity rating and explains in plain English what each one means, across email security, web and TLS, external exposure, attack surface, and brand. The step-by-step fix for every issue comes with the £50 full report, downloadable as a PDF.',
     },
   ],
 } as const;

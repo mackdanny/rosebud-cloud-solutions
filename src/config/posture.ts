@@ -11,10 +11,12 @@ export const POSTURE_API_BASE =
 export const REPORT_PRICE_GBP = 50;
 export const MONITORING_PRICE_GBP = 29;
 
-// Checkout destinations for the self-serve posture products. These are wired to
-// Stripe Payment Links via env at deploy; until those exist they fall back to a
-// concierge /contact route so the CTA is never dead. TODO: drop in the live
-// Stripe Payment Link URLs (VITE_REPORT_CHECKOUT_URL / VITE_MONITORING_CHECKOUT_URL).
+// Checkout destinations for the self-serve posture products. Self-serve billing
+// is GoCardless IN THE PORTAL (not payment links): at BILLING_ENABLED go-live,
+// set the env vars to the portal buy pages
+//   VITE_REPORT_CHECKOUT_URL=https://portal.rosebudcloudsolutions.co.uk/portal/full-report
+//   VITE_MONITORING_CHECKOUT_URL=https://portal.rosebudcloudsolutions.co.uk/portal/monitoring
+// Until then they fall back to the concierge /contact route so the CTA is never dead.
 export const REPORT_CHECKOUT_URL =
   import.meta.env.VITE_REPORT_CHECKOUT_URL || '/contact?intent=full-report';
 export const MONITORING_CHECKOUT_URL =
