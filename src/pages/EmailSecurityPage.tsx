@@ -89,7 +89,7 @@ const featureGroups: FeatureGroup[] = [
   {
     group: 'Visibility & analysis',
     rows: [
-      { label: 'Security score (A–F) with grade breakdown', marks: [T, T, T] },
+      { label: 'Security score (0-100) with section breakdown', marks: [T, T, T] },
       { label: 'Spoofability check (can someone send as you?)', marks: [T, T, T] },
       { label: 'DMARC aggregate report ingestion & analysis', marks: [T, T, T] },
       { label: 'Sender identification & classification', marks: [T, T, T] },
@@ -102,7 +102,7 @@ const featureGroups: FeatureGroup[] = [
       { label: 'Live status portal', marks: [T, T, T] },
       { label: 'Monthly PDF reports', marks: [T, T, T] },
       { label: 'Continuous monitoring & drift detection', marks: [T, T, T] },
-      { label: 'Full audit trail of every change to your domain', marks: [T, T, T] },
+      { label: 'A record of every change we make, available on request', marks: [T, T, T] },
     ],
   },
   {
@@ -122,7 +122,7 @@ const featureGroups: FeatureGroup[] = [
     rows: [
       { label: 'Multiple domains (up to 5)', marks: [F, F, T] },
       { label: 'Unlimited portal users', marks: [F, F, T] },
-      { label: 'Passwordless, phishing-resistant login', marks: [T, T, T] },
+      { label: 'Passwordless sign-in (magic link)', marks: [T, T, T] },
     ],
   },
   {
@@ -359,7 +359,15 @@ export const EmailSecurityPage: React.FC<EmailSecurityPageProps> = ({ className 
             })}
           </div>
 
-          <ScrollReveal className="mt-12 text-center">
+          <ScrollReveal className="mt-10 text-center">
+            <p className="text-on-surface-variant text-sm max-w-[820px] mx-auto">
+              <strong className="text-on-surface">The 90-day enforcement guarantee</strong> (Managed and Scale): if we have not
+              walked your domain to enforced DMARC (p=reject) within 90 days of onboarding, for reasons within our control,
+              your subscription is free from day 91 until we have. No small print beyond this sentence.
+            </p>
+          </ScrollReveal>
+
+          <ScrollReveal className="mt-8 text-center">
             <p className="text-on-surface-variant text-sm">
               Not sure yet? <Link to="/security-check" className="text-primary underline-offset-2 hover:underline">Run the free security check first</Link> — no signup needed.
               {' '}Want a one-off fix instead of a subscription? <Link to="/security-check" className="text-primary underline-offset-2 hover:underline">See the External Security options</Link>.
