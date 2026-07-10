@@ -123,6 +123,43 @@ const POSTURE_PRODUCTS = [
   },
 ];
 
+// A compact "your score, tracked over time" visual (pre-sale review B4): sells
+// what the £29 monitoring product produces - a rising posture score with a drift
+// dip caught and recovered. Pure inline SVG, theme-aware via currentColor.
+const ScoreTrend: React.FC = () => {
+  // Monthly client scores; the dip at index 4 is a caught regression, then recovery.
+  const scores = [58, 63, 69, 74, 66, 78, 85, 90];
+  const W = 520, H = 150, pad = 24;
+  const max = 100, min = 40;
+  const x = (i: number) => pad + (i * (W - pad * 2)) / (scores.length - 1);
+  const y = (s: number) => pad + (1 - (s - min) / (max - min)) * (H - pad * 2);
+  const line = scores.map((s, i) => `${i === 0 ? 'M' : 'L'}${x(i).toFixed(1)},${y(s).toFixed(1)}`).join(' ');
+  const area = `${line} L${x(scores.length - 1).toFixed(1)},${H - pad} L${x(0).toFixed(1)},${H - pad} Z`;
+  const dip = scores.indexOf(Math.min(...scores));
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto text-primary" role="img" aria-label="A security score rising over eight months, with one dip caught and recovered">
+      <defs>
+        <linearGradient id="scoreFill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="currentColor" stopOpacity="0.22" />
+          <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      {[40, 60, 80, 100].map((g) => (
+        <g key={g}>
+          <line x1={pad} x2={W - pad} y1={y(g)} y2={y(g)} stroke="currentColor" strokeOpacity="0.1" strokeWidth="1" />
+          <text x={0} y={y(g) + 3} fontSize="9" fill="currentColor" fillOpacity="0.5">{g}</text>
+        </g>
+      ))}
+      <path d={area} fill="url(#scoreFill)" />
+      <path d={line} fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      {scores.map((s, i) => (
+        <circle key={i} cx={x(i)} cy={y(s)} r={i === dip ? 4.5 : 3} fill={i === dip ? '#f59e0b' : 'currentColor'} />
+      ))}
+      <text x={x(dip)} y={y(scores[dip]) + 18} fontSize="9" fill="#f59e0b" textAnchor="middle" fontWeight="700">drift caught</text>
+    </svg>
+  );
+};
+
 const Reveal: React.FC<{ children: React.ReactNode; className?: string; delay?: number }> = ({
   children,
   className = '',
@@ -288,7 +325,7 @@ export const SecurityCheckPage: React.FC = () => {
               <span className="inline-block text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label mb-4">Who it is for</span>
               <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight mb-5">Built for UK businesses, free to run</h2>
               <p className="text-on-surface-variant leading-relaxed mb-4 max-w-3xl">
-                Half of UK businesses reported a cyber attack or breach in the UK Government's Cyber Security Breaches Survey 2024, and phishing remains the most common attack type. Misconfigured or missing SPF, DKIM and DMARC records mean your domain can be used to phish your own customers and suppliers without your knowledge.
+                More than four in ten UK businesses identified a cyber attack or breach in the past year, and phishing remains by far the most common type (UK Government Cyber Security Breaches Survey 2025/26). Misconfigured or missing SPF, DKIM and DMARC records mean your domain can be used to phish your own customers and suppliers without your knowledge.
               </p>
               <p className="text-on-surface-variant leading-relaxed max-w-3xl">
                 The check is designed for IT managers, operations leads, and business owners who want a quick external view before a board update, a tender submission, a Cyber Essentials assessment, or a conversation with a security partner. The results are written in plain English, so you do not need to be technical to act on them.
@@ -359,6 +396,19 @@ export const SecurityCheckPage: React.FC = () => {
             </Reveal>
           ))}
         </div>
+
+        <Reveal className="mt-16 max-w-[1000px] mx-auto">
+          <div className="rounded-2xl border border-outline/60 bg-surface/60 p-7 md:p-9 grid md:grid-cols-2 gap-8 items-center">
+            <div>
+              <span className="inline-block text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label mb-4">With monitoring</span>
+              <h3 className="font-headline text-2xl font-bold tracking-tight mb-3">Watch your score climb, and prove it</h3>
+              <p className="text-on-surface-variant leading-relaxed text-sm">
+                We re-scan every day and track your posture score over time. When something slips, a weakened policy, an expiring certificate, you get an email the same day and it shows up as a dip you can see us recover. A clear line to show your board, auditor or insurer that security is improving.
+              </p>
+            </div>
+            <ScoreTrend />
+          </div>
+        </Reveal>
 
         <Reveal className="mt-16 mb-8 text-center">
           <h3 className="font-headline text-2xl font-bold tracking-tight">Free scan vs full report</h3>
