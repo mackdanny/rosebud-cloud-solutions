@@ -9,6 +9,9 @@ export interface PostureScanState {
   error: string | null;
   /** Where to send an existing paying customer to sign in (member mode). */
   portalLoginUrl: string | null;
+  /** Which "check your inbox" outcome the done phase represents: a dashboard
+   *  sign-in link (verify) vs the report link the visitor opted into (report). */
+  unlockMode: 'verify' | 'report' | null;
   scan: (rawDomain: string) => Promise<void>;
   submitEmail: (email: string, consent?: boolean) => Promise<void>;
   reset: () => void;
@@ -19,6 +22,7 @@ export function usePostureScan(): PostureScanState {
   const [result, setResult] = useState<ScanSuccess | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [portalLoginUrl, setPortalLoginUrl] = useState<string | null>(null);
+  const [unlockMode, setUnlockMode] = useState<'verify' | 'report' | null>(null);
 
   const scan = useCallback(async (rawDomain: string) => {
     const domain = normaliseDomain(rawDomain);
@@ -58,7 +62,10 @@ export function usePostureScan(): PostureScanState {
         setPhase('member');
         return;
       }
-      // verify (prospect) + report (opt-out) both emailed a link -> check inbox.
+      // verify (returning prospect) got a dashboard sign-in link; report (the
+      // "just email me the report" opt-out) got the report link. Track which so
+      // the done screen shows platform-first copy for verify, not the PDF/report.
+      setUnlockMode(res.mode === 'verify' ? 'verify' : 'report');
       setPhase('done');
     } else {
       setError(res.message);
@@ -71,7 +78,8 @@ export function usePostureScan(): PostureScanState {
     setResult(null);
     setError(null);
     setPortalLoginUrl(null);
+    setUnlockMode(null);
   }, []);
 
-  return { phase, result, error, portalLoginUrl, scan, submitEmail, reset };
+  return { phase, result, error, portalLoginUrl, unlockMode, scan, submitEmail, reset };
 }

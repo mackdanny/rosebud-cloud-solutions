@@ -42,11 +42,13 @@ const ScoreRing: React.FC<{ score: number }> = ({ score }) => {
 };
 
 export const PostureScan: React.FC<PostureScanProps> = ({ variant = 'section', onComplete }) => {
-  const { phase, result, error, portalLoginUrl, scan, submitEmail, reset } = usePostureScan();
+  const { phase, result, error, portalLoginUrl, unlockMode, scan, submitEmail, reset } = usePostureScan();
 
   useEffect(() => {
-    if (phase === 'done' && result) onComplete?.(`${POSTURE_API_BASE}/r/${result.token}`);
-  }, [phase, result, onComplete]);
+    // Only a report-mode unlock produces a report the caller can link to; a
+    // verify-mode unlock sends them to the dashboard instead.
+    if (phase === 'done' && result && unlockMode !== 'verify') onComplete?.(`${POSTURE_API_BASE}/r/${result.token}`);
+  }, [phase, result, unlockMode, onComplete]);
   const [domain, setDomain] = useState('');
   const [email, setEmail] = useState('');
   const [reportOnly, setReportOnly] = useState(false);
@@ -165,23 +167,29 @@ export const PostureScan: React.FC<PostureScanProps> = ({ variant = 'section', o
               <span aria-hidden="true" className="material-symbols-outlined text-primary text-[28px]">mark_email_read</span>
             </div>
             <h3 className="font-headline text-2xl font-bold">Check your inbox</h3>
-            <p className="text-on-surface-variant text-sm max-w-sm">We have emailed a private link to your security report. It may take a minute to arrive.</p>
-            <a
-              href={`${POSTURE_API_BASE}/r/${result.token}`} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-primary font-label text-sm uppercase tracking-[0.18em] no-underline hover:gap-3 transition-all"
-            >
-              View report now
-              <span aria-hidden="true" className="material-symbols-outlined text-[16px]">open_in_new</span>
-            </a>
-            <a
-              href={REPORT_CHECKOUT_URL}
-              className="w-full no-underline mt-1"
-            >
-              <button className="btn-animated text-white font-headline font-bold w-full px-7 py-3.5 rounded-lg text-sm">
-                Unlock the full report &amp; fix plan — £{REPORT_PRICE_GBP}
-              </button>
-            </a>
-            <p className="text-xs text-on-surface-variant/60 font-label">The free report shows what's wrong. The full report shows exactly how to fix it.</p>
+            {unlockMode === 'verify' ? (
+              <p className="text-on-surface-variant text-sm max-w-sm">We&apos;ve sent a link to sign in to your dashboard, where you can view all your findings. It may take a minute to arrive.</p>
+            ) : (
+              <>
+                <p className="text-on-surface-variant text-sm max-w-sm">We have emailed a private link to your security report. It may take a minute to arrive.</p>
+                <a
+                  href={`${POSTURE_API_BASE}/r/${result.token}`} target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-primary font-label text-sm uppercase tracking-[0.18em] no-underline hover:gap-3 transition-all"
+                >
+                  View report now
+                  <span aria-hidden="true" className="material-symbols-outlined text-[16px]">open_in_new</span>
+                </a>
+                <a
+                  href={REPORT_CHECKOUT_URL}
+                  className="w-full no-underline mt-1"
+                >
+                  <button className="btn-animated text-white font-headline font-bold w-full px-7 py-3.5 rounded-lg text-sm">
+                    Unlock the full report &amp; fix plan — £{REPORT_PRICE_GBP}
+                  </button>
+                </a>
+                <p className="text-xs text-on-surface-variant/60 font-label">The free report shows what's wrong. The full report shows exactly how to fix it.</p>
+              </>
+            )}
             <button onClick={reset} className="text-xs text-on-surface-variant/60 font-label hover:text-white transition-colors mt-1">Scan another domain</button>
           </motion.div>
         )}
