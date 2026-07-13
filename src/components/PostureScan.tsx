@@ -42,7 +42,7 @@ const ScoreRing: React.FC<{ score: number }> = ({ score }) => {
 };
 
 export const PostureScan: React.FC<PostureScanProps> = ({ variant = 'section', onComplete }) => {
-  const { phase, result, error, scan, submitEmail, reset } = usePostureScan();
+  const { phase, result, error, portalLoginUrl, scan, submitEmail, reset } = usePostureScan();
 
   useEffect(() => {
     if (phase === 'done' && result) onComplete?.(`${POSTURE_API_BASE}/r/${result.token}`);
@@ -182,6 +182,27 @@ export const PostureScan: React.FC<PostureScanProps> = ({ variant = 'section', o
               </button>
             </a>
             <p className="text-xs text-on-surface-variant/60 font-label">The free report shows what's wrong. The full report shows exactly how to fix it.</p>
+            <button onClick={reset} className="text-xs text-on-surface-variant/60 font-label hover:text-white transition-colors mt-1">Scan another domain</button>
+          </motion.div>
+        )}
+
+        {phase === 'member' && (
+          <motion.div
+            key="member"
+            initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3 }}
+            className="flex flex-col items-center text-center gap-4 py-2"
+          >
+            <div className="w-14 h-14 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center">
+              <span aria-hidden="true" className="material-symbols-outlined text-primary text-[28px]">account_circle</span>
+            </div>
+            <h3 className="font-headline text-2xl font-bold">You already have an account</h3>
+            <p className="text-on-surface-variant text-sm max-w-sm">Sign in to your security platform to scan new domains and see the full findings there.</p>
+            <a href={portalLoginUrl ?? 'https://portal.rosebudcloudsolutions.co.uk/portal/login'} className="w-full no-underline mt-1">
+              <button className="btn-animated text-white font-headline font-bold w-full px-7 py-3.5 rounded-lg text-sm">
+                Sign in to your platform
+              </button>
+            </a>
             <button onClick={reset} className="text-xs text-on-surface-variant/60 font-label hover:text-white transition-colors mt-1">Scan another domain</button>
           </motion.div>
         )}

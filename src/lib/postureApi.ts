@@ -15,7 +15,19 @@ export interface ScanFailure {
 }
 export type ScanResult = ScanSuccess | ScanFailure;
 
-export interface UnlockSuccess { ok: true; loginUrl?: string }
+export interface UnlockSuccess {
+  ok: true;
+  /**
+   * How the account was handled (see the Posture on-ramp):
+   *  - `login`  — brand-new account, `loginUrl` is set and we redirect straight in.
+   *  - `verify` — existing prospect, a sign-in link was emailed ("check inbox").
+   *  - `member` — existing paying customer, send them to `portalLoginUrl` to sign in.
+   *  - `report` — report link emailed (the "just email me the report" opt-out).
+   */
+  mode?: 'login' | 'verify' | 'member' | 'report';
+  loginUrl?: string;
+  portalLoginUrl?: string;
+}
 export interface UnlockFailure {
   ok: false;
   kind: 'invalidEmail' | 'expired' | 'network' | 'rateLimited';
@@ -104,6 +116,8 @@ export async function unlock(token: string, email: string, consent = false): Pro
     return { ok: false, kind: 'network', message: 'Something went wrong. Please try again.' };
   }
   const body = await res.json().catch(() => null);
+  const mode = body && typeof body.mode === 'string' ? (body.mode as UnlockSuccess['mode']) : undefined;
   const loginUrl = body && typeof body.loginUrl === 'string' ? body.loginUrl : undefined;
-  return { ok: true, loginUrl };
+  const portalLoginUrl = body && typeof body.portalLoginUrl === 'string' ? body.portalLoginUrl : undefined;
+  return { ok: true, mode, loginUrl, portalLoginUrl };
 }
