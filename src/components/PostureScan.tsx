@@ -202,7 +202,7 @@ export const PostureScan: React.FC<PostureScanProps> = ({ variant = 'section', o
             className="flex flex-col items-center text-center gap-4 py-2"
           >
             <div className="w-14 h-14 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center">
-              <span aria-hidden="true" className="material-symbols-outlined text-primary text-[28px]">account_circle</span>
+              <span aria-hidden="true" className="material-symbols-outlined text-primary text-[28px]">badge</span>
             </div>
             <h3 className="font-headline text-2xl font-bold">You already have an account</h3>
             <p className="text-on-surface-variant text-sm max-w-sm">Sign in to your security platform to scan new domains and see the full findings there.</p>
