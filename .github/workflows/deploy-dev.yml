@@ -44,6 +44,9 @@ jobs:
         env:
           VITE_WEB3FORMS_KEY: ${{ secrets.VITE_WEB3FORMS_KEY }}
           VITE_CHATBOT_API_URL: https://rcs-chatbot.rosebudcloudsolutions.workers.dev
+          # Dev-site sign-in goes to the DEV platform. Unset (the prod build)
+          # falls back to the live portal, so only dev builds ever divert.
+          VITE_PORTAL_URL: https://ca-rcs-journey-dev.bluestone-629b4555.uksouth.azurecontainerapps.io
 
       - name: Validate build output
         run: |
