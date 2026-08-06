@@ -10,8 +10,10 @@ name: Promote to Production (Azure Static Web App)
 # Authorisation to touch the prod resource comes from the service principal's
 # role in the resource group, not from the environment name.
 #
-# This workflow does NOT touch the live www binding. www stays on the dev app
-# until the deliberate cutover (see docs/deploy-pipeline.md).
+# www is now bound to this prod app (cutover done 2026-07-02). After deploying,
+# the workflow verifies the www custom-domain binding is Ready and the live site
+# returns 200, so a broken binding or dead origin fails the run loudly instead of
+# silently leaving the site down (see docs/deploy-pipeline.md).
 
 on:
   workflow_dispatch:
@@ -32,6 +34,7 @@ env:
   SWA_NAME: swa-uks-web-prod-001
   SWA_LOCATION: westeurope
   SWA_SKU: Free
+  PROD_HOSTNAME: www.rosebudcloudsolutions.co.uk
 
 jobs:
   # Approval gate. Does no work; its only job is to hold the run until an
@@ -149,6 +152,48 @@ jobs:
           echo "$resp"
           echo "$resp" | grep -q '"success":true' || { echo "Cloudflare purge failed"; exit 1; }
           echo "Cloudflare cache purged."
+
+      # Hard gate: a promotion is only "done" if www actually serves. The
+      # 2026-07-02 outage was a Failed custom-domain binding (no TLS cert) that
+      # produced a Cloudflare 526 while the deploy itself reported success. This
+      # step catches that class of failure instead of shipping a dead site.
+      - name: Verify prod custom domain and live site
+        run: |
+          HOST="${{ env.PROD_HOSTNAME }}"
+
+          echo "Checking custom-domain binding status for $HOST ..."
+          status=""
+          for i in $(seq 1 5); do
+            status=$(az staticwebapp hostname list \
+              --name "${{ env.SWA_NAME }}" \
+              --resource-group "${{ env.RESOURCE_GROUP }}" \
+              --query "[?domainName=='$HOST'].status | [0]" --output tsv 2>/dev/null)
+            echo "  attempt $i: status=${status:-<none>}"
+            [ "$status" = "Ready" ] && break
+            sleep 15
+          done
+          if [ "$status" != "Ready" ]; then
+            echo "FAIL: custom domain $HOST is not Ready (status=${status:-missing})."
+            echo "      A Failed/Adding binding means no valid origin TLS cert, so the"
+            echo "      live site will return a Cloudflare 526. Re-add the binding with"
+            echo "      --validation-method dns-txt-token (see docs/deploy-pipeline.md)."
+            exit 1
+          fi
+          echo "PASS: $HOST binding is Ready."
+
+          echo "Checking https://$HOST returns 200 ..."
+          code=""
+          for i in $(seq 1 6); do
+            code=$(curl -s -o /dev/null -w "%{http_code}" -m 15 "https://$HOST")
+            echo "  attempt $i: http=$code"
+            [ "$code" = "200" ] && break
+            sleep 15
+          done
+          if [ "$code" != "200" ]; then
+            echo "FAIL: https://$HOST returned $code (expected 200)."
+            exit 1
+          fi
+          echo "PASS: https://$HOST is live (200). Promotion verified."
 
       - name: Azure logout
         if: always()

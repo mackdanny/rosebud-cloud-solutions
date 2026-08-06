@@ -4,6 +4,18 @@
 > `swa-uks-web-prod-001` and the dev/promote pipeline below is in effect. The
 > Phase 2 cutover described near the end has already been performed.
 
+> **⚠️ Binding gotcha (caused a live 526 outage on 2026-07-02).** `www` is
+> proxied through Cloudflare (orange cloud). Azure's **default** custom-domain
+> validation (CNAME delegation) cannot validate through the proxy, so the bind
+> silently lands in `Failed` with no TLS cert and Cloudflare returns 526.
+> Binding `www` **must** use TXT-token validation:
+> `az staticwebapp hostname set ... --hostname www.rosebudcloudsolutions.co.uk --validation-method dns-txt-token`,
+> then publish the returned token as a `TXT` record at `_dnsauth.www` in
+> Cloudflare and wait for status `Ready`. **Leave the `_dnsauth.www` record in
+> place permanently** — Azure re-checks it to auto-renew the cert, so deleting it
+> re-breaks `www` in ~90 days. The promote workflow now hard-fails if the binding
+> is not `Ready` and the live site is not 200.
+
 ## Why this exists
 
 Until now `dev` and the live site were the **same Azure Static Web App**
@@ -66,8 +78,11 @@ When you're happy prod is serving correctly, move the live domain:
 
 1. In Cloudflare, repoint `www` (CNAME) from the dev app hostname to the prod
    app hostname (`swa-uks-web-prod-001`'s `*.azurestaticapps.net`).
-2. Bind `www` on the prod app:
-   `az staticwebapp hostname set -n swa-uks-web-prod-001 -g rg-uks-web-001 --hostname www.rosebudcloudsolutions.co.uk`
+2. Bind `www` on the prod app **using TXT-token validation** (the default CNAME
+   method fails behind Cloudflare's proxy — see the binding gotcha at the top):
+   `az staticwebapp hostname set -n swa-uks-web-prod-001 -g rg-uks-web-001 --hostname www.rosebudcloudsolutions.co.uk --validation-method dns-txt-token`
+   then add the returned token as a `TXT` record at `_dnsauth.www` in Cloudflare
+   and wait for status `Ready` (keep that record permanently).
 3. Unbind `www` from the dev app:
    `az staticwebapp hostname delete -n swa-uks-web-dev-001 -g rg-uks-web-001 --hostname www.rosebudcloudsolutions.co.uk`
 4. In `deploy-dev.yml`, remove `www.rosebudcloudsolutions.co.uk` from the
