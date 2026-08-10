@@ -16,6 +16,44 @@ function bandColor(score: number): string {
   return '#d05a5a'; // soft red
 }
 
+/** Section ids as the engine emits them, in the words a visitor uses. */
+const SECTION_LABELS: Record<string, string> = {
+  email: 'email',
+  web_tls: 'web and TLS',
+  external: 'external exposure',
+  identity: 'identity and brand',
+  exposure: 'credential exposure',
+  attack_surface: 'attack surface',
+  supply_chain: 'supply chain',
+};
+
+function listify(items: string[]): string {
+  if (items.length <= 1) return items[0] ?? '';
+  return `${items.slice(0, -1).join(', ')} and ${items[items.length - 1]}`;
+}
+
+/**
+ * What the score was computed over, in one line.
+ *
+ * A check that could not be completed carries no penalty, and a section nothing
+ * could be established for leaves the composite entirely, so the scan that
+ * reached least can show the friendliest number. Saying so costs the visitor
+ * nothing and is the difference between a number and an impression.
+ *
+ * Returns null when the API did not send coverage (an older deployment of it, or
+ * this site shipping first), so the teaser silently keeps its previous shape
+ * rather than claiming a coverage it does not know.
+ */
+function coverageNote(assessed?: number, total?: number, unassessed?: string[]): string | null {
+  if (typeof assessed !== 'number' || typeof total !== 'number' || total <= 0) return null;
+  if (assessed >= total) return `Based on all ${total} checks we run.`;
+  const missed = (unassessed ?? []).map((s) => SECTION_LABELS[s]).filter(Boolean);
+  const tail = missed.length
+    ? ` The ${listify(missed)} checks could not be completed for this domain.`
+    : '';
+  return `Based on ${assessed} of ${total} checks.${tail}`;
+}
+
 const ScoreRing: React.FC<{ score: number }> = ({ score }) => {
   const col = bandColor(score);
   const r = 54;
@@ -112,6 +150,13 @@ export const PostureScan: React.FC<PostureScanProps> = ({ variant = 'section', o
                 ? 'No material issues found. Unlock the full breakdown to confirm.'
                 : `${result.issueCount} ${result.issueCount === 1 ? 'opportunity' : 'opportunities'} to improve across your email, web, DNS and exposure surface.`}
             </p>
+
+            {(() => {
+              const note = coverageNote(result.assessedChecks, result.totalChecks, result.unassessedSections);
+              return note
+                ? <p className="text-xs text-on-surface-variant/60 font-label max-w-sm">{note}</p>
+                : null;
+            })()}
 
             <p className="text-xs text-on-surface-variant/60 font-label">Enter your email and we&apos;ll take you straight to your free dashboard to view the full findings.</p>
 

@@ -6,6 +6,22 @@ export interface ScanSuccess {
   score: number;
   grade: string;
   issueCount: number;
+  /**
+   * What the score was actually computed over.
+   *
+   * A check the scanner could not complete carries no penalty, and a section it
+   * could not establish anything for leaves the composite altogether, so the
+   * thinnest scan can show the friendliest number. The API publishes coverage
+   * alongside the score so the teaser can say so rather than implying a whole
+   * assessment.
+   *
+   * Optional on purpose: this site deploys independently of the Posture API, so
+   * a build that lands first must degrade to the old teaser rather than render
+   * "based on 0 of 0 checks".
+   */
+  assessedChecks?: number;
+  totalChecks?: number;
+  unassessedSections?: string[];
 }
 export interface ScanFailure {
   ok: false;
@@ -88,6 +104,13 @@ export async function runScan(domain: string): Promise<ScanResult> {
     score: Number(body.score) || 0,
     grade: String(body.grade ?? ''),
     issueCount: Number(body.issueCount) || 0,
+    // Left undefined when the API has not been told about them yet, so the
+    // teaser omits the line entirely rather than inventing a coverage claim.
+    assessedChecks: typeof body.assessedChecks === 'number' ? body.assessedChecks : undefined,
+    totalChecks: typeof body.totalChecks === 'number' ? body.totalChecks : undefined,
+    unassessedSections: Array.isArray(body.unassessedSections)
+      ? body.unassessedSections.filter((s: unknown): s is string => typeof s === 'string')
+      : undefined,
   };
 }
 
