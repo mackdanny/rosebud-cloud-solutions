@@ -18,3 +18,12 @@ export function trialUrl(plan: ManagedPlan, domain?: string, interval: 'month' |
 
 /** Sign-in lands on the portal login page. */
 export const SIGNIN_URL = `${PORTAL_URL}/portal/login`;
+
+/**
+ * Build-time switch for the DMARC pricing cards: false (default) keeps the
+ * concierge /contact route; true points them at portal self-serve signup via
+ * trialUrl(). Set VITE_DMARC_SELF_SERVE=true only on the site deploy that
+ * accompanies SELF_SERVE_ENABLED/BILLING_ENABLED going live in the portal
+ * (DEPLOY.md → "GoCardless billing" pre-flip checklist).
+ */
+export const DMARC_SELF_SERVE = import.meta.env.VITE_DMARC_SELF_SERVE === 'true';

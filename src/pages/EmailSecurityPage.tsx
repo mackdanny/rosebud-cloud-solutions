@@ -7,7 +7,7 @@ import { Faq } from '../components/Faq';
 import { pageMeta, serviceSchema, breadcrumbSchema, faqSchema } from '../data/seoMeta';
 import { faqs } from '../data/faqs';
 import { TiltCard } from '../components/TiltCard';
-import { type ManagedPlan } from '../config/portal';
+import { type ManagedPlan, DMARC_SELF_SERVE, trialUrl } from '../config/portal';
 
 // ─── Animation ────────────────────────────────────────────────────────────────
 
@@ -352,15 +352,27 @@ export const EmailSecurityPage: React.FC<EmailSecurityPageProps> = ({ className 
                         </li>
                       ))}
                     </ul>
-                    <Link to="/contact?service=email-security" className="no-underline mt-auto">
-                      <button
-                        className={`w-full font-headline font-bold px-5 py-3 rounded-lg text-sm transition-all ${
-                          pkg.featured ? 'btn-animated text-white' : 'border border-outline/60 text-on-surface hover:border-primary/40'
-                        }`}
-                      >
-                        Talk to us to get started
-                      </button>
-                    </Link>
+                    {DMARC_SELF_SERVE ? (
+                      <a href={trialUrl(pkg.id, undefined, annual ? 'year' : 'month')} className="no-underline mt-auto">
+                        <button
+                          className={`w-full font-headline font-bold px-5 py-3 rounded-lg text-sm transition-all ${
+                            pkg.featured ? 'btn-animated text-white' : 'border border-outline/60 text-on-surface hover:border-primary/40'
+                          }`}
+                        >
+                          Start your 14-day free trial
+                        </button>
+                      </a>
+                    ) : (
+                      <Link to="/contact?service=email-security" className="no-underline mt-auto">
+                        <button
+                          className={`w-full font-headline font-bold px-5 py-3 rounded-lg text-sm transition-all ${
+                            pkg.featured ? 'btn-animated text-white' : 'border border-outline/60 text-on-surface hover:border-primary/40'
+                          }`}
+                        >
+                          Talk to us to get started
+                        </button>
+                      </Link>
+                    )}
                   </TiltCard>
                 </motion.div>
               );
