@@ -29,7 +29,7 @@ export const pageMeta = {
   partners: {
     title: 'DMARC Partner Programme for MSPs | White-Label Email Security',
     description:
-      'Resell managed DMARC under your own brand. £10 per domain per month wholesale, minimum 5 domains, parked domains free, UK engineers behind your team.',
+      'Resell managed DMARC under your own brand. Flat per-domain wholesale from 5 domains, parked domains free, no volume metering, UK engineers behind your team.',
     path: '/partners',
   },
   azureLandingZones: {

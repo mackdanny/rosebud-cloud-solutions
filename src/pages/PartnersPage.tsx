@@ -31,16 +31,16 @@ const ScrollReveal: React.FC<{ children: React.ReactNode; className?: string; de
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
 const rateLines: { icon: string; text: string }[] = [
-  { icon: 'group', text: 'Minimum 5 domains, so a partnership starts at £50/month' },
+  { icon: 'group', text: 'Minimum 5 domains to start, nothing more' },
   { icon: 'inventory_2', text: 'Parked and inactive domains free, unlimited' },
   { icon: 'all_inclusive', text: 'No email volume metering, ever' },
   { icon: 'event_repeat', text: 'Month to month, cancel anytime' },
 ];
 
 const volumeBreaks: { band: string; price: string }[] = [
-  { band: '5-49 domains', price: '£10 /domain/mo' },
-  { band: '50-199 domains', price: '£8 /domain/mo' },
-  { band: '200+ domains', price: 'Talk to us' },
+  { band: '5-49 domains', price: 'Standard rate' },
+  { band: '50-199 domains', price: 'Volume rate' },
+  { band: '200+ domains', price: 'Custom' },
 ];
 
 const whatYouGet: { icon: string; title: string; body: string }[] = [
@@ -167,8 +167,8 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ className = '' }) =>
               transition={{ duration: 0.7, delay: 0.62 }}
             >
               For MSPs, IT providers and agencies. White-label our DMARC platform, resell it at your
-              price, and keep our UK engineers behind your team. The wholesale rate card is published
-              right here.
+              price, and keep our UK engineers behind your team. Flat per-domain wholesale, and the
+              full rate card on the first call.
             </motion.p>
 
             <motion.div
@@ -187,7 +187,7 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ className = '' }) =>
                 </motion.button>
               </Link>
               <a href="#rates" className="text-sm text-on-surface-variant hover:text-primary underline-offset-4 hover:underline transition-colors">
-                Or see the rate card first →
+                Or see how partner pricing works first →
               </a>
             </motion.div>
           </div>
@@ -212,14 +212,15 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ className = '' }) =>
         <div className="max-w-[1280px] mx-auto">
           <ScrollReveal className="mb-12">
             <span className="text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label block mb-4">
-              Wholesale rate card
+              Partner pricing
             </span>
             <h2 className="font-headline text-4xl md:text-5xl font-bold tracking-tight max-w-2xl">
-              One number, published
+              Simple wholesale, no games
             </h2>
             <p className="text-on-surface-variant max-w-xl mt-4">
-              The big DMARC vendors run partner programmes with pricing on application and 10-domain
-              minimums. Ours is public, starts at 5, and comes with UK engineers you can actually ring.
+              The big DMARC vendors put partners through qualification mazes, 10-domain minimums and
+              opaque commitments. Ours is one flat per-domain rate, quoted in full on the first call,
+              with the structure public below and UK engineers you can actually ring.
             </p>
             <div className="h-px w-24 bg-gradient-to-r from-primary to-transparent mt-6" />
           </ScrollReveal>
@@ -231,10 +232,13 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ className = '' }) =>
                 <span className="self-start mb-4 text-[10px] uppercase tracking-[0.15em] font-bold text-white bg-gradient-to-r from-primary to-fuchsia-500 px-2.5 py-1 rounded-full">
                   Every active domain
                 </span>
-                <div className="flex items-end gap-2 mb-6">
-                  <span className="font-headline text-6xl font-extrabold tracking-tight">£10</span>
-                  <span className="text-on-surface-variant text-lg mb-2">/domain /month</span>
+                <div className="flex items-end gap-2 mb-2">
+                  <span className="font-headline text-4xl md:text-5xl font-extrabold tracking-tight">Flat per-domain wholesale</span>
                 </div>
+                <p className="text-on-surface-variant text-sm mb-6">
+                  One rate per active domain per month. We quote it in full on the first call, no
+                  qualification maze first.
+                </p>
                 <ul className="space-y-3.5 flex-1">
                   {rateLines.map((line) => (
                     <li key={line.text} className="flex items-start gap-3 text-sm text-on-surface">
@@ -247,7 +251,8 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({ className = '' }) =>
                 </ul>
                 <p className="text-on-surface-variant text-sm mt-6 pt-6 border-t border-outline/40">
                   UK MSPs typically charge £75 to £200 per domain per month for managed DMARC.
-                  The platform underneath costs you £10. The rest is yours.
+                  The platform underneath is a fraction of that. You set the retail price, and the
+                  margin is yours.
                 </p>
               </div>
             </ScrollReveal>

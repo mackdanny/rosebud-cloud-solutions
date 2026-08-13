@@ -176,13 +176,13 @@ URL: https://www.rosebudcloudsolutions.co.uk/partners
 
 White-label managed DMARC for MSPs, IT providers and agencies: partners resell the RCS DMARC platform under their own brand at their own retail price, with RCS engineers available in escalation.
 
-The wholesale rate card is published: £10 per active domain per month, minimum 5 domains (so a partnership starts at £50/month), parked and inactive domains free without limit, no email volume metering, month-to-month terms. Volume pricing: £8 per domain per month from 50 domains, custom pricing from 200 domains. UK MSPs typically charge £75 to £200 per domain per month for managed DMARC, so partner margin is substantial.
+Partner pricing is a flat per-domain monthly wholesale rate, quoted in full on the first call: minimum 5 domains, parked and inactive domains free without limit, no email volume metering, month-to-month terms, volume rates from 50 domains and custom pricing from 200. UK MSPs typically charge £75 to £200 per domain per month for managed DMARC, so partner margin is substantial.
 
 Partners get white-label board-ready PDF reporting carrying their own logo and colours, a single console covering every client domain, a partner API for provisioning and status, and direct access to the RCS engineering team. Founding partners receive locked pricing.
 
 Common questions on this service:
 - How does white-label DMARC reselling work?
-- What does the £10 per domain wholesale price include?
+- What does the per-domain wholesale price include?
 - Can my customers see RCS branding?
 - Is there a minimum commitment?
 
