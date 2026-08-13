@@ -151,6 +151,43 @@ Common questions on this service:
 
 ---
 
+### Managed Email Security & DMARC
+URL: https://www.rosebudcloudsolutions.co.uk/services/email-security
+
+Done-for-you DMARC: RCS takes a domain all the way to enforced DMARC (p=reject) and keeps it there, without the customer having to learn DMARC or risk breaking legitimate email. Covers DMARC, SPF, DKIM, MTA-STS, TLS-RPT and BIMI, with hosted DMARC so the customer never edits DNS again.
+
+Pricing is flat per tier in GBP with no email volume metering: Monitor at £39/month (self-serve visibility, 1 domain), Managed at £99/month (done-for-you enforcement, 1 domain, most popular), Scale at £149/month (up to 5 domains, dedicated specialist and SLA), and Enterprise at custom pricing (unlimited domains and group structures, named engineer, custom SLA, white-label board-ready reporting, partner API). Annual billing gives 2 months free.
+
+The 90-day enforcement guarantee (Managed, Scale and Enterprise): if RCS has not walked the domain to enforced DMARC within 90 days of onboarding, for reasons within its control, the subscription is free from day 91 until it has.
+
+Context: since 2024 Google and Yahoo, joined by Microsoft in May 2025, reject or junk mail from bulk senders that fail email authentication. NCSC retired its free Mail Check service on 31 March 2026 and recommends commercial replacements.
+
+Common questions on this service:
+- What is DMARC and why does my organisation need it?
+- Will tightening DMARC break my legitimate email?
+- How long does it take to reach p=reject?
+- What does the 90-day guarantee cover?
+- Do you meter email volume?
+
+---
+
+### DMARC Partner Programme (MSPs and IT providers)
+URL: https://www.rosebudcloudsolutions.co.uk/partners
+
+White-label managed DMARC for MSPs, IT providers and agencies: partners resell the RCS DMARC platform under their own brand at their own retail price, with RCS engineers available in escalation.
+
+The wholesale rate card is published: £10 per active domain per month, minimum 5 domains (so a partnership starts at £50/month), parked and inactive domains free without limit, no email volume metering, month-to-month terms. Volume pricing: £8 per domain per month from 50 domains, custom pricing from 200 domains. UK MSPs typically charge £75 to £200 per domain per month for managed DMARC, so partner margin is substantial.
+
+Partners get white-label board-ready PDF reporting carrying their own logo and colours, a single console covering every client domain, a partner API for provisioning and status, and direct access to the RCS engineering team. Founding partners receive locked pricing.
+
+Common questions on this service:
+- How does white-label DMARC reselling work?
+- What does the £10 per domain wholesale price include?
+- Can my customers see RCS branding?
+- Is there a minimum commitment?
+
+---
+
 ## How We Work
 
 URL: https://www.rosebudcloudsolutions.co.uk/how-we-work

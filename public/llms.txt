@@ -16,6 +16,8 @@ Rosebud Cloud Solutions (RCS) is a UK-based Microsoft-certified consultancy spec
 - [Cloud Optimisation](https://www.rosebudcloudsolutions.co.uk/services/cloud-optimisation): Azure cost reduction through architectural review, FinOps discipline, and automated optimisation.
 - [Advisory & Consulting](https://www.rosebudcloudsolutions.co.uk/services/advisory-consulting): Strategic Azure advisory for cloud adoption, platform architecture, and modernisation.
 - [Managed Cloud](https://www.rosebudcloudsolutions.co.uk/services/managed-cloud): Ongoing management, monitoring, and improvement of Azure platforms with enterprise-grade SLAs.
+- [Managed Email Security & DMARC](https://www.rosebudcloudsolutions.co.uk/services/email-security): Done-for-you DMARC, SPF, DKIM and BIMI with a 90-day enforcement guarantee. Transparent flat GBP pricing (Monitor £39/mo, Managed £99/mo, Scale £149/mo, Enterprise custom) with no email volume metering.
+- [DMARC Partner Programme](https://www.rosebudcloudsolutions.co.uk/partners): White-label managed DMARC for MSPs, IT providers and agencies. Published wholesale rate card: £10 per domain per month, minimum 5 domains, parked domains free, volume pricing from 50 domains. Partners resell under their own brand with RCS engineers in escalation.
 
 ## Research
 

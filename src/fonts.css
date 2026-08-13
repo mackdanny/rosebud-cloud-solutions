@@ -1,7 +1,12 @@
-/* Material Symbols Outlined – self-hosted + subset to the ~46 icons actually
-   used (1.1MB -> 13KB). font-display:block hides icons during the brief load
-   instead of flashing the ligature text (e.g. the word "chat_bubble"), which
-   was causing a large page-wide layout shift (CLS). */
+/* Material Symbols Outlined – self-hosted subset of exactly the icon names used
+   in src. A ligature NOT in the subset renders as raw text (e.g. the word
+   "palette"), so regenerate whenever a new icon name is introduced: collect all
+   names from `icon: '...'` fields and material-symbols-outlined spans, request
+   fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=<sorted,csv>
+   with a Chrome user agent, and download the woff2 it references over
+   src/assets/material-symbols-subset.woff2. font-display:block hides icons
+   during the brief load instead of flashing the ligature text, which was
+   causing a large page-wide layout shift (CLS). */
 @font-face {
   font-family: 'Material Symbols Outlined';
   font-style: normal;

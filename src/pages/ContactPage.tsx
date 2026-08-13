@@ -33,6 +33,8 @@ const serviceLabels: Record<string, string> = {
   'cloud-optimisation': 'Cloud Optimisation',
   'advisory': 'Advisory & Consulting',
   'managed-cloud': 'Managed Cloud Support',
+  'email-security': 'Managed Email Security & DMARC',
+  'partner-programme': 'DMARC Partner Programme (MSPs & IT providers)',
   'strategic-triage': 'Strategic Triage Engine',
 };
 
@@ -333,6 +335,8 @@ export const ContactPage: React.FC = () => {
                           <option value="cloud-optimisation">Cloud Optimisation</option>
                           <option value="advisory">Advisory & Consulting</option>
                           <option value="managed-cloud">Managed Cloud Support</option>
+                          <option value="email-security">Managed Email Security &amp; DMARC</option>
+                          <option value="partner-programme">DMARC Partner Programme (MSPs &amp; IT providers)</option>
                           {STRATEGIC_TRIAGE_ENABLED && (
                             <option value="strategic-triage">Strategic Triage Engine</option>
                           )}

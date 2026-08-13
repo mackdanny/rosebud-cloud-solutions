@@ -26,6 +26,12 @@ export const pageMeta = {
       'Done-for-you DMARC, SPF, DKIM and BIMI. We get your domain to full enforcement (now required by Google, Yahoo & Microsoft) without breaking your mail, then keep it protected.',
     path: '/services/email-security',
   },
+  partners: {
+    title: 'DMARC Partner Programme for MSPs | White-Label Email Security',
+    description:
+      'Resell managed DMARC under your own brand. £10 per domain per month wholesale, minimum 5 domains, parked domains free, UK engineers behind your team.',
+    path: '/partners',
+  },
   azureLandingZones: {
     title: 'Azure Landing Zone Consultancy UK',
     description:

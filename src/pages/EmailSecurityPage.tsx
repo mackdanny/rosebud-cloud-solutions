@@ -75,11 +75,11 @@ const packages: PricedPkg[] = [
   },
 ];
 
-const tiers = ['Monitor', 'Managed', 'Scale'];
+const tiers = ['Monitor', 'Managed', 'Scale', 'Enterprise'];
 
 interface FeatureGroup {
   group: string;
-  rows: { label: string; marks: [boolean, boolean, boolean] }[];
+  rows: { label: string; marks: [boolean, boolean, boolean, boolean] }[];
 }
 
 const T = true;
@@ -89,48 +89,52 @@ const featureGroups: FeatureGroup[] = [
   {
     group: 'Visibility & analysis',
     rows: [
-      { label: 'Security score (0-100) with section breakdown', marks: [T, T, T] },
-      { label: 'Spoofability check (can someone send as you?)', marks: [T, T, T] },
-      { label: 'DMARC aggregate report ingestion & analysis', marks: [T, T, T] },
-      { label: 'Sender identification & classification', marks: [T, T, T] },
-      { label: 'Lookalike / typo-squat domain detection', marks: [T, T, T] },
+      { label: 'Security score (0-100) with section breakdown', marks: [T, T, T, T] },
+      { label: 'Spoofability check (can someone send as you?)', marks: [T, T, T, T] },
+      { label: 'DMARC aggregate report ingestion & analysis', marks: [T, T, T, T] },
+      { label: 'Sender identification & classification', marks: [T, T, T, T] },
+      { label: 'Lookalike / typo-squat domain detection', marks: [T, T, T, T] },
     ],
   },
   {
     group: 'Reporting & monitoring',
     rows: [
-      { label: 'Live status portal', marks: [T, T, T] },
-      { label: 'Monthly PDF reports', marks: [T, T, T] },
-      { label: 'Continuous monitoring & drift detection', marks: [T, T, T] },
-      { label: 'A record of every change we make, available on request', marks: [T, T, T] },
+      { label: 'Live status portal', marks: [T, T, T, T] },
+      { label: 'Monthly PDF reports', marks: [T, T, T, T] },
+      { label: 'Continuous monitoring & drift detection', marks: [T, T, T, T] },
+      { label: 'A record of every change we make, available on request', marks: [T, T, T, T] },
+      { label: 'White-label, board-ready reporting (your brand)', marks: [F, F, F, T] },
     ],
   },
   {
     group: 'Getting protected (done-for-you)',
     rows: [
-      { label: 'We walk you to full enforcement (p=reject)', marks: [F, T, T] },
-      { label: 'Enforcement safety gates (no broken mail)', marks: [F, T, T] },
-      { label: 'Hosted DMARC, so you never edit DNS again', marks: [F, T, T] },
-      { label: 'Done-for-you SPF & DKIM guidance', marks: [F, T, T] },
-      { label: 'MTA-STS & TLS reporting (TLS-RPT)', marks: [F, T, T] },
-      { label: 'Enforcement guarantee (90 days)', marks: [F, T, T] },
-      { label: 'BIMI (your verified logo in inboxes)', marks: [F, F, T] },
+      { label: 'We walk you to full enforcement (p=reject)', marks: [F, T, T, T] },
+      { label: 'Enforcement safety gates (no broken mail)', marks: [F, T, T, T] },
+      { label: 'Hosted DMARC, so you never edit DNS again', marks: [F, T, T, T] },
+      { label: 'Done-for-you SPF & DKIM guidance', marks: [F, T, T, T] },
+      { label: 'MTA-STS & TLS reporting (TLS-RPT)', marks: [F, T, T, T] },
+      { label: 'Enforcement guarantee (90 days)', marks: [F, T, T, T] },
+      { label: 'BIMI (your verified logo in inboxes)', marks: [F, F, T, T] },
     ],
   },
   {
     group: 'Management & access',
     rows: [
-      { label: 'Multiple domains (up to 5)', marks: [F, F, T] },
-      { label: 'Unlimited portal users', marks: [F, F, T] },
-      { label: 'Passwordless sign-in (magic link)', marks: [T, T, T] },
+      { label: 'Multiple domains (up to 5)', marks: [F, F, T, T] },
+      { label: 'Unlimited domains & group structures', marks: [F, F, F, T] },
+      { label: 'Unlimited portal users', marks: [F, F, T, T] },
+      { label: 'Passwordless sign-in (magic link)', marks: [T, T, T, T] },
     ],
   },
   {
     group: 'Service & support',
     rows: [
-      { label: 'Priority human support', marks: [F, T, T] },
-      { label: 'Ongoing managed service & guidance', marks: [F, T, T] },
-      { label: 'Dedicated specialist + SLA', marks: [F, F, T] },
+      { label: 'Priority human support', marks: [F, T, T, T] },
+      { label: 'Ongoing managed service & guidance', marks: [F, T, T, T] },
+      { label: 'Dedicated specialist + SLA', marks: [F, F, T, T] },
+      { label: 'Named engineer, custom SLA & tailored onboarding', marks: [F, F, F, T] },
+      { label: 'Partner API & integrations', marks: [F, F, F, T] },
     ],
   },
 ];
@@ -348,7 +352,7 @@ export const EmailSecurityPage: React.FC<EmailSecurityPageProps> = ({ className 
                         </li>
                       ))}
                     </ul>
-                    <Link to="/contact" className="no-underline mt-auto">
+                    <Link to="/contact?service=email-security" className="no-underline mt-auto">
                       <button
                         className={`w-full font-headline font-bold px-5 py-3 rounded-lg text-sm transition-all ${
                           pkg.featured ? 'btn-animated text-white' : 'border border-outline/60 text-on-surface hover:border-primary/40'
@@ -363,9 +367,62 @@ export const EmailSecurityPage: React.FC<EmailSecurityPageProps> = ({ className 
             })}
           </div>
 
+          {/* Enterprise: the final rung. POA; also the front door to the partner programme. */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-60px' }}
+            variants={fadeUp}
+            transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] }}
+            className="max-w-[1100px] mx-auto mt-6"
+          >
+            <div className="relative overflow-hidden rounded-2xl border border-outline/60 bg-background p-8 md:p-10 hover:border-primary/30 transition-all">
+              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
+              <div className="flex flex-col lg:flex-row lg:items-center gap-8">
+                <div className="flex-1">
+                  <h3 className="font-headline text-xl font-bold mb-1">Enterprise</h3>
+                  <p className="text-on-surface-variant text-sm mb-5 max-w-xl">
+                    Group structures, estates beyond five domains, and organisations that want our platform under their own brand.
+                  </p>
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2.5">
+                    {[
+                      'Everything in Scale',
+                      'Unlimited domains & group structures',
+                      'Named engineer, custom SLA & tailored onboarding',
+                      'White-label, board-ready reporting',
+                      'Partner API & integrations',
+                      'Annual invoicing available',
+                    ].map((f) => (
+                      <li key={f} className="flex items-start gap-2 text-sm text-on-surface">
+                        <span aria-hidden="true" className="material-symbols-outlined text-primary shrink-0" style={{ fontSize: '1.05rem' }}>
+                          check
+                        </span>
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="flex flex-col items-start lg:items-end gap-3 shrink-0">
+                  <span className="font-headline text-3xl font-extrabold tracking-tight">Custom</span>
+                  <span className="text-[11px] uppercase tracking-[0.15em] text-on-surface-variant/70 font-bold font-label">
+                    Unlimited domains · unlimited users
+                  </span>
+                  <Link to="/contact?service=email-security&tier=enterprise" className="no-underline">
+                    <button className="btn-animated text-white font-headline font-bold px-8 py-3 rounded-lg text-sm">
+                      Talk to us
+                    </button>
+                  </Link>
+                  <Link to="/partners" className="text-sm text-primary underline-offset-4 hover:underline">
+                    MSP or IT provider? See the partner programme →
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
           <ScrollReveal className="mt-10 text-center">
             <p className="text-on-surface-variant text-sm max-w-[820px] mx-auto">
-              <strong className="text-on-surface">The 90-day enforcement guarantee</strong> (Managed and Scale): if we have not
+              <strong className="text-on-surface">The 90-day enforcement guarantee</strong> (Managed, Scale and Enterprise): if we have not
               walked your domain to enforced DMARC (p=reject) within 90 days of onboarding, for reasons within our control,
               your subscription is free from day 91 until we have. No small print beyond this sentence.
             </p>
@@ -487,7 +544,7 @@ export const EmailSecurityPage: React.FC<EmailSecurityPageProps> = ({ className 
                   {featureGroups.map((grp) => (
                     <Fragment key={grp.group}>
                       <tr className="bg-surface-container">
-                        <td colSpan={4} className="px-4 py-2.5 text-[11px] uppercase tracking-[0.12em] font-bold text-primary font-label">
+                        <td colSpan={5} className="px-4 py-2.5 text-[11px] uppercase tracking-[0.12em] font-bold text-primary font-label">
                           {grp.group}
                         </td>
                       </tr>
