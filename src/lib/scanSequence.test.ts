@@ -27,7 +27,7 @@ describe('createScanSequence', () => {
     const states: SeqState[] = [];
     const seq = createScanSequence((s) => states.push(s));
     seq.start();
-    expect(states.at(-1)).toMatchObject({ active: 0 });
+    expect(states.at(-1)).toMatchObject({ active: 0, doneBelow: 0 });
     vi.advanceTimersByTime(SCAN_STEPS[0].ms);
     expect(states.at(-1)).toMatchObject({ active: 1 });
     vi.advanceTimersByTime(SCAN_STEPS.slice(1).reduce((a, s) => a + s.ms, 0));
@@ -56,5 +56,20 @@ describe('createScanSequence', () => {
     const n = states.length;
     vi.advanceTimersByTime(30_000);
     expect(states.length).toBe(n);
+  });
+
+  it('cancel() during the done-cascade stops the rest of the cascade', () => {
+    const states: SeqState[] = [];
+    const done = vi.fn();
+    const seq = createScanSequence((s) => states.push(s));
+    seq.start();
+    vi.advanceTimersByTime(SCAN_STEPS[0].ms); // two rows in
+    seq.finish(done);
+    vi.advanceTimersByTime(40); // one or two cascade ticks in
+    seq.cancel();
+    const n = states.length;
+    vi.advanceTimersByTime(CASCADE_MS + 500);
+    expect(states.length).toBe(n);
+    expect(done).not.toHaveBeenCalled();
   });
 });

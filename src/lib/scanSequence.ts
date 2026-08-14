@@ -33,6 +33,10 @@ export interface SeqState {
   complete: boolean;
 }
 
+// Single use: create one instance per scan, call start() once. cancel() is
+// terminal, there is no restart. Calling finish() after cancel() is a no-op
+// that intentionally drops onDone: the scan fetch can resolve after the
+// component has already unmounted, and nothing should fire once cancelled.
 export function createScanSequence(onChange: (s: SeqState) => void): {
   start: () => void;
   finish: (onDone: () => void) => void;
@@ -41,6 +45,7 @@ export function createScanSequence(onChange: (s: SeqState) => void): {
   let idx = -1;
   let timer: ReturnType<typeof setTimeout> | null = null;
   let finished = false;
+  let started = false;
 
   const advance = () => {
     if (finished) return;
@@ -52,7 +57,13 @@ export function createScanSequence(onChange: (s: SeqState) => void): {
   };
 
   return {
-    start: advance,
+    // Not idempotent: call once. The guard just stops a second call from
+    // interleaving a duplicate timer chain.
+    start: () => {
+      if (started || finished) return;
+      started = true;
+      advance();
+    },
     finish: (onDone) => {
       if (finished) return;
       finished = true;
@@ -63,7 +74,7 @@ export function createScanSequence(onChange: (s: SeqState) => void): {
         if (idx < rows) {
           idx += 1;
           onChange({ active: -1, doneBelow: idx, complete: false });
-          setTimeout(tick, per);
+          timer = setTimeout(tick, per);
         } else {
           onChange({ active: -1, doneBelow: rows, complete: true });
           onDone();
