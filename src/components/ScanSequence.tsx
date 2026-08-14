@@ -31,28 +31,39 @@ export default function ScanSequence({ done }: { done: boolean }) {
   return (
     <div className="flex flex-col gap-1.5 text-left" data-testid="scan-sequence">
       <span className="sr-only" role="status" aria-live="polite">{announced}</span>
-      {ROWS.map((label, i) => {
-        const isDone = i < state.doneBelow || state.complete;
-        const isActive = i === state.active && !isDone;
-        return (
-          <div
-            key={label}
-            className={`flex items-center gap-2 text-sm font-label transition-opacity duration-300 motion-reduce:transition-none ${
-              isDone || isActive ? 'opacity-100' : 'opacity-40'
-            } ${isActive ? 'text-white' : 'text-on-surface-variant/80'}`}
-          >
-            <span
-              aria-hidden="true"
-              className={`material-symbols-outlined text-[16px] ${
-                isDone ? 'text-primary' : isActive ? 'animate-spin motion-reduce:animate-none' : 'opacity-50'
-              }`}
+      <ol className="flex flex-col gap-1.5 list-none m-0 p-0">
+        {ROWS.map((label, i) => {
+          const isDone = i < state.doneBelow || state.complete;
+          const isActive = i === state.active && !isDone;
+          return (
+            <li
+              key={label}
+              className={`flex items-center gap-2 text-sm font-label transition-opacity duration-300 motion-reduce:transition-none ${
+                isDone || isActive ? 'opacity-100' : 'opacity-40'
+              } ${isActive ? 'text-white' : 'text-on-surface-variant/80'}`}
             >
-              {isDone ? 'check_circle' : isActive ? 'progress_activity' : 'circle'}
-            </span>
-            {label}
-          </div>
-        );
-      })}
+              <span className="inline-flex w-4 justify-center flex-none">
+                {isDone || isActive ? (
+                  <span
+                    aria-hidden="true"
+                    className={`material-symbols-outlined text-[16px] ${
+                      isDone ? 'text-primary' : 'animate-spin motion-reduce:animate-none'
+                    }`}
+                  >
+                    {isDone ? 'check_circle' : 'progress_activity'}
+                  </span>
+                ) : (
+                  // The self-hosted Material Symbols subset does not include `circle`
+                  // (see ac3a9ba for the same class of bug), so the pending state draws
+                  // a plain CSS ring instead of a font glyph that would render as text.
+                  <span aria-hidden="true" className="w-3.5 h-3.5 mx-px rounded-full border-2 border-on-surface-variant/40 flex-none opacity-50" />
+                )}
+              </span>
+              {label}
+            </li>
+          );
+        })}
+      </ol>
     </div>
   );
 }
