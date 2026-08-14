@@ -31,7 +31,8 @@ export default function ScanSequence({ done }: { done: boolean }) {
   return (
     <div className="flex flex-col gap-1.5 text-left" data-testid="scan-sequence">
       <span className="sr-only" role="status" aria-live="polite">{announced}</span>
-      <ol className="flex flex-col gap-1.5 list-none m-0 p-0">
+      {/* role restores list semantics stripped by Safari/VoiceOver on list-style:none */}
+      <ol role="list" className="flex flex-col gap-1.5 list-none m-0 p-0">
         {ROWS.map((label, i) => {
           const isDone = i < state.doneBelow || state.complete;
           const isActive = i === state.active && !isDone;
