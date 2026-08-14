@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build && vike prerender && node scripts/check-csp-hashes.mjs",
     "lint": "eslint .",
+    "test": "vitest run",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -44,6 +45,7 @@
     "tailwindcss": "^4.2.2",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.58.0",
-    "vite": "^8.0.4"
+    "vite": "^8.0.4",
+    "vitest": "^4.1.10"
   }
 }
