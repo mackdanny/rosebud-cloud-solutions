@@ -20,10 +20,18 @@ npm run icons
 and commit the regenerated `.woff2` alongside your change. It re-downloads the
 current upstream font, scans `src/` for the icon names in use, and rebuilds the
 subset with exactly those ligatures. `npm run build` runs `npm run icons:check`
-first, which fails with the offending names if the committed font is missing any
-(that check is offline and skips itself where python/fontTools is absent, e.g. CI).
+first, which fails with the offending names if the committed font is missing any.
+The check is offline, and skips itself where python/fontTools is absent rather
+than failing a build it cannot actually perform.
 
 Requires `python3` with fontTools: `python3 -m pip install 'fonttools[woff]'`.
+
+**This is enforced in CI.** Both deploy workflows install fontTools before
+building, so a missing icon fails the run at the build step and nothing is
+deployed: the dev site keeps serving the previous build, and a production promote
+stops before the first Azure step, so prod is never touched. If PyPI is
+unreachable that install is non-fatal and the check simply skips, which is why
+running `npm run icons` locally is still the real habit rather than leaning on CI.
 
 Notes:
 
