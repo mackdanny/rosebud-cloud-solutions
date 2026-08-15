@@ -85,7 +85,7 @@ const steps: { n: string; title: string; body: string }[] = [
   {
     n: '02',
     title: 'We onboard together',
-    body: 'Your first client domains go live with our engineers alongside you, white-labelled reporting included from the start.',
+    body: 'Your first client domains go live with our engineers alongside you, with white-labelled reporting set up as part of onboarding.',
   },
   {
     n: '03',
