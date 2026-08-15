@@ -1,5 +1,39 @@
 # React + TypeScript + Vite
 
+## Icons: regenerate the subset after adding one
+
+Material Symbols is self-hosted and subset to only the icons the site uses
+(`src/assets/material-symbols-subset.woff2`, wired up in `src/fonts.css`). The
+full font is 1.1MB and used to wreck LCP/CLS; the subset is ~100KB.
+
+The catch: an icon whose name is not in the subset renders as its **literal
+ligature text**, so a new `<span className="material-symbols-outlined">circle</span>`
+prints the word "circle" on the page. That has shipped twice (`24a2eef`,
+`ac3a9ba`).
+
+So: **after adding or renaming an icon, run**
+
+```bash
+npm run icons
+```
+
+and commit the regenerated `.woff2` alongside your change. It re-downloads the
+current upstream font, scans `src/` for the icon names in use, and rebuilds the
+subset with exactly those ligatures. `npm run build` runs `npm run icons:check`
+first, which fails with the offending names if the committed font is missing any
+(that check is offline and skips itself where python/fontTools is absent, e.g. CI).
+
+Requires `python3` with fontTools: `python3 -m pip install 'fonttools[woff]'`.
+
+Notes:
+
+- Icons chosen at runtime (`<span …>{item.icon}</span>`) are picked up from
+  `icon: '…'` fields in the source. If one still renders as text, run a build
+  and then `node scripts/subset-icons.mjs --include-dist` (reads the names out
+  of the prerendered HTML), or list it in `scripts/icons.extra.txt`.
+- `node scripts/subset-icons.mjs --list` prints every name the scan found and
+  where it came from.
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:

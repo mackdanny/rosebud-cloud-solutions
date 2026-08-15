@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && vike prerender && node scripts/check-csp-hashes.mjs",
+    "build": "npm run icons:check && vite build && vike prerender && node scripts/check-csp-hashes.mjs",
+    "icons": "node scripts/subset-icons.mjs",
+    "icons:check": "node scripts/subset-icons.mjs --check",
     "lint": "eslint .",
     "preview": "vite preview"
   },
