@@ -71,11 +71,7 @@ export const onRenderHtml: OnRenderHtmlAsync = async (pageContext): ReturnType<O
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0B0F2A" />
-    <!-- Material Symbols Outlined is self-hosted via src/fonts.css -->
-    <!-- Schibsted Grotesk: display face for hero headlines (taster; subset/self-host for prod) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet" />
+    <!-- Material Symbols Outlined and Schibsted Grotesk are self-hosted via src/fonts.css -->
     ${dangerouslySkipEscape(helmetTags)}
   </head>
   <body ${dangerouslySkipEscape(bodyAttrs)}>
