@@ -67,6 +67,13 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
+      # See deploy-dev.yml: this is what makes `npm run icons:check` run for real
+      # instead of skipping. It sits before the build, and the build sits before any
+      # Azure step, so a missing icon stops the promote without touching prod.
+      - name: Install fontTools (for the icon subset check)
+        continue-on-error: true
+        run: python3 -m pip install --quiet 'fonttools[woff]' || python3 -m pip install --quiet --break-system-packages 'fonttools[woff]'
+
       - name: Install dependencies
         run: npm ci
 

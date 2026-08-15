@@ -36,6 +36,15 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
+      # Lets `npm run icons:check` (the first thing `npm run build` does) actually run
+      # here. Without fontTools the check skips itself, so an icon missing from the
+      # subset would only ever be caught on a developer's machine, and would ship as
+      # its literal ligature text. Non-fatal on purpose: if this install fails the
+      # check goes back to skipping rather than blocking a deploy on a PyPI wobble.
+      - name: Install fontTools (for the icon subset check)
+        continue-on-error: true
+        run: python3 -m pip install --quiet 'fonttools[woff]' || python3 -m pip install --quiet --break-system-packages 'fonttools[woff]'
+
       - name: Install dependencies
         run: npm ci
 
