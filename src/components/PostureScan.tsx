@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePostureScan } from '../hooks/usePostureScan';
+import ScanSequence from './ScanSequence';
 import { POSTURE_API_BASE, REPORT_CHECKOUT_URL, REPORT_PRICE_GBP } from '../config/posture';
 
 interface PostureScanProps {
@@ -80,7 +81,7 @@ const ScoreRing: React.FC<{ score: number }> = ({ score }) => {
 };
 
 export const PostureScan: React.FC<PostureScanProps> = ({ variant = 'section', onComplete }) => {
-  const { phase, result, error, portalLoginUrl, unlockMode, scan, submitEmail, reset } = usePostureScan();
+  const { phase, result, error, portalLoginUrl, unlockMode, scanResolved, scan, submitEmail, reset } = usePostureScan();
 
   useEffect(() => {
     // Only a report-mode unlock produces a report the caller can link to; a
@@ -128,9 +129,7 @@ export const PostureScan: React.FC<PostureScanProps> = ({ variant = 'section', o
                 )}
               </button>
             </div>
-            {phase === 'scanning' && (
-              <p className="text-sm text-on-surface-variant/80 font-label">Running 40+ checks across your email, web, DNS and exposure surface...</p>
-            )}
+            {phase === 'scanning' && <ScanSequence done={scanResolved} />}
             {error && phase === 'idle' && <p className="text-sm text-secondary">{error}</p>}
             <p className="text-xs text-on-surface-variant/60 font-label tracking-wide">In seconds. Nothing to install, no access to your systems.</p>
           </motion.form>

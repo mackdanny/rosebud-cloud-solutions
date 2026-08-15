@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { runScan, unlock, normaliseDomain, type ScanSuccess } from '../lib/postureApi';
+import { CASCADE_MS } from '../lib/scanSequence';
 
 export type ScanPhase = 'idle' | 'scanning' | 'teaser' | 'submitting' | 'done' | 'member';
 
@@ -12,6 +13,9 @@ export interface PostureScanState {
   /** Which "check your inbox" outcome the done phase represents: a dashboard
    *  sign-in link (verify) vs the report link the visitor opted into (report). */
   unlockMode: 'verify' | 'report' | null;
+  /** True once the scan request has resolved ok; the sequence plays its
+   *  done-cascade during the short window before phase flips to teaser. */
+  scanResolved: boolean;
   scan: (rawDomain: string) => Promise<void>;
   submitEmail: (email: string, consent?: boolean) => Promise<void>;
   reset: () => void;
@@ -23,6 +27,7 @@ export function usePostureScan(): PostureScanState {
   const [error, setError] = useState<string | null>(null);
   const [portalLoginUrl, setPortalLoginUrl] = useState<string | null>(null);
   const [unlockMode, setUnlockMode] = useState<'verify' | 'report' | null>(null);
+  const [scanResolved, setScanResolved] = useState(false);
 
   const scan = useCallback(async (rawDomain: string) => {
     const domain = normaliseDomain(rawDomain);
@@ -31,10 +36,14 @@ export function usePostureScan(): PostureScanState {
       return;
     }
     setError(null);
+    setScanResolved(false);
     setPhase('scanning');
     const res = await runScan(domain);
     if (res.ok) {
       setResult(res);
+      setScanResolved(true);
+      // Leave room for the sequence's done-cascade before the teaser replaces it.
+      await new Promise((r) => setTimeout(r, CASCADE_MS + 300));
       setPhase('teaser');
     } else {
       setError(res.message);
@@ -79,7 +88,8 @@ export function usePostureScan(): PostureScanState {
     setError(null);
     setPortalLoginUrl(null);
     setUnlockMode(null);
+    setScanResolved(false);
   }, []);
 
-  return { phase, result, error, portalLoginUrl, unlockMode, scan, submitEmail, reset };
+  return { phase, result, error, portalLoginUrl, unlockMode, scanResolved, scan, submitEmail, reset };
 }
