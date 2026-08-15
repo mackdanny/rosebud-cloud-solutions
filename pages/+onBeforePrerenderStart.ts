@@ -14,6 +14,7 @@ export function onBeforePrerenderStart() {
     '/services/advisory-consulting',
     '/services/managed-cloud',
     '/services/email-security',
+    '/partners',
     // '/tools/strategic-triage' intentionally NOT prerendered while the feature
     // flag is off — with the route disabled it would prerender the 404 page.
     // Re-add when STRATEGIC_TRIAGE_ENABLED flips back on.

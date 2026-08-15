@@ -37,6 +37,7 @@ const EmailSecurityPage = lazy(() =>
 const StrategicTriagePage = lazy(() =>
   import('./pages/StrategicTriagePage').then((m) => ({ default: m.StrategicTriagePage })),
 );
+const PartnersPage = lazy(() => import('./pages/PartnersPage').then((m) => ({ default: m.PartnersPage })));
 const AboutPage = lazy(() => import('./pages/AboutPage').then((m) => ({ default: m.AboutPage })));
 const HowWeWorkPage = lazy(() =>
   import('./pages/HowWeWorkPage').then((m) => ({ default: m.HowWeWorkPage })),
@@ -111,6 +112,7 @@ export function AppRoutes() {
           <Route path="/services/advisory-consulting" element={<AdvisoryConsultingPage />} />
           <Route path="/services/managed-cloud" element={<ManagedCloudPage />} />
           <Route path="/services/email-security" element={<EmailSecurityPage />} />
+          <Route path="/partners" element={<PartnersPage />} />
           {STRATEGIC_TRIAGE_ENABLED && (
             <Route path="/tools/strategic-triage" element={<StrategicTriagePage />} />
           )}

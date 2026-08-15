@@ -25,7 +25,7 @@ export const faqs = {
     {
       question: 'How long does it take to get fully protected?',
       answer:
-        'Most domains reach full enforcement within a few weeks, depending on how many systems send email as you. Our Hardening package is guaranteed to reach enforcement within 90 days, and Managed DMARC then keeps you there with ongoing monitoring.',
+        'Most domains reach full enforcement within a few weeks, depending on how many systems send email as you. On the Managed and Scale plans we guarantee enforcement within 90 days of onboarding: if we have not got you there, for reasons within our control, your subscription is free from day 91 until we have. Managed DMARC then keeps you at enforcement with ongoing monitoring.',
     },
     {
       question: 'Do we need any technical knowledge?',
@@ -320,12 +320,12 @@ export const faqs = {
     {
       question: 'What happens to the information I enter?',
       answer:
-        'The scan uses only publicly available DNS and web data. We keep the scan results so we can generate your report, and if you request the full report by email we store your address to send it and to follow up once. We never sell or share your details with third parties. See our [privacy policy](/privacy) for full detail.',
+        'The scan uses only publicly available DNS and web data. We keep the scan results so we can generate your report, and if you ask us to email it to you we store your address to send it and to follow up once. We never sell or share your details with third parties. See our [privacy policy](/privacy) for full detail.',
     },
     {
-      question: 'What do I get in the full report?',
+      question: 'What do I get in the emailed report?',
       answer:
-        'The instant result shows your overall score, rating, and how many issues were found. The full report, sent to your email as a private link, breaks down every finding with a severity rating, explains what each one means in plain English, and covers your email authentication, web and TLS configuration, and externally visible footprint.',
+        'The instant result shows your overall score, rating, and how many issues were found. Your emailed report, sent as a private link, breaks down every finding with a severity rating and explains in plain English what each one means, across email security, web and TLS, external exposure, attack surface, and brand. The step-by-step fix for every issue comes with the £50 full report, downloadable as a PDF.',
     },
   ],
 } as const;

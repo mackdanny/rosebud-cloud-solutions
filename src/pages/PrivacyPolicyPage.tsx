@@ -26,7 +26,7 @@ const ScrollReveal: React.FC<{
   </motion.div>
 );
 
-const LAST_UPDATED = '22 May 2025';
+const LAST_UPDATED = '8 July 2026';
 
 const sections = [
   {
@@ -35,11 +35,15 @@ const sections = [
   },
   {
     heading: 'What Data We Collect',
-    body: `We collect personal data only when you actively provide it through our website. This includes:\n\n• Contact form — your name, email address, company name (optional), the service you are enquiring about, and your message.\n• AI chatbot — the messages you send during a conversation. If you choose to share your name, email, or topic of interest with the chatbot, those details are also collected.\n\nWe do not collect data passively through tracking cookies, analytics scripts, or advertising pixels. Our website does not use Google Analytics, Facebook Pixel, or any similar third-party tracking technology.`,
+    body: `We collect personal data only when you actively provide it through our website. This includes:\n\n• Contact form — your name, email address, company name (optional), the service you are enquiring about, and your message.\n• AI chatbot — the messages you send during a conversation. If you choose to share your name, email, or topic of interest with the chatbot, those details are also collected.\n• Security scan — when you run a free security scan, the domain you ask us to scan and the email address you provide to receive your results.\n\nWe do not collect data passively through tracking cookies, analytics scripts, or advertising pixels. Our website does not use Google Analytics, Facebook Pixel, or any similar third-party tracking technology.`,
   },
   {
     heading: 'How We Use Your Data',
-    body: `We use the data you provide for the following purposes:\n\n• To respond to your enquiry or request for consultation.\n• To understand the nature of your requirements so we can prepare for an initial conversation.\n• To operate the AI chatbot and provide helpful responses during your session.\n\nWe do not use your data for marketing, profiling, automated decision-making, or any purpose beyond responding to your enquiry unless you explicitly ask us to.`,
+    body: `We use the data you provide for the following purposes:\n\n• To respond to your enquiry or request for consultation.\n• To understand the nature of your requirements so we can prepare for an initial conversation.\n• To operate the AI chatbot and provide helpful responses during your session.\n\nIf you run a security scan or share your business email with us, we may contact you about security services relevant to your results. We rely on our legitimate interest in offering relevant services to organisations that have engaged with us, and you can opt out at any time using the unsubscribe link in any message, or by emailing us. Beyond that, we do not profile you, make automated decisions about you, or sell your personal data.`,
+  },
+  {
+    heading: 'Security Scan and Dashboard',
+    body: `When you run a free security scan on our website, we collect the domain you ask us to scan and the email address you provide. We use these to run the scan, generate your security findings, and set up a free security dashboard where you can view them. We email you a one-time link to sign in to that dashboard, no password needed.\n\nThe scan only inspects information that is already publicly visible about a domain, such as its public DNS records and its published email and web security settings. It does not access anything private, and it does not attempt to log in to any system.\n\nOur legal basis for this is legitimate interest: you have asked us to assess a domain and show you the results, and you provide your email so that we can deliver them. The dashboard is the default way we deliver your results; you can instead choose to have the report emailed to you, and you can ask us to delete your account and data at any time by emailing hello@rosebudcloudsolutions.co.uk.`,
   },
   {
     heading: 'Legal Basis for Processing',
@@ -55,7 +59,7 @@ const sections = [
   },
   {
     heading: 'Data Retention',
-    body: `Contact form submissions and chatbot transcripts are delivered to our email inbox and retained only as long as necessary to respond to your enquiry and for reasonable record-keeping. We do not maintain a separate database of enquiry data.\n\nChatbot conversations are not stored on our servers. They exist in your browser session only and are discarded when you close or navigate away from the page. A transcript may be sent to our inbox for follow-up purposes.`,
+    body: `Contact form submissions and chatbot transcripts are delivered to our email inbox and retained only as long as necessary to respond to your enquiry and for reasonable record-keeping.\n\nWhen you run a scan we store your results and, if created, your free dashboard account so you can return to them. If an account is inactive and has not become a customer, we delete it and its scan data after 24 months. If you become a customer, we keep your data for the duration of our relationship and the period our legal and accounting obligations require afterwards. You can ask us to delete your data at any time.\n\nChatbot conversations are not stored on our servers. They exist in your browser session only and are discarded when you close or navigate away from the page. A transcript may be sent to our inbox for follow-up purposes.`,
   },
   {
     heading: 'Your Rights',

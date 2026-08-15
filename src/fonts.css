@@ -1,7 +1,10 @@
-/* Material Symbols Outlined – self-hosted + subset to the ~46 icons actually
-   used (1.1MB -> 13KB). font-display:block hides icons during the brief load
+/* Material Symbols Outlined – self-hosted + subset to only the icons actually
+   used (1.1MB -> ~100KB). font-display:block hides icons during the brief load
    instead of flashing the ligature text (e.g. the word "chat_bubble"), which
-   was causing a large page-wide layout shift (CLS). */
+   was causing a large page-wide layout shift (CLS).
+
+   Adding an icon? The subset has to be regenerated or the new name renders as
+   its literal text: `npm run icons` (see README, scripts/subset-icons.mjs). */
 @font-face {
   font-family: 'Material Symbols Outlined';
   font-style: normal;

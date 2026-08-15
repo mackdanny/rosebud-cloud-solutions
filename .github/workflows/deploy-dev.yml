@@ -36,6 +36,15 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
+      # Lets `npm run icons:check` (the first thing `npm run build` does) actually run
+      # here. Without fontTools the check skips itself, so an icon missing from the
+      # subset would only ever be caught on a developer's machine, and would ship as
+      # its literal ligature text. Non-fatal on purpose: if this install fails the
+      # check goes back to skipping rather than blocking a deploy on a PyPI wobble.
+      - name: Install fontTools (for the icon subset check)
+        continue-on-error: true
+        run: python3 -m pip install --quiet 'fonttools[woff]' || python3 -m pip install --quiet --break-system-packages 'fonttools[woff]'
+
       - name: Install dependencies
         run: npm ci
 
@@ -44,6 +53,9 @@ jobs:
         env:
           VITE_WEB3FORMS_KEY: ${{ secrets.VITE_WEB3FORMS_KEY }}
           VITE_CHATBOT_API_URL: https://rcs-chatbot.rosebudcloudsolutions.workers.dev
+          # Dev-site sign-in goes to the DEV platform. Unset (the prod build)
+          # falls back to the live portal, so only dev builds ever divert.
+          VITE_PORTAL_URL: https://ca-rcs-journey-dev.bluestone-629b4555.uksouth.azurecontainerapps.io
 
       - name: Validate build output
         run: |
@@ -104,8 +116,10 @@ jobs:
           skip_api_build: true
 
       - name: Bind custom domains
+        # www lives on the prod app now (swa-uks-web-prod-001). Dev must only
+        # ever bind dev.* so a dev deploy can never reclaim the live domain.
         run: |
-          for domain in dev.rosebudcloudsolutions.co.uk www.rosebudcloudsolutions.co.uk; do
+          for domain in dev.rosebudcloudsolutions.co.uk; do
             existing=$(az staticwebapp hostname list \
               --name ${{ env.SWA_NAME }} \
               --resource-group ${{ env.RESOURCE_GROUP }} \
@@ -121,6 +135,10 @@ jobs:
               echo "Custom domain $domain already bound, skipping."
             fi
           done
+
+      # Cloudflare cache purge lives in the prod workflow now: dev.* is not
+      # proxied through Cloudflare, so a dev deploy must not purge the live
+      # (www) edge cache.
 
       - name: Azure logout
         if: always()

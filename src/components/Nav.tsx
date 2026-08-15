@@ -9,13 +9,14 @@ interface NavProps {
 }
 
 const serviceLinks = [
+  { label: 'Managed DMARC',                      href: '/services/email-security',         icon: 'mark_email_read' },
+  { label: 'External Security',                  href: '/security-check',                  icon: 'radar' },
   { label: 'Azure Foundation & Landing Zones', href: '/services/azure-landing-zones', icon: 'cloud_done' },
   { label: 'Cloud Security & Compliance',       href: '/services/cloud-security',        icon: 'security' },
   { label: 'Secure DevOps & Automation',         href: '/services/devsecops',             icon: 'terminal' },
   { label: 'Cloud Optimisation & Improvement',  href: '/services/cloud-optimisation',    icon: 'trending_up' },
   { label: 'Cloud Architecture & Design',        href: '/services/advisory-consulting',    icon: 'architecture' },
   { label: 'Managed Cloud & Security Support',  href: '/services/managed-cloud',         icon: 'shield' },
-  { label: 'Email Security & DMARC',             href: '/services/email-security',         icon: 'mark_email_read' },
 ];
 
 const platformLink = { label: 'Strategic Triage', href: '/tools/strategic-triage' };

@@ -1,16 +1,61 @@
-import { motion } from 'framer-motion';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { SEO } from '../components/SEO';
 import { PostureScan } from '../components/PostureScan';
-import { trialUrl } from '../config/portal';
 import { Faq } from '../components/Faq';
 import { pageMeta, securityCheckSchema, breadcrumbSchema, faqSchema } from '../data/seoMeta';
 import { faqs } from '../data/faqs';
+import { REPORT_PRICE_GBP, MONITORING_PRICE_GBP, REPORT_CHECKOUT_URL, MONITORING_CHECKOUT_URL } from '../config/posture';
 
-const CHECKS = [
-  { icon: 'mail', title: 'Email security', body: 'SPF, DKIM, DMARC and spoofing exposure.' },
-  { icon: 'public', title: 'Web and TLS', body: 'Certificates, headers and exposed services.' },
-  { icon: 'travel_explore', title: 'External surface', body: 'Subdomains and attacker-visible footprint.' },
+const STATS = [
+  { value: '40+', label: 'Individual checks' },
+  { value: '6', label: 'Coverage areas' },
+  { value: '100%', label: 'External & passive' },
+  { value: 'None', label: 'Sign-up to scan' },
+];
+
+// Mirrors the report's section structure 1:1 (same titles, same checks per
+// section) so the page and the delivered report reconcile exactly. Sourced from
+// the engine's `comprehensive` profile + section assignments in scan-core
+// score.ts (see Posture STATUS.md). Keep in sync if the profile/sections change.
+const CHECK_GROUPS = [
+  {
+    icon: 'mark_email_read',
+    title: 'Email Security',
+    blurb: 'Can anyone send mail as you, and does yours get delivered?',
+    items: ['SPF record & policy', 'SPF lookup budget', 'SPF hygiene', 'DKIM signatures & selectors', 'DKIM key strength', 'DMARC policy & enforcement', 'DMARC reporting', 'MTA-STS policy', 'MTA-STS enforcement mode', 'TLS-RPT reporting', 'BIMI verified logo', 'ARC forwarding integrity', 'Reverse DNS (FCrDNS)', 'Mail-server IP reputation', 'Mail delivery resilience', 'DNSSEC'],
+  },
+  {
+    icon: 'public',
+    title: 'Web & TLS',
+    blurb: 'Is your website configured safely?',
+    items: ['TLS version & ciphers', 'Certificate health & expiry', 'TLS hardening grade', 'HSTS', 'Content-Security-Policy', 'Clickjacking protection', 'MIME-sniffing protection', 'Referrer-Policy', 'Permissions-Policy', 'Cookie security flags', 'Mixed content', 'Server version disclosure', 'Security-header depth', 'CAA records'],
+  },
+  {
+    icon: 'travel_explore',
+    title: 'External Exposure',
+    blurb: 'What can an attacker discover about you?',
+    items: ['Subdomain discovery', 'Subdomain-takeover exposure', 'Certificate Transparency exposure', 'DNS zone-transfer (AXFR)', 'Wildcard DNS', 'Nameserver diversity', 'Domain expiry', 'Registrar transfer lock', 'security.txt disclosure policy'],
+  },
+  {
+    icon: 'badge',
+    title: 'Additional context',
+    blurb: 'Extra intelligence we surface, for context.',
+    items: ['Microsoft 365 footprint', 'Staff email-address pattern', 'Hostname naming exposure', 'Compliance framework alignment'],
+  },
+  {
+    icon: 'fingerprint',
+    title: 'Identity & Brand',
+    blurb: 'Who could impersonate you?',
+    items: ['Look-alike domains', 'Mail-enabled lookalike abuse'],
+  },
+  {
+    icon: 'shield',
+    title: 'Attack Surface',
+    blurb: 'Can your infrastructure absorb an attack?',
+    items: ['DDoS scrubbing coverage'],
+  },
 ];
 
 const WHAT_WE_CHECK = [
@@ -26,18 +71,94 @@ const WHAT_WE_CHECK = [
   },
   {
     icon: 'travel_explore',
-    title: 'External attack surface',
+    title: 'External exposure',
     body: 'Subdomains created for old projects and never decommissioned stay visible to attackers. The scan maps the subdomains and services associated with your domain to show what is publicly facing. Forgotten DNS records pointing at decommissioned infrastructure are a well-documented source of subdomain takeover vulnerabilities.',
   },
 ];
 
 const REPORT_ROWS = [
   { label: 'Overall security score and rating', free: true, full: true },
-  { label: 'Issue count across email, web and exposure', free: true, full: true },
-  { label: 'Every finding with a severity rating', free: false, full: true },
-  { label: 'Plain-English explanation of why each finding matters', free: false, full: true },
-  { label: 'Private link you can share with your IT team', free: false, full: true },
+  { label: 'All 40+ checks, run on every scan', free: true, full: true },
+  { label: 'Every finding flagged with a severity rating', free: true, full: true },
+  { label: 'Plain-English risk: what each finding means for you', free: true, full: true },
+  { label: 'Step-by-step fix for every issue', free: false, full: true },
+  { label: 'Prioritised fix plan, in order of what matters most', free: false, full: true },
+  { label: 'Downloadable PDF you can hand to IT or a supplier', free: false, full: true },
 ];
+
+// The Posture line's paid products. The £50 report is self-serve (the door-opener);
+// monitoring is the recurring posture product; hardening is done-for-you / quote-only.
+const POSTURE_PRODUCTS = [
+  {
+    name: 'Full report',
+    price: `£${REPORT_PRICE_GBP}`,
+    unit: 'one-off',
+    who: 'The complete breakdown with a step-by-step fix for every issue, prioritised in the order that matters.',
+    features: ['Every finding, with the exact fix', 'Prioritised plan: what to do first', 'Downloadable PDF for IT or suppliers', 'Yours to keep — no subscription'],
+    cta: 'Get the full report',
+    href: REPORT_CHECKOUT_URL,
+    featured: true,
+    badge: 'Most popular',
+    note: 'Credited back if you go on to a hardening project.',
+  },
+  {
+    name: 'External Security Monitoring',
+    price: `£${MONITORING_PRICE_GBP}`,
+    unit: '/mo',
+    who: 'We re-scan your domain every day and alert you when your security slips.',
+    features: ['Daily automatic re-scan', 'Email alerts when something changes', 'Track your score over time', 'Cancel anytime'],
+    cta: 'Start monitoring',
+    href: MONITORING_CHECKOUT_URL,
+    note: 'Threats and misconfigurations creep in over time. This catches them.',
+  },
+  {
+    name: 'Hardening',
+    price: 'Quote',
+    unit: 'done-for-you',
+    who: "Don't want to touch it yourself? We fix everything for you, all the way to a clean bill of health.",
+    features: ['Hands-on remediation by us', 'Email, web, DNS & exposure fixes', 'Before/after proof scan', 'Enforced in 90 days, guaranteed'],
+    cta: 'Talk to us',
+    href: '/contact?intent=hardening',
+    note: 'Fixed price per domain, no ongoing commitment.',
+  },
+];
+
+// A compact "your score, tracked over time" visual (pre-sale review B4): sells
+// what the £29 monitoring product produces - a rising posture score with a drift
+// dip caught and recovered. Pure inline SVG, theme-aware via currentColor.
+const ScoreTrend: React.FC = () => {
+  // Monthly client scores; the dip at index 4 is a caught regression, then recovery.
+  const scores = [58, 63, 69, 74, 66, 78, 85, 90];
+  const W = 520, H = 150, pad = 24;
+  const max = 100, min = 40;
+  const x = (i: number) => pad + (i * (W - pad * 2)) / (scores.length - 1);
+  const y = (s: number) => pad + (1 - (s - min) / (max - min)) * (H - pad * 2);
+  const line = scores.map((s, i) => `${i === 0 ? 'M' : 'L'}${x(i).toFixed(1)},${y(s).toFixed(1)}`).join(' ');
+  const area = `${line} L${x(scores.length - 1).toFixed(1)},${H - pad} L${x(0).toFixed(1)},${H - pad} Z`;
+  const dip = scores.indexOf(Math.min(...scores));
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto text-primary" role="img" aria-label="A security score rising over eight months, with one dip caught and recovered">
+      <defs>
+        <linearGradient id="scoreFill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="currentColor" stopOpacity="0.22" />
+          <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      {[40, 60, 80, 100].map((g) => (
+        <g key={g}>
+          <line x1={pad} x2={W - pad} y1={y(g)} y2={y(g)} stroke="currentColor" strokeOpacity="0.1" strokeWidth="1" />
+          <text x={0} y={y(g) + 3} fontSize="9" fill="currentColor" fillOpacity="0.5">{g}</text>
+        </g>
+      ))}
+      <path d={area} fill="url(#scoreFill)" />
+      <path d={line} fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      {scores.map((s, i) => (
+        <circle key={i} cx={x(i)} cy={y(s)} r={i === dip ? 4.5 : 3} fill={i === dip ? '#f59e0b' : 'currentColor'} />
+      ))}
+      <text x={x(dip)} y={y(scores[dip]) + 18} fontSize="9" fill="#f59e0b" textAnchor="middle" fontWeight="700">drift caught</text>
+    </svg>
+  );
+};
 
 const Reveal: React.FC<{ children: React.ReactNode; className?: string; delay?: number }> = ({
   children,
@@ -55,7 +176,31 @@ const Reveal: React.FC<{ children: React.ReactNode; className?: string; delay?: 
   </motion.div>
 );
 
-export const SecurityCheckPage: React.FC = () => (
+export const SecurityCheckPage: React.FC = () => {
+  // The product options stay hidden until the visitor submits their email for the
+  // free report — then they reveal and we scroll them into view.
+  const [showProducts, setShowProducts] = useState(false);
+  const [reportUrl, setReportUrl] = useState<string | null>(null);
+  const productsRef = useRef<HTMLDivElement>(null);
+  const revealProducts = useCallback((url: string) => {
+    setReportUrl(url);
+    setShowProducts(true);
+  }, []);
+
+  useEffect(() => {
+    if (!showProducts) return;
+    // Double rAF so the section is mounted + laid out before we scroll; the
+    // header offset is handled by `scroll-mt-32` on the section (scroll-margin).
+    let inner = 0;
+    const outer = requestAnimationFrame(() => {
+      inner = requestAnimationFrame(() => {
+        productsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+    return () => { cancelAnimationFrame(outer); cancelAnimationFrame(inner); };
+  }, [showProducts]);
+
+  return (
   <main className="pt-32 md:pt-40 pb-32 bg-background relative overflow-hidden">
     <SEO
       {...pageMeta.securityCheck}
@@ -77,7 +222,7 @@ export const SecurityCheckPage: React.FC = () => (
           initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
           className="inline-block text-[10px] uppercase tracking-[0.4em] text-primary font-bold font-label mb-6"
         >
-          Free tool
+          External Security
         </motion.span>
         <motion.h1
           initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.05 }}
@@ -89,34 +234,70 @@ export const SecurityCheckPage: React.FC = () => (
           initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}
           className="max-w-2xl mx-auto text-on-surface-variant text-lg leading-relaxed"
         >
-          How exposed is your domain? Run a free external scan of your SPF, DKIM and DMARC records, TLS configuration, and attacker-visible services in around 15 seconds. No install, no sign-up, no access to your systems.
+          The free front door to <span className="text-on-surface font-medium">External Security</span> — our outside-in protection for everything attackers can see. Run a free scan that checks over 40 points across your email security, web and TLS, external exposure, attack surface, and brand. No install, no sign-up, no access to your systems.
         </motion.p>
       </div>
 
       <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.15 }}>
-        <PostureScan variant="page" />
+        <PostureScan variant="page" onComplete={revealProducts} />
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
-        {CHECKS.map(({ icon, title, body }) => (
-          <div key={title} className="rounded-2xl border border-outline/50 bg-surface/60 p-6 text-center">
-            <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/25 flex items-center justify-center mx-auto mb-4">
-              <span aria-hidden="true" className="material-symbols-outlined text-primary text-[22px]">{icon}</span>
-            </div>
-            <h2 className="font-headline text-lg font-bold mb-2">{title}</h2>
-            <p className="text-on-surface-variant text-sm leading-relaxed">{body}</p>
+      {/* ── Stat band ─────────────────────────────────────────────────── */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16">
+        {STATS.map(({ value, label }) => (
+          <div key={label} className="rounded-2xl border border-outline/50 bg-surface/60 px-4 py-6 text-center">
+            <div className="font-headline text-3xl md:text-4xl font-extrabold text-gradient-primary tracking-tight">{value}</div>
+            <div className="text-on-surface-variant text-xs md:text-sm mt-1.5 leading-snug">{label}</div>
           </div>
         ))}
       </div>
 
-      {/* ── What we check and why it matters ─────────────────────────── */}
+      {/* ── Everything we check ───────────────────────────────────────── */}
       <section className="mt-28">
         <Reveal className="text-center mb-12">
-          <span className="inline-block text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label mb-4">Under the hood</span>
-          <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight mb-5">What the scan checks and why it matters</h2>
+          <span className="inline-block text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label mb-4">The full picture</span>
+          <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight mb-5">Over 40 checks, across six fronts</h2>
           <p className="max-w-3xl mx-auto text-on-surface-variant leading-relaxed">
+            Most free scanners look at SPF and a TLS certificate and call it a day. This one runs the same comprehensive passive assessment we use in our paid audits, on every scan, entirely from the outside. Here is exactly what it looks at.
+          </p>
+        </Reveal>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+          {CHECK_GROUPS.map(({ icon, title, blurb, items }, i) => (
+            <Reveal key={title} delay={i % 2}>
+              <div className="rounded-2xl border border-outline/50 bg-surface/60 p-6 md:p-7">
+                <div className="flex items-start gap-4">
+                  <div className="w-11 h-11 rounded-xl bg-primary/10 border border-primary/25 flex items-center justify-center shrink-0">
+                    <span aria-hidden="true" className="material-symbols-outlined text-primary text-[20px]">{icon}</span>
+                  </div>
+                  <div>
+                    <h3 className="font-headline text-lg font-bold leading-tight">{title}</h3>
+                    <p className="text-on-surface-variant/80 text-sm mt-1">{blurb}</p>
+                  </div>
+                </div>
+                <ul className="flex flex-wrap gap-2 mt-5 pt-5 border-t border-outline/30">
+                  {items.map((item) => (
+                    <li key={item} className="inline-flex items-center gap-1.5 text-xs text-on-surface-variant bg-surface border border-outline/40 rounded-full pl-2 pr-3 py-1">
+                      <span aria-hidden="true" className="material-symbols-outlined text-primary text-[14px]">check</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+        <Reveal className="text-center mt-8">
+          <p className="text-sm text-on-surface-variant/70 max-w-2xl mx-auto">
             The scanner runs entirely from outside your network, the same view an attacker has. It reads publicly available DNS records and public-facing services only. It never sends test emails, never logs in to anything, and never touches your internal systems.
           </p>
+        </Reveal>
+      </section>
+
+      {/* ── Why it matters (plain English) ───────────────────────────── */}
+      <section className="mt-28">
+        <Reveal className="text-center mb-12">
+          <span className="inline-block text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label mb-4">Why it matters</span>
+          <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight mb-5">What the big findings mean for you</h2>
         </Reveal>
         <div className="flex flex-col gap-6">
           {WHAT_WE_CHECK.map(({ icon, title, body }, i) => (
@@ -144,7 +325,7 @@ export const SecurityCheckPage: React.FC = () => (
               <span className="inline-block text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label mb-4">Who it is for</span>
               <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight mb-5">Built for UK businesses, free to run</h2>
               <p className="text-on-surface-variant leading-relaxed mb-4 max-w-3xl">
-                Half of UK businesses reported a cyber attack or breach in the UK Government's Cyber Security Breaches Survey 2024, and phishing remains the most common attack type. Misconfigured or missing SPF, DKIM and DMARC records mean your domain can be used to phish your own customers and suppliers without your knowledge.
+                More than four in ten UK businesses identified a cyber attack or breach in the past year, and phishing remains by far the most common type (UK Government Cyber Security Breaches Survey 2025/26). Misconfigured or missing SPF, DKIM and DMARC records mean your domain can be used to phish your own customers and suppliers without your knowledge.
               </p>
               <p className="text-on-surface-variant leading-relaxed max-w-3xl">
                 The check is designed for IT managers, operations leads, and business owners who want a quick external view before a board update, a tender submission, a Cyber Essentials assessment, or a conversation with a security partner. The results are written in plain English, so you do not need to be technical to act on them.
@@ -154,11 +335,86 @@ export const SecurityCheckPage: React.FC = () => (
         </Reveal>
       </section>
 
-      {/* ── Free scan vs full report ──────────────────────────────────── */}
-      <section className="mt-28">
+      {/* ── What happens after the free scan (priced posture products) ──── */}
+      <AnimatePresence>
+      {showProducts && (
+      <motion.section
+        id="fix"
+        ref={productsRef}
+        className="mt-28 scroll-mt-32"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, ease: 'easeOut' }}
+      >
+        <Reveal className="mb-10">
+          <div className="flex flex-col sm:flex-row items-center gap-4 rounded-2xl border border-primary/30 bg-primary/10 px-6 py-5 max-w-2xl mx-auto text-center sm:text-left">
+            <span aria-hidden="true" className="material-symbols-outlined text-primary text-[30px] shrink-0">mark_email_read</span>
+            <div className="flex-1">
+              <p className="font-headline font-bold text-white">Your free report is on its way — check your inbox.</p>
+              <p className="text-on-surface-variant text-sm mt-0.5">
+                It can take a minute to arrive.{reportUrl && <> Or <a href={reportUrl} target="_blank" rel="noopener noreferrer" className="text-primary underline-offset-2 hover:underline">view it now</a>.</>}
+              </p>
+            </div>
+          </div>
+        </Reveal>
         <Reveal className="text-center mb-10">
-          <span className="inline-block text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label mb-4">What you get</span>
-          <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight">Instant result vs full report</h2>
+          <span className="inline-block text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label mb-4">After the free scan</span>
+          <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight">Know the fix, keep it fixed, or have us do it</h2>
+          <p className="max-w-2xl mx-auto text-on-surface-variant leading-relaxed mt-5">
+            The free scan shows you what's wrong and why it matters. When you're ready to act, pick the level of help that suits you — from a one-off report you action yourself to a done-for-you fix.
+          </p>
+        </Reveal>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch max-w-[1000px] mx-auto">
+          {POSTURE_PRODUCTS.map((p, i) => (
+            <Reveal key={p.name} delay={i}>
+              <div className={`group h-full rounded-2xl p-7 flex flex-col relative overflow-hidden transition-all ${p.featured ? 'bg-surface border-2 border-primary/40' : 'bg-surface/60 border border-outline/60 hover:border-primary/30'}`}>
+                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
+                {p.badge && (
+                  <span className="self-start mb-3 text-[10px] uppercase tracking-[0.15em] font-bold text-white bg-gradient-to-r from-primary to-fuchsia-500 px-2.5 py-1 rounded-full">{p.badge}</span>
+                )}
+                <h3 className="font-headline text-xl font-bold mb-1">{p.name}</h3>
+                <p className="text-on-surface-variant text-sm min-h-[4rem] mb-3">{p.who}</p>
+                <div className="mb-4 flex items-end gap-1.5">
+                  <span className="font-headline text-4xl font-extrabold tracking-tight">{p.price}</span>
+                  <span className="text-on-surface-variant text-sm mb-1.5">{p.unit}</span>
+                </div>
+                <ul className="space-y-2.5 flex-1 mb-5">
+                  {p.features.map((f) => (
+                    <li key={f} className="flex items-start gap-2 text-sm text-on-surface">
+                      <span aria-hidden="true" className="material-symbols-outlined text-primary shrink-0" style={{ fontSize: '1.05rem' }}>check</span>
+                      <span>{f}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p className="text-xs text-on-surface-variant/70 mb-5 leading-relaxed">{p.note}</p>
+                <a href={p.href} className="no-underline mt-auto">
+                  <button className={`w-full font-headline font-bold px-5 py-3 rounded-lg text-sm transition-all ${p.featured ? 'btn-animated text-white' : 'border border-outline/60 text-on-surface hover:border-primary/40'}`}>
+                    {p.cta}
+                  </button>
+                </a>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+
+        <Reveal className="mt-16 max-w-[1000px] mx-auto">
+          <div className="rounded-2xl border border-outline/60 bg-surface/60 p-7 md:p-9 grid md:grid-cols-2 gap-8 items-center">
+            <div>
+              <span className="inline-block text-[10px] uppercase tracking-[0.3em] text-primary font-bold font-label mb-4">With monitoring</span>
+              <h3 className="font-headline text-2xl font-bold tracking-tight mb-3">Watch your score climb, and prove it</h3>
+              <p className="text-on-surface-variant leading-relaxed text-sm">
+                We re-scan every day and track your posture score over time. When something slips, a weakened policy, an expiring certificate, you get an email the same day and it shows up as a dip you can see us recover. A clear line to show your board, auditor or insurer that security is improving.
+              </p>
+            </div>
+            <ScoreTrend />
+          </div>
+        </Reveal>
+
+        <Reveal className="mt-16 mb-8 text-center">
+          <h3 className="font-headline text-2xl font-bold tracking-tight">Free scan vs full report</h3>
+          <p className="max-w-xl mx-auto text-on-surface-variant leading-relaxed mt-3 text-sm">
+            The free scan tells you <em>what</em> is wrong. The £{REPORT_PRICE_GBP} report tells you exactly <em>how</em> to fix it.
+          </p>
         </Reveal>
         <Reveal>
           <div className="rounded-2xl border border-outline/50 bg-surface/60 overflow-hidden max-w-3xl mx-auto">
@@ -166,8 +422,8 @@ export const SecurityCheckPage: React.FC = () => (
               <thead>
                 <tr className="border-b border-outline/60">
                   <th className="px-6 py-4 text-sm font-label uppercase tracking-wider text-on-surface-variant">Included</th>
-                  <th className="px-4 py-4 text-sm font-label uppercase tracking-wider text-on-surface-variant text-center">Instant</th>
-                  <th className="px-4 py-4 text-sm font-label uppercase tracking-wider text-primary text-center">Full report</th>
+                  <th className="px-4 py-4 text-sm font-label uppercase tracking-wider text-on-surface-variant text-center">Free scan</th>
+                  <th className="px-4 py-4 text-sm font-label uppercase tracking-wider text-primary text-center">Full report · £{REPORT_PRICE_GBP}</th>
                 </tr>
               </thead>
               <tbody>
@@ -191,7 +447,9 @@ export const SecurityCheckPage: React.FC = () => (
             The scan uses only publicly available DNS and web data. We keep scan results so we can generate your report, and we never sell or share your details with third parties. See our <Link to="/privacy" className="text-primary underline-offset-4 hover:underline">privacy policy</Link>.
           </p>
         </Reveal>
-      </section>
+      </motion.section>
+      )}
+      </AnimatePresence>
 
       {/* ── FAQ ───────────────────────────────────────────────────────── */}
       <Faq
@@ -209,34 +467,40 @@ export const SecurityCheckPage: React.FC = () => (
           <div className="text-center rounded-2xl border border-outline/50 bg-surface/60 px-8 py-12">
             <h2 className="font-headline text-2xl md:text-3xl font-bold tracking-tight mb-4">Found something you want fixed?</h2>
             <p className="text-on-surface-variant leading-relaxed max-w-2xl mx-auto mb-8">
-              The fastest fix for email impersonation is our <Link to="/services/email-security" className="text-primary underline-offset-4 hover:underline">Managed DMARC</Link> service: we walk your domain safely to full enforcement, done for you. Start a free 7-day trial, or talk to us about a one-off hardening project or your wider <Link to="/services/cloud-security" className="text-primary underline-offset-4 hover:underline">cloud security</Link>. A free scan commits you to nothing.
+              Get the £{REPORT_PRICE_GBP} full report and you'll have the exact fix for every finding, prioritised and ready to action. A free scan commits you to nothing.
             </p>
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-              <a href={trialUrl('managed')} target="_blank" rel="noopener noreferrer" className="no-underline inline-block">
+              <a href={REPORT_CHECKOUT_URL} className="no-underline inline-block">
                 <motion.button
                   className="btn-animated text-white font-headline font-bold px-10 py-4 rounded-lg text-base tracking-tight"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.97 }}
                 >
-                  Start a free 7-day trial
+                  Get the full report · £{REPORT_PRICE_GBP}
                 </motion.button>
               </a>
-              <Link to="/contact" className="no-underline inline-block">
+              <Link to="/contact?intent=hardening" className="no-underline inline-block">
                 <motion.button
                   className="border border-outline/50 hover:border-primary/40 text-on-surface font-headline font-bold px-10 py-4 rounded-lg text-base tracking-tight transition-colors"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.97 }}
                 >
-                  Talk to us about your results
+                  Have us fix it for you
                 </motion.button>
               </Link>
             </div>
+            <p className="text-sm text-on-surface-variant/70 mt-8">
+              Specifically worried about email impersonation and DMARC? Our{' '}
+              <Link to="/services/email-security" className="text-primary underline-offset-4 hover:underline">Managed DMARC</Link>{' '}
+              service walks your domain safely to full enforcement, done for you.
+            </p>
           </div>
         </Reveal>
       </section>
 
     </div>
   </main>
-);
+  );
+};
 
 export default SecurityCheckPage;

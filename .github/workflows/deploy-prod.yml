@@ -1,0 +1,207 @@
+name: Promote to Production (Azure Static Web App)
+
+# Manual promotion only. Nothing here runs on push.
+# Flow: you dispatch this workflow -> the `gate` job pauses for your approval
+# (production environment, required reviewer) -> the `deploy` job builds the
+# current ref and deploys it to the PROD Static Web App.
+#
+# The deploy job runs under `environment: dev` on purpose: that is the identity
+# the existing Azure federated credential trusts, so no Entra change is needed.
+# Authorisation to touch the prod resource comes from the service principal's
+# role in the resource group, not from the environment name.
+#
+# www is now bound to this prod app (cutover done 2026-07-02). After deploying,
+# the workflow verifies the www custom-domain binding is Ready and the live site
+# returns 200, so a broken binding or dead origin fails the run loudly instead of
+# silently leaving the site down (see docs/deploy-pipeline.md).
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "promote" to confirm deploying the current main to production'
+        required: true
+        default: ''
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  TENANT_ID: 902841c1-b9f1-4253-91e5-f868aac15774
+  SUBSCRIPTION_ID: 495bf684-02f0-4d46-8b31-c82b31aa7943
+  RESOURCE_GROUP: rg-uks-web-001
+  SWA_NAME: swa-uks-web-prod-001
+  SWA_LOCATION: westeurope
+  SWA_SKU: Free
+  PROD_HOSTNAME: www.rosebudcloudsolutions.co.uk
+
+jobs:
+  # Approval gate. Does no work; its only job is to hold the run until an
+  # authorised reviewer approves the `production` environment.
+  gate:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Confirm input
+        run: |
+          if [ "${{ github.event.inputs.confirm }}" != "promote" ]; then
+            echo "Confirmation text was not 'promote' — aborting."
+            exit 1
+          fi
+          echo "Promotion of ${{ github.sha }} approved."
+
+  deploy:
+    needs: gate
+    runs-on: ubuntu-latest
+    # Reuse the dev environment identity so the existing federated credential
+    # authenticates the Azure login. RBAC on the resource group authorises prod.
+    environment: dev
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      # See deploy-dev.yml: this is what makes `npm run icons:check` run for real
+      # instead of skipping. It sits before the build, and the build sits before any
+      # Azure step, so a missing icon stops the promote without touching prod.
+      - name: Install fontTools (for the icon subset check)
+        continue-on-error: true
+        run: python3 -m pip install --quiet 'fonttools[woff]' || python3 -m pip install --quiet --break-system-packages 'fonttools[woff]'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          VITE_WEB3FORMS_KEY: ${{ secrets.VITE_WEB3FORMS_KEY }}
+          VITE_CHATBOT_API_URL: https://rcs-chatbot.rosebudcloudsolutions.workers.dev
+
+      - name: Validate build output
+        run: |
+          test -d dist/client            || { echo "FAIL: dist/client/ not found";        exit 1; }
+          test -f dist/client/index.html || { echo "FAIL: dist/client/index.html missing"; exit 1; }
+          echo "PASS: build output present"
+          find dist/client -name "*.html" | sort
+
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.SP_WEB_DEV_CLIENT_ID }}
+          tenant-id: ${{ env.TENANT_ID }}
+          subscription-id: ${{ env.SUBSCRIPTION_ID }}
+
+      - name: Ensure prod Static Web App exists
+        run: |
+          az staticwebapp show \
+            --name ${{ env.SWA_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --output none 2>/dev/null && echo "Prod SWA already exists." || {
+              echo "Creating prod SWA..."
+              az staticwebapp create \
+                --name ${{ env.SWA_NAME }} \
+                --resource-group ${{ env.RESOURCE_GROUP }} \
+                --location ${{ env.SWA_LOCATION }} \
+                --sku ${{ env.SWA_SKU }}
+            }
+
+      - name: Get SWA deployment token
+        id: get-token
+        run: |
+          token=$(az staticwebapp secrets list \
+            --name ${{ env.SWA_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --query "properties.apiKey" \
+            --output tsv)
+          echo "::add-mask::$token"
+          echo "token=$token" >> $GITHUB_OUTPUT
+
+      - name: Deploy to prod Static Web App
+        uses: azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ steps.get-token.outputs.token }}
+          action: upload
+          app_location: dist/client
+          skip_app_build: true
+          skip_api_build: true
+
+      - name: Report prod status
+        run: |
+          host=$(az staticwebapp show \
+            --name ${{ env.SWA_NAME }} \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --query "defaultHostname" --output tsv)
+          echo "Deployed to prod app: https://$host"
+          echo "Live at: https://www.rosebudcloudsolutions.co.uk (via Cloudflare)"
+
+      # Prod serves www through Cloudflare, so refresh the edge cache after a
+      # deploy. Safe no-op until the CF_ZONE_ID / CF_API_TOKEN secrets are set.
+      - name: Purge Cloudflare cache
+        env:
+          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+        run: |
+          if [ -z "$CF_ZONE_ID" ] || [ -z "$CF_API_TOKEN" ]; then
+            echo "CF_ZONE_ID / CF_API_TOKEN not set - skipping Cloudflare purge."
+            exit 0
+          fi
+          resp=$(curl -sS -X POST \
+            "https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/purge_cache" \
+            -H "Authorization: Bearer $CF_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            --data '{"purge_everything":true}')
+          echo "$resp"
+          echo "$resp" | grep -q '"success":true' || { echo "Cloudflare purge failed"; exit 1; }
+          echo "Cloudflare cache purged."
+
+      # Hard gate: a promotion is only "done" if www actually serves. The
+      # 2026-07-02 outage was a Failed custom-domain binding (no TLS cert) that
+      # produced a Cloudflare 526 while the deploy itself reported success. This
+      # step catches that class of failure instead of shipping a dead site.
+      - name: Verify prod custom domain and live site
+        run: |
+          HOST="${{ env.PROD_HOSTNAME }}"
+
+          echo "Checking custom-domain binding status for $HOST ..."
+          status=""
+          for i in $(seq 1 5); do
+            status=$(az staticwebapp hostname list \
+              --name "${{ env.SWA_NAME }}" \
+              --resource-group "${{ env.RESOURCE_GROUP }}" \
+              --query "[?domainName=='$HOST'].status | [0]" --output tsv 2>/dev/null)
+            echo "  attempt $i: status=${status:-<none>}"
+            [ "$status" = "Ready" ] && break
+            sleep 15
+          done
+          if [ "$status" != "Ready" ]; then
+            echo "FAIL: custom domain $HOST is not Ready (status=${status:-missing})."
+            echo "      A Failed/Adding binding means no valid origin TLS cert, so the"
+            echo "      live site will return a Cloudflare 526. Re-add the binding with"
+            echo "      --validation-method dns-txt-token (see docs/deploy-pipeline.md)."
+            exit 1
+          fi
+          echo "PASS: $HOST binding is Ready."
+
+          echo "Checking https://$HOST returns 200 ..."
+          code=""
+          for i in $(seq 1 6); do
+            code=$(curl -s -o /dev/null -w "%{http_code}" -m 15 "https://$HOST")
+            echo "  attempt $i: http=$code"
+            [ "$code" = "200" ] && break
+            sleep 15
+          done
+          if [ "$code" != "200" ]; then
+            echo "FAIL: https://$HOST returned $code (expected 200)."
+            exit 1
+          fi
+          echo "PASS: https://$HOST is live (200). Promotion verified."
+
+      - name: Azure logout
+        if: always()
+        run: az logout

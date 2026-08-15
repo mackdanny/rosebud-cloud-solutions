@@ -1,14 +1,23 @@
 import { useState, useCallback } from 'react';
 import { runScan, unlock, normaliseDomain, type ScanSuccess } from '../lib/postureApi';
+import { CASCADE_MS } from '../lib/scanSequence';
 
-export type ScanPhase = 'idle' | 'scanning' | 'teaser' | 'submitting' | 'done';
+export type ScanPhase = 'idle' | 'scanning' | 'teaser' | 'submitting' | 'done' | 'member';
 
 export interface PostureScanState {
   phase: ScanPhase;
   result: ScanSuccess | null;
   error: string | null;
+  /** Where to send an existing paying customer to sign in (member mode). */
+  portalLoginUrl: string | null;
+  /** Which "check your inbox" outcome the done phase represents: a dashboard
+   *  sign-in link (verify) vs the report link the visitor opted into (report). */
+  unlockMode: 'verify' | 'report' | null;
+  /** True once the scan request has resolved ok; the sequence plays its
+   *  done-cascade during the short window before phase flips to teaser. */
+  scanResolved: boolean;
   scan: (rawDomain: string) => Promise<void>;
-  submitEmail: (email: string) => Promise<void>;
+  submitEmail: (email: string, consent?: boolean) => Promise<void>;
   reset: () => void;
 }
 
@@ -16,6 +25,9 @@ export function usePostureScan(): PostureScanState {
   const [phase, setPhase] = useState<ScanPhase>('idle');
   const [result, setResult] = useState<ScanSuccess | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [portalLoginUrl, setPortalLoginUrl] = useState<string | null>(null);
+  const [unlockMode, setUnlockMode] = useState<'verify' | 'report' | null>(null);
+  const [scanResolved, setScanResolved] = useState(false);
 
   const scan = useCallback(async (rawDomain: string) => {
     const domain = normaliseDomain(rawDomain);
@@ -24,10 +36,14 @@ export function usePostureScan(): PostureScanState {
       return;
     }
     setError(null);
+    setScanResolved(false);
     setPhase('scanning');
     const res = await runScan(domain);
     if (res.ok) {
       setResult(res);
+      setScanResolved(true);
+      // Leave room for the sequence's done-cascade before the teaser replaces it.
+      await new Promise((r) => setTimeout(r, CASCADE_MS + 300));
       setPhase('teaser');
     } else {
       setError(res.message);
@@ -35,12 +51,30 @@ export function usePostureScan(): PostureScanState {
     }
   }, []);
 
-  const submitEmail = useCallback(async (email: string) => {
+  const submitEmail = useCallback(async (email: string, consent = false) => {
     if (!result) return;
     setError(null);
     setPhase('submitting');
-    const res = await unlock(result.token, email);
+    const res = await unlock(result.token, email, consent);
     if (res.ok) {
+      if (res.loginUrl) {
+        // Direct-to-platform on-ramp (login mode): the magic-link is single-use,
+        // so we redirect straight into it instead of showing "check your inbox".
+        // Don't set phase to 'done' here, we're navigating away.
+        window.location.href = res.loginUrl;
+        return;
+      }
+      if (res.mode === 'member') {
+        // Existing paying customer: never auto-logged-in from the funnel. Point
+        // them at the platform to sign in and scan new domains there.
+        setPortalLoginUrl(res.portalLoginUrl ?? 'https://portal.rosebudcloudsolutions.co.uk/portal/login');
+        setPhase('member');
+        return;
+      }
+      // verify (returning prospect) got a dashboard sign-in link; report (the
+      // "just email me the report" opt-out) got the report link. Track which so
+      // the done screen shows platform-first copy for verify, not the PDF/report.
+      setUnlockMode(res.mode === 'verify' ? 'verify' : 'report');
       setPhase('done');
     } else {
       setError(res.message);
@@ -52,7 +86,10 @@ export function usePostureScan(): PostureScanState {
     setPhase('idle');
     setResult(null);
     setError(null);
+    setPortalLoginUrl(null);
+    setUnlockMode(null);
+    setScanResolved(false);
   }, []);
 
-  return { phase, result, error, scan, submitEmail, reset };
+  return { phase, result, error, portalLoginUrl, unlockMode, scanResolved, scan, submitEmail, reset };
 }
